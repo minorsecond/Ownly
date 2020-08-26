@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_PREFIX_PATH "C:\\msys64\\mingw64")
 #set(Qt5_DIR "C:\\msys64\\mingw64\\lib\\cmake\\Qt5")
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 find_package(SQLite3 REQUIRED)
 
