@@ -8,9 +8,10 @@
 
 class Database {
 
-    static void build();  // Build database
+    static auto get();
+    static void read(const std::string& file_name);
 public:
-    int open_or_create(std::string file_name);
+    static int open_or_create(const std::string& file_name);
 };
 
 

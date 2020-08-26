@@ -5,8 +5,9 @@
 #include "Database.h"
 #include "../include/sqlite_orm.h"
 #include <unistd.h>
+#include <iostream>
 
-void Database::build() {
+auto Database::get() {
     struct Item {
         int id;
         std::string itemName;
@@ -35,23 +36,28 @@ void Database::build() {
                                                                    sqlite_orm::make_column("notes", &Item::notes)));
 
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
+    return storage, Item;
 }
 
-int Database::open_or_create(std::string file_name) {
+void Database::read(const std::string& file_name) {
+    auto storage = Database::get();
+    std::vector<int> item_ids = storage.get_all<id>()
+}
+
+int Database::open_or_create(const std::string& file_name) {
     int res = access(file_name.c_str(), R_OK);
-    int db_status = -1;
 
     if(res < 0) {
         if (errno == ENOENT) {// DB file doesn't exist
-            Database::build();
-            db_status = 0;
+            Database::get();
+            std::cout << "Creating new SQLite3 file at : " << file_name << std::endl;
         } else if (errno == EACCES) {  // DB file exists but isn't readable
-            db_status = 1;
+            std::cout << "SQLite3 File exists at: " << file_name << " but is corrupt." << std::endl;
         }
-    } else if(res == 1) {
-        // Code to read existing sqlite file
-        db_status = 0;
+    } else if(res == 0) {
+        Database::read(file_name);
+        std::cout << "Reading existing SQLite3 file at: " << file_name << std::endl;
     }
 
-    return db_status;
+    return res;
 }

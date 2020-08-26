@@ -38,7 +38,7 @@
 # *.ipr
 
 # CMake
-cmake-build-*/
+cmake-get-*/
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
@@ -61,7 +61,7 @@ atlassian-ide-plugin.xml
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
-crashlytics-build.properties
+crashlytics-get.properties
 fabric.properties
 
 # Editor-based Rest Client
