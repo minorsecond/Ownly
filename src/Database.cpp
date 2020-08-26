@@ -8,19 +8,6 @@
 #include <iostream>
 
 auto Database::get() {
-    struct Item {
-        int id;
-        std::string itemName;
-        std::string category;
-        int purchaseYear;
-        int purchaseMonth;
-        int purchaseDay;
-        double purchasePrice;
-        int count;
-        bool usedInLastSixMonths;
-        std::string notes;
-    };
-
     auto storage = sqlite_orm::make_storage("db.sqlite",
                                             sqlite_orm::make_table("items",
                                                                    sqlite_orm::make_column("id", &Item::id, sqlite_orm::autoincrement(), sqlite_orm::primary_key()),
@@ -41,7 +28,11 @@ auto Database::get() {
 
 void Database::read(const std::string& file_name) {
     auto storage = Database::get();
-    //std::vector<int> item_ids = storage.get_all<id>()
+    auto allItems = storage.get_all<Item>();
+
+    for(auto &item : allItems) {
+        std::cout << storage.dump(item) << std::endl;
+    }
 }
 
 int Database::open_or_create(const std::string& file_name) {

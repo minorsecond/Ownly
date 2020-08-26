@@ -7,11 +7,23 @@
 #include "string"
 
 class Database {
-
+private:
+    struct Item {
+        int id;
+        std::string itemName;
+        std::string category;
+        int purchaseYear;
+        int purchaseMonth;
+        int purchaseDay;
+        double purchasePrice;
+        int count;
+        bool usedInLastSixMonths;
+        std::string notes;
+    };
     static auto get();
-    static void read(const std::string& file_name);
+    void read(const std::string& file_name);
 public:
-    static int open_or_create(const std::string& file_name);
+    int open_or_create(const std::string& file_name);
 };
 
 
