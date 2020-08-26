@@ -15,9 +15,9 @@ pipeline {
                     bat 'pwd'
                     archiveArtifacts 'Notch.exe'
                 }
-                always {
-                    cleanWs()
-                }
+                //always {
+                //    cleanWs()
+                //}
             }
         }
 	}
