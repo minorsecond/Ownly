@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(Notch)
 set(CMAKE_CXX_STANDARD 20)
 
-set(CMAKE_PREFIX_PATH "C:/msys64/mingw64")
+set(CMAKE_PREFIX_PATH "C:\\msys64\\mingw64")
 #set(Qt5_DIR "C:\\msys64\\mingw64\\lib\\cmake\\Qt5")
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
