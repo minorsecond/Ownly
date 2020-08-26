@@ -6,6 +6,8 @@
 #include "../include/sqlite_orm.h"
 #include <unistd.h>
 #include <iostream>
+#include <vector>
+#include <string.h>
 
 auto Database::get() {
     auto storage = sqlite_orm::make_storage("db.sqlite",
@@ -33,6 +35,35 @@ void Database::read(const std::string& file_name) {
     for(auto &item : allItems) {
         std::cout << storage.dump(item) << std::endl;
     }
+}
+
+int Database::write(const std::string &file_name, std::vector<std::string> payload) {
+    auto storage = Database::get();
+    std::string item_name = payload.at(0);
+    std::string item_category = payload.at(1);
+    std::string purchase_date = payload.at(2);
+    int purchaseYear = 0;
+    int purchaseMonth = 0 ;
+    int purchaseDay= 0;
+    double purchase_price = std::stod(payload.at(3));
+    int count = std::stoi(payload.at(3));
+    bool usedInLastSixMonths = false;
+    std::string notes = payload.at(5);
+
+    if(std::strcmp(payload.at(4).c_str(), "true") == 0)
+        usedInLastSixMonths = true;
+    else if(std::strcmp(payload.at(4).c_str(), "false") == 0)
+        usedInLastSixMonths = false;
+
+    // QDateEdit returns string as dd/mm/yyyy
+    scanf("%d/%d/%d", &purchaseMonth, &purchaseDay, &purchaseYear);
+
+    Item item{-1, item_name, item_category, purchaseYear, purchaseMonth, purchaseDay, purchase_price, count, usedInLastSixMonths, notes};
+    auto insertedId = storage.insert(item);
+    std::cout << "insertedId = " << insertedId << std::endl;
+    item.id = insertedId;
+
+    return insertedId;
 }
 
 int Database::open_or_create(const std::string& file_name) {
