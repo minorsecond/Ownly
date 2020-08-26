@@ -36,12 +36,12 @@ auto Database::get() {
                                                                    sqlite_orm::make_column("notes", &Item::notes)));
 
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
-    return storage, Item;
+    return storage;
 }
 
 void Database::read(const std::string& file_name) {
     auto storage = Database::get();
-    std::vector<int> item_ids = storage.get_all<id>()
+    //std::vector<int> item_ids = storage.get_all<id>()
 }
 
 int Database::open_or_create(const std::string& file_name) {
