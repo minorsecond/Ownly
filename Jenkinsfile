@@ -1,6 +1,6 @@
 
 pipeline {
-	agent any
+	agent { label 'CI-W10-Slave'}
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 	}
