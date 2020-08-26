@@ -30,7 +30,8 @@ void Database::build() {
                                                                    sqlite_orm::make_column("purchase_day", &Item::purchaseDay),
                                                                    sqlite_orm::make_column("purchase_price", &Item::purchasePrice),
                                                                    sqlite_orm::make_column("count", &Item::count),
-                                                                   sqlite_orm::make_column("used_in_last_six_months", &Item::usedInLastSixMonths),
+                                                                   sqlite_orm::make_column("used_in_last_six_months", &Item::usedInLastSixMonths, sqlite_orm::default_value(
+                                                                           false)),
                                                                    sqlite_orm::make_column("notes", &Item::notes)));
 
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
