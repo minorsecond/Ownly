@@ -9,6 +9,11 @@ pipeline {
             steps {
                 cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', steps: [[withCmake: true]]
             }
+            failure {
+                post {
+                    cleanWs()
+                }
+            }
         }
 	}
 }
