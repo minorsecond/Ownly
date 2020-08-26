@@ -7,4 +7,4 @@ find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Notch src/main.cpp)
-target_link_libraries(Notch Qt5::Core Qt5::Widgets ${GDAL_LIBRARY})
+target_link_libraries(Notch Qt5::Core Qt5::Widgets)
