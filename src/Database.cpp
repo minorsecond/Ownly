@@ -4,7 +4,7 @@
 
 #include "Database.h"
 #include "../include/sqlite_orm.h"
-#include "ctime"
+#include <unistd.h>
 
 void Database::build() {
     struct Item {
@@ -30,7 +30,25 @@ void Database::build() {
                                                                    sqlite_orm::make_column("purchase_day", &Item::purchaseDay),
                                                                    sqlite_orm::make_column("purchase_price", &Item::purchasePrice),
                                                                    sqlite_orm::make_column("count", &Item::count),
-                                                                   sqlite_orm::make_column("used_in_last_six_months", &Item::usedInLastSixMonths),
+                                                                   sqlite_orm::make_column("used_in_last_six_months", &Item::usedInLastSixMonths), sqlite_orm::default_value("FALSE"),
                                                                    sqlite_orm::make_column("notes", &Item::notes)));
+}
 
+int Database::open_or_create(std::string file_name) {
+    int res = access(file_name.c_str(), R_OK);
+    int db_status = -1;
+
+    if(res < 0) {
+        if (errno == ENOENT) {// DB file doesn't exist
+            Database::build();
+            db_status = 0;
+        } else if (errno == EACCES) {  // DB file exists but isn't readable
+            db_status = 1;
+        }
+    } else if(res == 1) {
+        // Code to read existing sqlite file
+        db_status = 0;
+    }
+
+    return db_status;
 }

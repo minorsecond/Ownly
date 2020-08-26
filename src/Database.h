@@ -4,12 +4,13 @@
 
 #ifndef NOTCH_DATABASE_H
 #define NOTCH_DATABASE_H
-#include "../include/sqlite_orm.h"
 #include "string"
 
 class Database {
 
-    void build();  // Build database
+    static void build();  // Build database
+public:
+    int open_or_create(std::string file_name);
 };
 
 
