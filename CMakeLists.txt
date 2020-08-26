@@ -15,5 +15,6 @@ find_package(SQLite3 REQUIRED)
 include_directories(${SQLITE3_INCLUDE_DIRS})
 
 add_executable(Notch src/main.cpp src/Database.cpp src/Database.h)
-message(STATUS ${SQLite3_LIBRARIES})
+message(STATUS ${SQLite3_INCLUDE_DIRS})
+target_include_directories(Notch PRIVATE ${SQLite3_INCLUDE_DIRS})
 target_link_libraries(Notch Qt5::Core Qt5::Widgets SQLite3)
