@@ -5,6 +5,7 @@
 #ifndef NOTCH_DATABASE_H
 #define NOTCH_DATABASE_H
 #include "string"
+#include <vector>
 
 class Database {
 private:
@@ -22,6 +23,7 @@ private:
     };
     static auto get();
     void read(const std::string& file_name);
+    int write(const std::string& file_name, std::vector<std::string> payload);
 public:
     int open_or_create(const std::string& file_name);
 };
