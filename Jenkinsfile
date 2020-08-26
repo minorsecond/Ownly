@@ -7,6 +7,7 @@ pipeline {
 	stages {
         stage('Build') {
             steps {
+                bat 'dir'
                 cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', steps: [[withCmake: true]]
             }
             post {
