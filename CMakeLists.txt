@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_PREFIX_PATH "C:\\msys64\\mingw64")
 list(APPEND CMAKE_PREFIX_PATH "C:\\msys64\\mingw64\\lib\\cmake\\Qt5")
+list(APPEND CMAKE_PREFIX_PATH "C:\\msys64\\usr\\local\\lib\\cmake\\Catch2")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
