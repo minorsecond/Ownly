@@ -41,7 +41,7 @@ using Storage = decltype(initStorage());  // Get Storage return type
 
 class Database {
 public:
-    int writeDbToDisk(auto storage);
+    int writeDbToDisk(Storage storage);
     Storage read(const std::string& file_name);
     Storage write(const std::string& file_name, std::vector<std::string> payload);
     int open_or_create(const std::string& file_name);

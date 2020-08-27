@@ -21,7 +21,7 @@ Storage Database::read(const std::string& file_name) {
 }
 
 Storage Database::write(const std::string &file_name, std::vector<std::string> payload) {
-    auto storage = initStorage();
+    Storage storage = initStorage();
     std::string item_name = payload.at(0);
     std::string item_category = payload.at(1);
     std::string purchase_date = payload.at(2);
@@ -55,20 +55,20 @@ int Database::open_or_create(const std::string& file_name) {
     if(res < 0) {
         if (errno == ENOENT) {// DB file doesn't exist
             std::cout << "Creating new SQLite3 file at : " << file_name << std::endl;
-            auto storage = initStorage();
+            Storage storage = initStorage();
             Database::writeDbToDisk(storage);
         } else if (errno == EACCES) {  // DB file exists but isn't readable
             std::cout << "SQLite3 File exists at: " << file_name << " but is corrupt." << std::endl;
         }
     } else if (res == 0) {
         std::cout << "Reading existing SQLite3 file at: " << file_name << std::endl;
-        auto storage = Database::read("db.sqlite");
+        Storage storage = Database::read("db.sqlite");
     }
 
     return res;
 }
 
-int Database::writeDbToDisk(auto storage) {
+int Database::writeDbToDisk(Storage storage) {
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
     return 0;
 }
