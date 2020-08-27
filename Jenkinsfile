@@ -29,6 +29,7 @@ pipeline {
             post {
                 success {
                     archiveArtifacts artifacts: 'Ownly.exe'
+                    cleanWs()
                 }
                 failure {
                     cleanWs()
