@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(Notch)
+project(Ownly)
 set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_PREFIX_PATH "C:\\msys64\\mingw64")
@@ -24,7 +24,7 @@ endif(SQLITE3_FOUND)
 
 include_directories(${SQLITE3_INCLUDE_DIRS})
 
-add_executable(Notch src/main.cpp src/Database.cpp src/Database.h)
+add_executable(Ownly src/main.cpp src/Database.cpp src/Database.h)
 message(STATUS ${SQLite3_INCLUDE_DIRS})
-target_include_directories(Notch PRIVATE ${SQLite3_INCLUDE_DIRS})
-target_link_libraries(Notch Qt5::Core Qt5::Widgets SQLite3)
+target_include_directories(Ownly PRIVATE ${SQLite3_INCLUDE_DIRS})
+target_link_libraries(Ownly Qt5::Core Qt5::Widgets SQLite3)
