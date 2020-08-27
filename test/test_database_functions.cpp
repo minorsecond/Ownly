@@ -6,5 +6,6 @@
 #include "../src/Database.h"
 
 TEST_CASE("Read DB", "[DB Read]") {
-    Database::open_or_create()
+    Database db;
+    db.open_or_create("test-db.sqlite");
 }

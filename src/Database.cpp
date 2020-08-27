@@ -73,13 +73,13 @@ auto Database::open_or_create(const std::string& file_name) {
 
     if(res < 0) {
         if (errno == ENOENT) {// DB file doesn't exist
-            return Database::get();
             std::cout << "Creating new SQLite3 file at : " << file_name << std::endl;
+            return Database::get();
         } else if (errno == EACCES) {  // DB file exists but isn't readable
             std::cout << "SQLite3 File exists at: " << file_name << " but is corrupt." << std::endl;
         }
     } else if(res == 0) {
-        return Database::read(file_name);
         std::cout << "Reading existing SQLite3 file at: " << file_name << std::endl;
+        return Database::read(file_name);
     }
 }
