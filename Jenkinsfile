@@ -7,17 +7,16 @@ pipeline {
 	stages {
         stage('Build') {
             steps {
-                bat 'dir'
                 cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
+                bat 'dir'
             }
             post {
                 success {
-                    bat 'dir'
                     archiveArtifacts 'Notch.exe'
                 }
-                always {
-                    cleanWs()
-                }
+                //always {
+                //    cleanWs()
+                //}
             }
         }
 	}
