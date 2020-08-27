@@ -22,10 +22,10 @@ private:
         std::string notes;
     };
     static auto get();
-    void read(const std::string& file_name);
+    auto read(const std::string& file_name);
     int write(const std::string& file_name, std::vector<std::string> payload);
 public:
-    int open_or_create(const std::string& file_name);
+    auto open_or_create(const std::string& file_name);
 };
 
 

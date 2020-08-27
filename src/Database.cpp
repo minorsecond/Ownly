@@ -28,13 +28,15 @@ auto Database::get() {
     return storage;
 }
 
-void Database::read(const std::string& file_name) {
+auto Database::read(const std::string& file_name) {
     auto storage = Database::get();
     auto allItems = storage.get_all<Item>();
 
     for(auto &item : allItems) {
         std::cout << storage.dump(item) << std::endl;
     }
+
+    return storage;
 }
 
 int Database::write(const std::string &file_name, std::vector<std::string> payload) {
@@ -66,20 +68,18 @@ int Database::write(const std::string &file_name, std::vector<std::string> paylo
     return insertedId;
 }
 
-int Database::open_or_create(const std::string& file_name) {
+auto Database::open_or_create(const std::string& file_name) {
     int res = access(file_name.c_str(), R_OK);
 
     if(res < 0) {
         if (errno == ENOENT) {// DB file doesn't exist
-            Database::get();
+            return Database::get();
             std::cout << "Creating new SQLite3 file at : " << file_name << std::endl;
         } else if (errno == EACCES) {  // DB file exists but isn't readable
             std::cout << "SQLite3 File exists at: " << file_name << " but is corrupt." << std::endl;
         }
     } else if(res == 0) {
-        Database::read(file_name);
+        return Database::read(file_name);
         std::cout << "Reading existing SQLite3 file at: " << file_name << std::endl;
     }
-
-    return res;
 }
