@@ -1,21 +1,27 @@
 #include <iostream>
+#include <QApplication>
 #include "MainWindow.h"
 #include "Database.h"
+#include "main.h"
 
-int open_main_window(int argc, char** argv) {
-    QApplication app(argc, argv);
-    QMainWindow mainWindow;
-    QWidget widget;
-    Ui::MainWindow ui;
-    ui.setupUi(&mainWindow);
+MainWindow::MainWindow(QWidget *parent) {
+    ui.setupUi(this);
+    this->setFixedSize(800, 537);
+    // connect(ui.db_submit_button, SIGNAL(clicked()), this, SLOT(clicked_submit()));
+}
 
-    mainWindow.show();
-    return QApplication::exec();
+void MainWindow::clicked_submit(){
+    // Do something
 }
 
 int main(int argc, char** argv) {
     Database db;
-    auto storage = db.open_or_create("db.sqlite");
-    open_main_window(argc, argv);
+    db.open_or_create("db.sqlite");
+
+    QApplication app(argc, argv);
+    MainWindow mainWindow;
+    mainWindow.show();
+    return QApplication::exec();
+
     return 0;
 }
