@@ -21,8 +21,8 @@ struct Item {
     std::string notes;
 };
 
-inline static auto initStorage() {
-    return sqlite_orm::make_storage("db.sqlite",
+inline static auto initStorage(std::string file_name) {
+    return sqlite_orm::make_storage(file_name,
                                     sqlite_orm::make_table("items",
                                                            sqlite_orm::make_column("id", &Item::id, sqlite_orm::autoincrement(), sqlite_orm::primary_key()),
                                                            sqlite_orm::make_column("item_name", &Item::itemName),
@@ -37,7 +37,7 @@ inline static auto initStorage() {
                                                            sqlite_orm::make_column("notes", &Item::notes)));
 }
 
-using Storage = decltype(initStorage());  // Get Storage return type
+using Storage = decltype(initStorage(""));  // Get Storage return type
 
 class Database {
 public:

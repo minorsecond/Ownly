@@ -24,8 +24,11 @@ endif(SQLITE3_FOUND)
 
 include_directories(${SQLITE3_INCLUDE_DIRS})
 
-add_executable(Ownly src/main.cpp src/Database.cpp src/Database.h test/test-main.cpp)
+add_executable(Ownly src/main.cpp src/Database.cpp src/Database.h)
 add_executable(database_functions_test src/Database.cpp test/test-main.cpp test/test_database_functions.cpp)
 message(STATUS ${SQLite3_INCLUDE_DIRS})
 target_include_directories(Ownly PRIVATE ${SQLite3_INCLUDE_DIRS})
 target_link_libraries(Ownly Qt5::Core Qt5::Widgets SQLite3)
+
+target_include_directories(database_functions_test PRIVATE ${SQLite3_INCLUDE_DIRS})
+target_link_libraries(database_functions_test SQLite3)

@@ -10,7 +10,7 @@
 #include <string.h>
 
 Storage Database::read(const std::string& file_name) {
-    auto storage = initStorage();
+    auto storage = initStorage(file_name);
     auto allItems = storage.get_all<Item>();
 
     for(auto &item : allItems) {
@@ -21,7 +21,7 @@ Storage Database::read(const std::string& file_name) {
 }
 
 Storage Database::write(const std::string &file_name, std::vector<std::string> payload) {
-    Storage storage = initStorage();
+    Storage storage = initStorage(file_name);
     std::string item_name = payload.at(0);
     std::string item_category = payload.at(1);
     std::string purchase_date = payload.at(2);
@@ -55,7 +55,7 @@ int Database::open_or_create(const std::string& file_name) {
     if(res < 0) {
         if (errno == ENOENT) {// DB file doesn't exist
             std::cout << "Creating new SQLite3 file at : " << file_name << std::endl;
-            Storage storage = initStorage();
+            Storage storage = initStorage(file_name);
             Database::writeDbToDisk(storage);
         } else if (errno == EACCES) {  // DB file exists but isn't readable
             std::cout << "SQLite3 File exists at: " << file_name << " but is corrupt." << std::endl;
