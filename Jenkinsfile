@@ -12,7 +12,7 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts artifacts: 'Notch.exe'
+                    archiveArtifacts artifacts: 'Ownly.exe'
                     cleanWs()
                 }
                 failure {
