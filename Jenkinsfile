@@ -12,11 +12,12 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts 'Notch.exe'
+                    archiveArtifacts artifacts: 'Notch.exe'
+                    cleanWs()
                 }
-                //always {
-                //    cleanWs()
-                //}
+                failure {
+                    cleanWs()
+                }
             }
         }
 	}
