@@ -193,7 +193,7 @@ public:
         ItemPurchaseDateLabel->setText(QCoreApplication::translate("MainWindow", "Purchase Date", nullptr));
         ItemNotesLabel->setText(QCoreApplication::translate("MainWindow", "Notes", nullptr));
         ItemPurchasePriceLabel->setText(QCoreApplication::translate("MainWindow", "Purchase Price", nullptr));
-        InventoryListLabel->setText(QCoreApplication::translate("MainWindow", "Name", nullptr));
+        InventoryListLabel->setText(QCoreApplication::translate("MainWindow", "Inventory", nullptr));
         ItemCategory->setCurrentText(QString());
         ItemCategory->setPlaceholderText(QCoreApplication::translate("MainWindow", "All", nullptr));
         ItemUsedInLastSixMonths->setText(QCoreApplication::translate("MainWindow", "Used in last 6 months", nullptr));
