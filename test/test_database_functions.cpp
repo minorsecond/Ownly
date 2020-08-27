@@ -22,4 +22,5 @@ TEST_CASE("Init DB", "[DB Read]") {
     REQUIRE( exists(file_name) == true);
     REQUIRE( table_names.at(0) == "items");
     std::remove(file_name.c_str());
+    std::cout << "Init DB test ran." << std::endl;
 }
