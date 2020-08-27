@@ -15,7 +15,7 @@ int open_main_window(int argc, char** argv) {
 
 int main(int argc, char** argv) {
     Database db;
-    db.open_or_create("db.sqlite");
+    auto storage = db.open_or_create("db.sqlite");
     open_main_window(argc, argv);
     return 0;
 }

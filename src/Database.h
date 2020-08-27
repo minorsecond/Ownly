@@ -8,24 +8,12 @@
 #include <vector>
 
 class Database {
-private:
-    struct Item {
-        int id;
-        std::string itemName;
-        std::string category;
-        int purchaseYear;
-        int purchaseMonth;
-        int purchaseDay;
-        double purchasePrice;
-        int count;
-        bool usedInLastSixMonths;
-        std::string notes;
-    };
-    static auto get();
+public:
+    inline auto initStorage();
+    int writeDbToDisk(auto storage);
     auto read(const std::string& file_name);
     int write(const std::string& file_name, std::vector<std::string> payload);
-public:
-    auto open_or_create(const std::string& file_name);
+    int open_or_create(const std::string& file_name);
 };
 
 
