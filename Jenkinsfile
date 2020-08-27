@@ -14,10 +14,6 @@ pipeline {
                 bat 'dir'
             }
             post {
-                success {
-                    archiveArtifacts artifacts: 'Ownly.exe'
-                    cleanWs()
-                }
                 failure {
                     cleanWs()
                 }
@@ -29,6 +25,14 @@ pipeline {
             }
             steps {
             ctest 'InSearchPath'
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'Ownly.exe'
+                }
+                failure {
+                    cleanWs()
+                }
             }
         }
 	}
