@@ -12,7 +12,7 @@ pipeline {
             }
             post {
                 success {
-                    bat 'pwd'
+                    bat 'dir'
                     archiveArtifacts 'Notch.exe'
                 }
                 always {
