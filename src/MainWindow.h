@@ -22,6 +22,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextEdit>
@@ -55,6 +56,7 @@ public:
     QFrame *line_3;
     QLabel *ItemCountLabel;
     QSpinBox *ItemCount;
+    QPushButton *dbSubmitButton;
     QMenuBar *menubar;
     QMenu *menufile;
     QMenu *menuAbout;
@@ -158,6 +160,9 @@ public:
         ItemCount = new QSpinBox(centralwidget);
         ItemCount->setObjectName(QString::fromUtf8("ItemCount"));
         ItemCount->setGeometry(QRect(620, 220, 42, 22));
+        dbSubmitButton = new QPushButton(centralwidget);
+        dbSubmitButton->setObjectName(QString::fromUtf8("dbSubmitButton"));
+        dbSubmitButton->setGeometry(QRect(710, 260, 75, 23));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -198,6 +203,7 @@ public:
         ItemCategory->setPlaceholderText(QCoreApplication::translate("MainWindow", "All", nullptr));
         ItemUsedInLastSixMonths->setText(QCoreApplication::translate("MainWindow", "Used in last 6 months", nullptr));
         ItemCountLabel->setText(QCoreApplication::translate("MainWindow", "Count", nullptr));
+        dbSubmitButton->setText(QCoreApplication::translate("MainWindow", "Submit", nullptr));
         menufile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
         menuAbout->setTitle(QCoreApplication::translate("MainWindow", "About", nullptr));
     } // retranslateUi
