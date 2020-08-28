@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Archive') {
             steps {
-                bat 'dir artifacts/'
+                bat 'dir artifacts'
                 archiveArtifacts artifacts: 'artifacts/*'
             }
             post {
