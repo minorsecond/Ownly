@@ -12,6 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true, envVars: 'DESTDIR=${WORKSPACE}/artifacts']]
+                bat 'dir'
             }
             post {
                 failure {
@@ -37,8 +38,8 @@ pipeline {
                 environment name: 'ARCHIVE', value: 'true'
             }
             steps {
+                bat 'dir'
                 archiveArtifacts artifacts: 'artifacts/*'
-                cleanWs()
             }
             post {
                 always {
