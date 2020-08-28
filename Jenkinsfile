@@ -37,7 +37,7 @@ pipeline {
                 environment name: 'ARCHIVE', value: 'true'
             }
             steps {
-                archiveArtifacts artifacts: 'artifacts\\*'
+                archiveArtifacts artifacts: 'artifacts/*'
                 cleanWs()
             }
             post {
