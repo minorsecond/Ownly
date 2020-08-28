@@ -18,22 +18,30 @@ void MainWindow::clicked_submit(){
     std::string item_category = ui.ItemCategory->currentText().toUtf8().constData();
     std::string item_price_string = ui.ItemPurchasePrice->text().toUtf8().constData();
     double item_price;
-    std::string purchase_date = ui.ItemPurchaseDate->text().toUtf8().constData();
     int item_count = std::stoi(ui.ItemCount->text().toUtf8().constData());
     bool usedInLastSixMonths = ui.ItemUsedInLastSixMonths->isChecked();
     std::string notes = ui.ItemCount->text().toUtf8().constData();
+    int purchase_year = ui.ItemPurchaseDate->date().year();
+    int purchase_month = ui.ItemPurchaseDate->date().month();
+    int purchase_day = ui.ItemPurchaseDate->date().day();
 
     if (item_price_string.empty())
         item_price = 0.00;
     else
         item_price = std::stod(item_price_string);
 
-    std::cout << "Item price: " << item_price << std::endl;
-
-    //Item item{
-    //    -1,
-    //    ui.ItemName->trUtf8().constData();
-    //};
+    Item item{
+        -1,
+        item_name,
+        item_category,
+        purchase_year,
+        purchase_month,
+        purchase_day,
+        item_price,
+        item_count,
+        usedInLastSixMonths,
+        notes
+    };
 }
 
 int main(int argc, char** argv) {

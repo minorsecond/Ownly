@@ -38,9 +38,6 @@ Storage Database::write(const std::string &file_name, std::vector<std::string> p
     else if(std::strcmp(payload.at(4).c_str(), "false") == 0)
         usedInLastSixMonths = false;
 
-    // QDateEdit returns string as dd/mm/yyyy
-    scanf("%d/%d/%d", &purchaseMonth, &purchaseDay, &purchaseYear);
-
     Item item{-1, item_name, item_category, purchaseYear, purchaseMonth, purchaseDay, purchase_price, count, usedInLastSixMonths, notes};
     auto insertedId = storage.insert(item);
     std::cout << "insertedId = " << insertedId << std::endl;
