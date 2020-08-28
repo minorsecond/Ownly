@@ -4,10 +4,6 @@ pipeline {
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 	}
-	parameters {
-	    booleanParam name: 'RUN_TESTS', defaultValue: true, description: 'Run Tests?'
-	    booleanParam name: 'ARCHIVE', defaultValue: true, description: 'Archive artifacts?'
-	}
 	stages {
         stage('Build') {
             steps {
@@ -21,11 +17,8 @@ pipeline {
             }
         }
         stage('Test') {
-            when {
-                environment name: 'RUN_TESTS', value: 'true'
-            }
             steps {
-                ctest 'InSearchPath'
+                ctest installation: 'InSearchPath', workingDir: 'artifacts/'
             }
             post {
                 failure {
@@ -34,12 +27,9 @@ pipeline {
             }
         }
         stage('Archive') {
-            when {
-                environment name: 'ARCHIVE', value: 'true'
-            }
             steps {
-                bat 'dir'
-                archiveArtifacts artifacts: 'artifacts/*'
+                bat 'dir artifacts'
+                archiveArtifacts artifacts: 'artifacts/*', excludes: "artifacts/Testing/**,artifacts/*.cmake,artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe"
             }
             post {
                 always {
