@@ -29,7 +29,7 @@ pipeline {
         stage('Archive') {
             steps {
                 bat 'dir artifacts'
-                archiveArtifacts artifacts: 'artifacts/*'
+                archiveArtifacts artifacts: 'artifacts/*', excludes: 'Testing/**', 'database_functions_test.exe'
             }
             post {
                 always {
