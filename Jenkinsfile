@@ -6,11 +6,12 @@ pipeline {
 	}
 	parameters {
 	    booleanParam name: 'RUN_TESTS', defaultValue: true, description: 'Run Tests?'
+	    booleanParam name: 'ARCHIVE', defaultValue: true, description: 'Archive artifacts?'
 	}
 	stages {
         stage('Build') {
             steps {
-                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
+                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', buildDir: 'artifacts', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
                 bat 'dir'
             }
             post {
@@ -24,14 +25,24 @@ pipeline {
                 environment name: 'RUN_TESTS', value: 'true'
             }
             steps {
-            ctest 'InSearchPath'
+                ctest 'InSearchPath'
             }
             post {
-                success {
-                    archiveArtifacts artifacts: 'Ownly.exe'
+                failure {
                     cleanWs()
                 }
-                failure {
+            }
+        }
+        stage('Archive') {
+            when {
+                environment name: 'ARCHIVE', value: 'true'
+            }
+            steps {
+                bat 'dir'
+                archiveArtifacts artifacts: 'artifacts/*'
+            }
+            post {
+                always {
                     cleanWs()
                 }
             }
