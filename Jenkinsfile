@@ -6,6 +6,7 @@ pipeline {
 	}
 	parameters {
 	    booleanParam name: 'RUN_TESTS', defaultValue: true, description: 'Run Tests?'
+	    booleanParam name: 'ARCHIVE', defaultValue: true, description: 'Archive artifacts?'
 	}
 	stages {
         stage('Build') {
@@ -33,7 +34,7 @@ pipeline {
         }
         stage('Archive') {
             when {
-                environment name: 'Archive', value: 'true'
+                environment name: 'ARCHIVE', value: 'true'
             }
             steps {
                 archiveArtifacts artifacts: 'artifacts\\*'
