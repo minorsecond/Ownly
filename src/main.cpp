@@ -21,7 +21,7 @@ void MainWindow::clicked_submit(){
     double item_price;
     int item_count = std::stoi(ui.ItemCount->text().toUtf8().constData());
     bool usedInLastSixMonths = ui.ItemUsedInLastSixMonths->isChecked();
-    std::string notes = ui.ItemCount->text().toUtf8().constData();
+    std::string notes = ui.ItemNotes->toPlainText().toUtf8().constData();
     int purchase_year = ui.ItemPurchaseDate->date().year();
     int purchase_month = ui.ItemPurchaseDate->date().month();
     int purchase_day = ui.ItemPurchaseDate->date().day();
