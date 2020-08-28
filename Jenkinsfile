@@ -23,14 +23,24 @@ pipeline {
                 environment name: 'RUN_TESTS', value: 'true'
             }
             steps {
-            ctest 'InSearchPath'
+                ctest 'InSearchPath'
             }
             post {
-                success {
-                    archiveArtifacts artifacts: 'artifacts\\*'
+                failure {
                     cleanWs()
                 }
-                failure {
+            }
+        }
+        stage('Archive') {
+            when {
+                environment name: 'Archive', value: 'true'
+            }
+            steps {
+                archiveArtifacts artifacts: 'artifacts\\*'
+                cleanWs()
+            }
+            post {
+                always {
                     cleanWs()
                 }
             }
