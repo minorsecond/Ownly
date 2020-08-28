@@ -24,7 +24,7 @@ pipeline {
                 environment name: 'RUN_TESTS', value: 'true'
             }
             steps {
-            ctest 'InSearchPath', arguments: '--no-compress-output -T database_functions_test.exe'
+            ctest 'InSearchPath'
             }
             post {
                 success {
