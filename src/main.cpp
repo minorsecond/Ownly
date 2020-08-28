@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) {
 }
 
 void MainWindow::clicked_submit(){
+    Database db;
     std::cout << "Clicked dbSubmitButton" << std::endl;
 
     std::string item_name = ui.ItemName->text().toUtf8().constData();
@@ -42,11 +43,13 @@ void MainWindow::clicked_submit(){
         usedInLastSixMonths,
         notes
     };
+
+    db.write(item);
 }
 
 int main(int argc, char** argv) {
     Database db;
-    db.open_or_create("db.sqlite");
+    db.open_or_create();
 
     QApplication app(argc, argv);
     MainWindow mainWindow;

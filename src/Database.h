@@ -21,8 +21,8 @@ struct Item {
     std::string notes;
 };
 
-inline static auto initStorage(std::string file_name) {
-    return sqlite_orm::make_storage(file_name,
+inline static auto initStorage() {
+    return sqlite_orm::make_storage("ownly.db",
                                     sqlite_orm::make_table("items",
                                                            sqlite_orm::make_column("id", &Item::id, sqlite_orm::autoincrement(), sqlite_orm::primary_key()),
                                                            sqlite_orm::make_column("item_name", &Item::itemName),
@@ -37,14 +37,14 @@ inline static auto initStorage(std::string file_name) {
                                                            sqlite_orm::make_column("notes", &Item::notes)));
 }
 
-using Storage = decltype(initStorage(""));  // Get Storage return type
+using Storage = decltype(initStorage());  // Get Storage return type
 
 class Database {
 public:
     int writeDbToDisk(Storage storage);
-    Storage read(const std::string& file_name);
-    Storage write(const std::string& file_name, std::vector<std::string> payload);
-    int open_or_create(const std::string& file_name);
+    Storage read();
+    Storage write(Item item);
+    int open_or_create();
 };
 
 #endif //NOTCH_DATABASE_H
