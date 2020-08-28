@@ -10,7 +10,7 @@
 #include <string.h>
 
 Storage Database::read() {
-    auto storage = initStorage();
+    auto storage = initStorage("ownly.db");
     auto allItems = storage.get_all<Item>();
 
     for(auto &item : allItems) {
@@ -21,7 +21,7 @@ Storage Database::read() {
 }
 
 Storage Database::write(Item item) {
-    Storage storage = initStorage();
+    Storage storage = initStorage("ownly.db");
 
     auto insertedId = storage.insert(item);
     std::cout << "insertedId = " << insertedId << std::endl;
@@ -38,7 +38,7 @@ int Database::open_or_create() {
     if(res < 0) {
         if (errno == ENOENT) {// DB file doesn't exist
             std::cout << "Creating new SQLite3 file at : " << "ownly.db" << std::endl;
-            Storage storage = initStorage();
+            Storage storage = initStorage("ownly.db");
             Database::writeDbToDisk(storage);
         } else if (errno == EACCES) {  // DB file exists but isn't readable
             std::cout << "SQLite3 File exists at: " << "ownly.db" << " but is corrupt." << std::endl;
