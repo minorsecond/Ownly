@@ -10,7 +10,7 @@ pipeline {
 	stages {
         stage('Build') {
             steps {
-                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true, envVars: 'DESTDIR=${WORKSPACE}/artifacts']]]
+                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true, envVars: 'DESTDIR=${WORKSPACE}/artifacts']]
             }
             post {
                 failure {
