@@ -7,11 +7,22 @@
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
     this->setFixedSize(800, 537);
-    // connect(ui.db_submit_button, SIGNAL(clicked()), this, SLOT(clicked_submit()));
+
+    std::string item_name;
+    std::string item_category;
+    double item_price;
+    int purchaseYear;
+    int purchaseMonth;
+    int purchaseDay;
+    int itemCount;
+    bool usedInLastSixMonths;
+    std::string notes;
+
+    connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
 }
 
 void MainWindow::clicked_submit(){
-    // Do something
+    std::cout << "Clicked dbSubmitButton" << std::endl;
 }
 
 int main(int argc, char** argv) {
