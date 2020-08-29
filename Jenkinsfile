@@ -29,7 +29,11 @@ pipeline {
         }
         stage('Archive') {
             steps {
-                bat 'for /f %%d in ("CMakeFiles", "database_functions_test_autogen", "Ownly_autogen", "src", "database_functions_test_autogen") do rd /s /q "artifacts\\%%d"'
+                bat 'del /F/Q/S artifacts\CMakeFiles'
+                bat 'del /F/Q/S artifacts\database_functions_test_autogen'
+                bat 'del /F/Q/S artifacts\Ownly_autogen'
+                bat 'del /F/Q/S artifacts\src'
+                bat 'del /F/Q/S artifacts\database_functions_test_autogen'
                 archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake, artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe"
             }
             post {
