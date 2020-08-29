@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Archive') {
             steps {
-                bat 'for /f %%d in ("artifacts\\CMakeFiles", "artifacts\\database_functions_test_autogen", "artifacts\\Ownly_autogen", "artifacts\\src", "artifacts\\database_functions_test_autogen") do rd /s /q "artifacts\\%%d"'
+                bat 'for /f %%d in ("CMakeFiles", "database_functions_test_autogen", "Ownly_autogen", "src", "database_functions_test_autogen") do rd /s /q "artifacts\\%%d"'
                 archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake, artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe"
             }
             post {
