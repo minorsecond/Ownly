@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                ctest installation: 'InSearchPath', workingDir: 'artifacts/**'
+                ctest installation: 'InSearchPath', workingDir: 'artifacts/'
             }
             post {
                 failure {
