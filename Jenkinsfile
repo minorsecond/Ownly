@@ -30,10 +30,7 @@ pipeline {
         stage('Archive') {
             steps {
                 bat 'dir artifacts'
-                archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake,
-                artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,
-                artifacts/database_functions_test.exe,CMakeFiles/**/*/*/,database_functions_test_autogen/**/*/*/,
-                Ownly_autogen/**/*/*/,src/**/*/*/"
+                archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake, artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe,CMakeFiles/**/*/*/,database_functions_test_autogen/**/*/*/,Ownly_autogen/**/*/*/,src/**/*/*/"
             }
             post {
                 always {
