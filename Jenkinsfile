@@ -4,13 +4,10 @@ pipeline {
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 	}
-	parameters {
-	    booleanParam name: 'RUN_TESTS', defaultValue: true, description: 'Run Tests?'
-	}
 	stages {
         stage('Build') {
             steps {
-                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
+                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', buildDir: 'artifacts', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
                 bat 'dir'
             }
             post {
@@ -20,18 +17,22 @@ pipeline {
             }
         }
         stage('Test') {
-            when {
-                environment name: 'RUN_TESTS', value: 'true'
-            }
             steps {
-            ctest 'InSearchPath'
+                ctest installation: 'InSearchPath', workingDir: 'artifacts/'
             }
             post {
-                success {
-                    archiveArtifacts artifacts: 'Ownly.exe'
+                failure {
                     cleanWs()
                 }
-                failure {
+            }
+        }
+        stage('Archive') {
+            steps {
+                bat 'dir artifacts'
+                archiveArtifacts artifacts: 'artifacts/*', excludes: "artifacts/Testing/**,artifacts/*.cmake,artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe"
+            }
+            post {
+                always {
                     cleanWs()
                 }
             }
