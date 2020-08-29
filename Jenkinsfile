@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                bat 'dir artifacts\'
+                bat 'dir artifacts'
                 ctest installation: 'InSearchPath', workingDir: 'artifacts/'
             }
             post {
