@@ -16,15 +16,16 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDateEdit>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
@@ -38,7 +39,6 @@ public:
     QWidget *centralwidget;
     QComboBox *ViewCategoryComboBox;
     QLabel *ViewCategoryLabel;
-    QListWidget *InventoryList;
     QFrame *line;
     QLineEdit *ItemName;
     QFrame *line_2;
@@ -57,6 +57,7 @@ public:
     QLabel *ItemCountLabel;
     QSpinBox *ItemCount;
     QPushButton *dbSubmitButton;
+    QTableWidget *inventoryList;
     QMenuBar *menubar;
     QMenu *menufile;
     QMenu *menuAbout;
@@ -85,9 +86,6 @@ public:
         font.setPointSize(10);
         ViewCategoryLabel->setFont(font);
         ViewCategoryLabel->setAlignment(Qt::AlignCenter);
-        InventoryList = new QListWidget(centralwidget);
-        InventoryList->setObjectName(QString::fromUtf8("InventoryList"));
-        InventoryList->setGeometry(QRect(10, 120, 391, 371));
         line = new QFrame(centralwidget);
         line->setObjectName(QString::fromUtf8("line"));
         line->setGeometry(QRect(10, 80, 781, 20));
@@ -163,6 +161,9 @@ public:
         dbSubmitButton = new QPushButton(centralwidget);
         dbSubmitButton->setObjectName(QString::fromUtf8("dbSubmitButton"));
         dbSubmitButton->setGeometry(QRect(710, 260, 75, 23));
+        inventoryList = new QTableWidget(centralwidget);
+        inventoryList->setObjectName(QString::fromUtf8("inventoryList"));
+        inventoryList->setGeometry(QRect(10, 120, 391, 371));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
