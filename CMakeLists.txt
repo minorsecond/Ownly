@@ -58,6 +58,7 @@ add_custom_command(TARGET Ownly POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_d
 add_custom_command(TARGET Ownly POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/msys64/mingw64/bin/libpcre-1.dll" $<TARGET_FILE_DIR:Ownly>)
 add_custom_command(TARGET Ownly POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/msys64/mingw64/bin/libbrotlicommon.dll" $<TARGET_FILE_DIR:Ownly>)
 add_custom_command(TARGET Ownly POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/msys64/mingw64/bin/libiconv-2.dll" $<TARGET_FILE_DIR:Ownly>)
+add_custom_command(TARGET Ownly POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/msys64/mingw64/bin/libpcre2-16-0.dll" $<TARGET_FILE_DIR:Ownly>)
 
 message(STATUS ${SQLite3_INCLUDE_DIRS})
 target_include_directories(Ownly PRIVATE ${SQLite3_INCLUDE_DIRS})
