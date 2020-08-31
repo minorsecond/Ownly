@@ -236,7 +236,7 @@
      <rect>
       <x>10</x>
       <y>100</y>
-      <width>391</width>
+      <width>591</width>
       <height>20</height>
      </rect>
     </property>
@@ -356,7 +356,7 @@
      <number>0</number>
     </property>
     <property name="columnCount">
-     <number>7</number>
+     <number>6</number>
     </property>
     <attribute name="horizontalHeaderMinimumSectionSize">
      <number>39</number>
@@ -392,11 +392,6 @@
     <column>
      <property name="text">
       <string>Used Recently</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Notes</string>
      </property>
     </column>
    </widget>

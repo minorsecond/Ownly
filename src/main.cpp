@@ -9,6 +9,9 @@
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
     this->setFixedSize(1053, 537);
+    QHeaderView* header = ui.inventoryList->horizontalHeader();
+    header->setSectionResizeMode(0, QHeaderView::Stretch);
+
     Database db;
 
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
