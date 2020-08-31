@@ -24,7 +24,6 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
@@ -61,7 +60,6 @@ public:
     QMenuBar *menubar;
     QMenu *menufile;
     QMenu *menuAbout;
-    QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -96,7 +94,7 @@ public:
         ItemName->setGeometry(QRect(650, 120, 371, 20));
         line_2 = new QFrame(centralwidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
-        line_2->setGeometry(QRect(620, 100, 10, 391));
+        line_2->setGeometry(QRect(620, 100, 10, 401));
         line_2->setFrameShape(QFrame::VLine);
         line_2->setFrameShadow(QFrame::Sunken);
         ItemNameLabel = new QLabel(centralwidget);
@@ -119,7 +117,7 @@ public:
         ItemPurchaseDateLabel->setAlignment(Qt::AlignCenter);
         ItemNotes = new QTextEdit(centralwidget);
         ItemNotes->setObjectName(QString::fromUtf8("ItemNotes"));
-        ItemNotes->setGeometry(QRect(650, 290, 371, 201));
+        ItemNotes->setGeometry(QRect(650, 290, 371, 211));
         ItemNotesLabel = new QLabel(centralwidget);
         ItemNotesLabel->setObjectName(QString::fromUtf8("ItemNotesLabel"));
         ItemNotesLabel->setGeometry(QRect(650, 270, 371, 20));
@@ -177,7 +175,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
         inventoryList->setHorizontalHeaderItem(5, __qtablewidgetitem5);
         inventoryList->setObjectName(QString::fromUtf8("inventoryList"));
-        inventoryList->setGeometry(QRect(10, 120, 591, 371));
+        inventoryList->setGeometry(QRect(10, 120, 591, 381));
         inventoryList->setRowCount(0);
         inventoryList->setColumnCount(6);
         inventoryList->horizontalHeader()->setMinimumSectionSize(39);
@@ -191,9 +189,6 @@ public:
         menuAbout = new QMenu(menubar);
         menuAbout->setObjectName(QString::fromUtf8("menuAbout"));
         MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
-        MainWindow->setStatusBar(statusbar);
 
         menubar->addAction(menufile->menuAction());
         menubar->addAction(menuAbout->menuAction());

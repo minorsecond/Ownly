@@ -84,7 +84,7 @@
       <x>620</x>
       <y>100</y>
       <width>10</width>
-      <height>391</height>
+      <height>401</height>
      </rect>
     </property>
     <property name="orientation">
@@ -173,7 +173,7 @@
       <x>650</x>
       <y>290</y>
       <width>371</width>
-      <height>201</height>
+      <height>211</height>
      </rect>
     </property>
    </widget>
@@ -349,7 +349,7 @@
       <x>10</x>
       <y>120</y>
       <width>591</width>
-      <height>371</height>
+      <height>381</height>
      </rect>
     </property>
     <property name="rowCount">
@@ -419,7 +419,6 @@
    <addaction name="menufile"/>
    <addaction name="menuAbout"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew_Item">
    <property name="text">
     <string>New Item</string>
