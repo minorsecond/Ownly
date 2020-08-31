@@ -18,8 +18,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                bat 'dir artifacts\\Testing'
                 ctest installation: 'InSearchPath', workingDir: 'artifacts/', arguments: '--no-compress-output'
+                bat 'dir artifacts\\Testing'
                 archiveArtifacts (artifacts: 'artifacts/Testing/**/*.xml', fingerprint: true)
                 xunit (
                     testTimeMargin: '3000',
