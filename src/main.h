@@ -16,9 +16,6 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
-private:
-    static void populate_table(const std::vector<Item>& items);
-
 private slots:
     void clicked_submit();
 };
