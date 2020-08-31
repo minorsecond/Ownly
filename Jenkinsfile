@@ -45,7 +45,7 @@ pipeline {
             steps {
                 bat 'dir'
                 bat 'cppcheck --xml --xml-version=2 src 2> cppcheck-result.xml'
-                publishCppcheck
+                publishCppcheck pattern: '**/cppcheck-result.xml'
             }
             //post {
             //    failure {
