@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1053</width>
     <height>537</height>
    </rect>
   </property>
@@ -55,20 +55,10 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QListWidget" name="InventoryList">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>391</width>
-      <height>371</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="Line" name="line">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>140</x>
       <y>80</y>
       <width>781</width>
       <height>20</height>
@@ -81,7 +71,7 @@
    <widget class="QLineEdit" name="ItemName">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>120</y>
       <width>371</width>
       <height>20</height>
@@ -91,7 +81,7 @@
    <widget class="Line" name="line_2">
     <property name="geometry">
      <rect>
-      <x>406</x>
+      <x>620</x>
       <y>100</y>
       <width>10</width>
       <height>391</height>
@@ -104,7 +94,7 @@
    <widget class="QLabel" name="ItemNameLabel">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>100</y>
       <width>371</width>
       <height>20</height>
@@ -126,7 +116,7 @@
    <widget class="QLabel" name="ItemCategoryLabel">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>150</y>
       <width>191</width>
       <height>20</height>
@@ -148,7 +138,7 @@
    <widget class="QDateEdit" name="ItemPurchaseDate">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>850</x>
       <y>170</y>
       <width>171</width>
       <height>22</height>
@@ -158,7 +148,7 @@
    <widget class="QLabel" name="ItemPurchaseDateLabel">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>850</x>
       <y>150</y>
       <width>171</width>
       <height>20</height>
@@ -180,7 +170,7 @@
    <widget class="QTextEdit" name="ItemNotes">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>290</y>
       <width>371</width>
       <height>201</height>
@@ -190,7 +180,7 @@
    <widget class="QLabel" name="ItemNotesLabel">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>270</y>
       <width>371</width>
       <height>20</height>
@@ -212,7 +202,7 @@
    <widget class="QLabel" name="ItemPurchasePriceLabel">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>200</y>
       <width>191</width>
       <height>20</height>
@@ -234,7 +224,7 @@
    <widget class="QLineEdit" name="ItemPurchasePrice">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>220</y>
       <width>191</width>
       <height>20</height>
@@ -266,7 +256,7 @@
    <widget class="QComboBox" name="ItemCategory">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>650</x>
       <y>170</y>
       <width>191</width>
       <height>22</height>
@@ -285,7 +275,7 @@
    <widget class="QCheckBox" name="ItemUsedInLastSixMonths">
     <property name="geometry">
      <rect>
-      <x>670</x>
+      <x>900</x>
       <y>220</y>
       <width>121</width>
       <height>20</height>
@@ -298,7 +288,7 @@
    <widget class="Line" name="line_3">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>780</x>
       <y>260</y>
       <width>118</width>
       <height>3</height>
@@ -311,7 +301,7 @@
    <widget class="QLabel" name="ItemCountLabel">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>850</x>
       <y>200</y>
       <width>41</width>
       <height>20</height>
@@ -333,7 +323,7 @@
    <widget class="QSpinBox" name="ItemCount">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>850</x>
       <y>220</y>
       <width>42</width>
       <height>22</height>
@@ -343,7 +333,7 @@
    <widget class="QPushButton" name="dbSubmitButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>940</x>
       <y>260</y>
       <width>75</width>
       <height>23</height>
@@ -353,13 +343,70 @@
      <string>Submit</string>
     </property>
    </widget>
+   <widget class="QTableWidget" name="inventoryList">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>591</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="rowCount">
+     <number>0</number>
+    </property>
+    <property name="columnCount">
+     <number>7</number>
+    </property>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>39</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>84</number>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Category</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Purchased</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Price</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Count</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Used Recently</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Notes</string>
+     </property>
+    </column>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1053</width>
      <height>21</height>
     </rect>
    </property>
