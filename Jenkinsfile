@@ -20,7 +20,7 @@ pipeline {
             steps {
                 bat 'dir artifacts'
                 ctest installation: 'InSearchPath', workingDir: 'artifacts/', arguments: '--no-compress-output'
-                archiveArtifacts ('Testing/**/*.xml', fingerprint: true)
+                archiveArtifacts (artifacts: 'Testing/**/*.xml', fingerprint: true)
                 xunit (
                     testTimeMargin: '3000',
                     thresholdMode: 1,
