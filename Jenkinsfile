@@ -41,6 +41,17 @@ pipeline {
                 }
             }
         }
+        stage('Static Analysis') {
+            steps {
+                bat 'cppcheck --xml --xml-version=2 src 2> cppcheck.xml'
+                publishCppcheck pattern: 'cppcheck.xml'
+            }
+            post {
+                failure {
+                    cleanWs()
+                }
+            }
+        }
         stage('Archive') {
             steps {
                 bat 'del /F/Q/S artifacts\\CMakeFiles'
