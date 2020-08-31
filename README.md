@@ -1,5 +1,5 @@
 # Ownly
-Ownly is a Windows tool for keeping track of your belongings and their attributes, such as:
+Ownly is a Windows tool for keeping track of your belongings and their attributes.
 
 # Status
 | Branch  | Status |
@@ -12,3 +12,8 @@ Ownly is a Windows tool for keeping track of your belongings and their attribute
 - Purchase price
 - Count
 - Notes
+
+# Features:
+- Clean, minimal interface
+- Simple SQLite3 backend
+- Export to CSV
