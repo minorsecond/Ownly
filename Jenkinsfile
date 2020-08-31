@@ -19,7 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 bat 'dir artifacts'
-                ctest installation: 'InSearchPath', workingDir: 'artifacts/', arguments: 'no-compress-output'
+                ctest installation: 'InSearchPath', workingDir: 'artifacts/', arguments: '--no-compress-output'
             }
             post {
                 failure {
