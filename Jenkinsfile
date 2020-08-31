@@ -44,6 +44,7 @@ pipeline {
         stage('Static Analysis') {
             steps {
                 bat 'cppcheck --xml --xml-version=2 src 2> cppcheck.xml'
+                bat 'dir'
                 publishCppcheck pattern: 'cppcheck.xml'
             }
             post {
