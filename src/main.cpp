@@ -1,5 +1,6 @@
 #include <iostream>
 #include <QApplication>
+#include <QMessageBox>
 #include "MainWindow.h"
 #include "Database.h"
 #include "main.h"
@@ -55,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) {
 
 void MainWindow::clicked_submit(){
     Database db;
+    QMessageBox error_message;
     std::cout << "Clicked dbSubmitButton" << std::endl;
 
     std::string item_name = ui.ItemName->text().toUtf8().constData();
@@ -73,20 +75,25 @@ void MainWindow::clicked_submit(){
     else
         item_price = std::stod(item_price_string);
 
-    Item item{
-        -1,
-        item_name,
-        item_category,
-        purchase_year,
-        purchase_month,
-        purchase_day,
-        item_price,
-        item_count,
-        usedInLastSixMonths,
-        notes
-    };
+    if(item_name.empty() || item_category.empty() || item_count == 0){
+        error_message.critical(0, "Error", "Please enter item name, category, and count.");
+        error_message.setFixedSize(200, 200);
+    } else {
+        Item item{
+                -1,
+                item_name,
+                item_category,
+                purchase_year,
+                purchase_month,
+                purchase_day,
+                item_price,
+                item_count,
+                usedInLastSixMonths,
+                notes
+        };
 
-    db.write(item);
+        db.write(item);
+    }
 }
 
 int main(int argc, char** argv) {
