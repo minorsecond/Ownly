@@ -3,6 +3,7 @@
 #include "MainWindow.h"
 #include "Database.h"
 #include "main.h"
+#include <vector>
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
