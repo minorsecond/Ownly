@@ -48,6 +48,21 @@ void MainWindow::clicked_submit(){
     db.write(item);
 }
 
+void MainWindow::populate_table(const std::vector<Item>& items) {
+    for(const auto& entry : items){
+        std::string name = entry.itemName;
+        std::string category = entry.category;
+        int purchase_year = entry.purchaseYear;
+        int purchase_month = entry.purchaseMonth;
+        int purchase_day = entry.purchaseDay;
+        double purchase_price = entry.purchasePrice;
+        int item_count = entry.count;
+        bool usedInLastSixMonths = entry.usedInLastSixMonths;
+        std::string notes = entry.notes;
+    }
+}
+
+
 int main(int argc, char** argv) {
     Database db;
     db.open_or_create();
