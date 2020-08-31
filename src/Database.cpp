@@ -45,7 +45,6 @@ int Database::open_or_create() {
         }
     } else if (res == 0) {
         std::cout << "Reading existing SQLite3 file at: " << "ownly.db" << std::endl;
-        Storage storage = Database::read();
     }
 
     return res;
