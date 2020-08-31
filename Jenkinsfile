@@ -34,8 +34,6 @@ pipeline {
                     stopProcessingIfError: true
                 )]
                 )
-                bat 'cppcheck --xml --xml-version=2 . 2> cppcheck.xml'
-                scanForIssues tool: cppCheck(pattern: 'cppcheck.xml')
             }
             post {
                 failure {
