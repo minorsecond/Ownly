@@ -15,6 +15,7 @@ class MainWindow : public QMainWindow {
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
+    void updateMainTable();
 
 private slots:
     void clicked_submit();
