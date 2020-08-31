@@ -8,7 +8,6 @@ pipeline {
         stage('Build') {
             steps {
                 cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', buildDir: 'artifacts', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
-                bat 'dir'
             }
             post {
                 failure {
@@ -19,7 +18,6 @@ pipeline {
         stage('Test') {
             steps {
                 ctest installation: 'InSearchPath', workingDir: 'artifacts/', arguments: '-T test --no-compress-output'
-                bat 'dir artifacts\\Testing\\Temporary'
                 archiveArtifacts (artifacts: 'artifacts/Testing/**/*.xml', fingerprint: true)
                 xunit (
                     testTimeMargin: '3000',
