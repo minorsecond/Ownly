@@ -13,10 +13,6 @@ std::vector<Item> Database::read() {
     Storage storage = initStorage("ownly.db");
     std::vector<Item> allItems = storage.get_all<Item>();
 
-    for(auto &item : allItems) {
-        std::cout << storage.dump(item) << std::endl;
-    }
-
     return allItems;
 }
 
