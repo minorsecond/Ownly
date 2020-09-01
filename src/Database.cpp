@@ -9,15 +9,15 @@
 #include <vector>
 #include <string.h>
 
-Storage Database::read() {
-    auto storage = initStorage("ownly.db");
-    auto allItems = storage.get_all<Item>();
+std::vector<Item> Database::read() {
+    Storage storage = initStorage("ownly.db");
+    std::vector<Item> allItems = storage.get_all<Item>();
 
     for(auto &item : allItems) {
         std::cout << storage.dump(item) << std::endl;
     }
 
-    return storage;
+    return allItems;
 }
 
 Storage Database::write(Item item) {
@@ -45,7 +45,6 @@ int Database::open_or_create() {
         }
     } else if (res == 0) {
         std::cout << "Reading existing SQLite3 file at: " << "ownly.db" << std::endl;
-        Storage storage = Database::read();
     }
 
     return res;
