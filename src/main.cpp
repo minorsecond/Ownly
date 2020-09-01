@@ -5,6 +5,7 @@
 #include "Database.h"
 #include "main.h"
 #include <vector>
+#include <cmath>
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
@@ -80,10 +81,16 @@ void MainWindow::updateMainTable() {
         int purchase_year = entry.purchaseYear;
         int purchase_month = entry.purchaseMonth;
         int purchase_day = entry.purchaseDay;
-        auto *purchase_price = new QTableWidgetItem(std::to_string(entry.purchasePrice).c_str());
         auto *item_count = new QTableWidgetItem(std::to_string(entry.count).c_str());
         bool usedInLastSixMonths = entry.usedInLastSixMonths;
         QTableWidgetItem *used_recently;
+
+        // Limit prices on table to two digits
+        double purchase_price = std::ceil(entry.purchasePrice * 100.0) / 100.0;
+        std::ostringstream price_stream;
+        price_stream << purchase_price;
+        auto *purchase_price_str = new QTableWidgetItem(price_stream.str().c_str());
+
 
         std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_day);
         auto *date_qtwi = new QTableWidgetItem(date.c_str());
@@ -96,11 +103,10 @@ void MainWindow::updateMainTable() {
 
         std::string notes = entry.notes;
 
-        std::cout << "Row: " << current_row << " - iten name: " << name << std::endl;
         ui.inventoryList->setItem(current_row, 0, name);
         ui.inventoryList->setItem(current_row, 1, category);
         ui.inventoryList->setItem(current_row, 2, date_qtwi);
-        ui.inventoryList->setItem(current_row, 3, purchase_price);
+        ui.inventoryList->setItem(current_row, 3, purchase_price_str);
         ui.inventoryList->setItem(current_row, 4, item_count);
         ui.inventoryList->setItem(current_row, 5, used_recently);
 
