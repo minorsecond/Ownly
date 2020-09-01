@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) {
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
+    QDate date = QDate::currentDate();
+    ui.ItemPurchaseDate->setDate(date);
+
     Database db;
 
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
