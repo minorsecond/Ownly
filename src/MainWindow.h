@@ -118,7 +118,7 @@ public:
         ItemPurchasePrice->setGeometry(QRect(650, 180, 191, 20));
         InventoryListLabel = new QLabel(centralwidget);
         InventoryListLabel->setObjectName(QString::fromUtf8("InventoryListLabel"));
-        InventoryListLabel->setGeometry(QRect(10, 50, 591, 20));
+        InventoryListLabel->setGeometry(QRect(10, 60, 591, 20));
         InventoryListLabel->setFont(font);
         InventoryListLabel->setAlignment(Qt::AlignCenter);
         ItemCategory = new QComboBox(centralwidget);
