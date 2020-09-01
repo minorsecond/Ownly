@@ -9,8 +9,8 @@
 #include <vector>
 #include <string.h>
 
-std::vector<Item> Database::read() {
-    Storage storage = initStorage("ownly.db");
+std::vector<Item> Database::read(std::string file_name) {
+    Storage storage = initStorage(file_name);
     std::vector<Item> allItems = storage.get_all<Item>();
 
     return allItems;
@@ -49,4 +49,9 @@ int Database::open_or_create() {
 int Database::writeDbToDisk(Storage storage) {
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
     return 0;
+}
+
+void Database::truncate(Storage storage) {
+    storage.remove_all<Item>();
+    writeDbToDisk(storage);
 }

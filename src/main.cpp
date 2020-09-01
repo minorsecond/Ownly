@@ -68,7 +68,7 @@ void MainWindow::clicked_submit(){
 
 void MainWindow::updateMainTable() {
     Database db;
-    std::vector<Item> items = db.read();
+    std::vector<Item> items = db.read("ownly.db");
 
     int current_row = 0;
 
