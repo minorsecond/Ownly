@@ -34,7 +34,7 @@ class Ui_MainWindow
 {
 public:
     QAction *actionNew_Item;
-    QAction *actionQt5;
+    QAction *AboutMenu;
     QWidget *centralwidget;
     QLineEdit *ItemName;
     QFrame *line_2;
@@ -57,8 +57,7 @@ public:
     QComboBox *ViewCategoryComboBox;
     QLabel *label;
     QMenuBar *menubar;
-    QMenu *menufile;
-    QMenu *menuAbout;
+    QMenu *FileMenu;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -67,8 +66,8 @@ public:
         MainWindow->resize(1050, 511);
         actionNew_Item = new QAction(MainWindow);
         actionNew_Item->setObjectName(QString::fromUtf8("actionNew_Item"));
-        actionQt5 = new QAction(MainWindow);
-        actionQt5->setObjectName(QString::fromUtf8("actionQt5"));
+        AboutMenu = new QAction(MainWindow);
+        AboutMenu->setObjectName(QString::fromUtf8("AboutMenu"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         ItemName = new QLineEdit(centralwidget);
@@ -182,15 +181,11 @@ public:
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 1050, 21));
-        menufile = new QMenu(menubar);
-        menufile->setObjectName(QString::fromUtf8("menufile"));
-        menuAbout = new QMenu(menubar);
-        menuAbout->setObjectName(QString::fromUtf8("menuAbout"));
+        FileMenu = new QMenu(menubar);
+        FileMenu->setObjectName(QString::fromUtf8("FileMenu"));
         MainWindow->setMenuBar(menubar);
 
-        menubar->addAction(menufile->menuAction());
-        menubar->addAction(menuAbout->menuAction());
-        menuAbout->addAction(actionQt5);
+        menubar->addAction(FileMenu->menuAction());
 
         retranslateUi(MainWindow);
 
@@ -201,7 +196,7 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         actionNew_Item->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
-        actionQt5->setText(QCoreApplication::translate("MainWindow", "Qt5", nullptr));
+        AboutMenu->setText(QCoreApplication::translate("MainWindow", "Qt5", nullptr));
         ItemNameLabel->setText(QCoreApplication::translate("MainWindow", "Name", nullptr));
         ItemCategoryLabel->setText(QCoreApplication::translate("MainWindow", "Category", nullptr));
         ItemPurchaseDateLabel->setText(QCoreApplication::translate("MainWindow", "Purchase Date", nullptr));
@@ -228,8 +223,7 @@ public:
         ViewCategoryComboBox->setCurrentText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
         ViewCategoryComboBox->setPlaceholderText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Ownly", nullptr));
-        menufile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
-        menuAbout->setTitle(QCoreApplication::translate("MainWindow", "About", nullptr));
+        FileMenu->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 
 };

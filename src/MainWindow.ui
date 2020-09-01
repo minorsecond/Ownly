@@ -393,26 +393,19 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menufile">
+   <widget class="QMenu" name="FileMenu">
     <property name="title">
      <string>File</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuAbout">
-    <property name="title">
-     <string>About</string>
-    </property>
-    <addaction name="actionQt5"/>
-   </widget>
-   <addaction name="menufile"/>
-   <addaction name="menuAbout"/>
+   <addaction name="FileMenu"/>
   </widget>
   <action name="actionNew_Item">
    <property name="text">
     <string>New Item</string>
    </property>
   </action>
-  <action name="actionQt5">
+  <action name="AboutMenu">
    <property name="text">
     <string>Qt5</string>
    </property>
