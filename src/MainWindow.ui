@@ -397,6 +397,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionClear_Data"/>
    </widget>
    <addaction name="FileMenu"/>
   </widget>
@@ -408,6 +409,11 @@
   <action name="AboutMenu">
    <property name="text">
     <string>Qt5</string>
+   </property>
+  </action>
+  <action name="actionClear_Data">
+   <property name="text">
+    <string>Clear Data</string>
    </property>
   </action>
  </widget>

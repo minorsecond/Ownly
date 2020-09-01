@@ -35,6 +35,7 @@ class Ui_MainWindow
 public:
     QAction *actionNew_Item;
     QAction *AboutMenu;
+    QAction *actionClear_Data;
     QWidget *centralwidget;
     QLineEdit *ItemName;
     QFrame *line_2;
@@ -68,6 +69,8 @@ public:
         actionNew_Item->setObjectName(QString::fromUtf8("actionNew_Item"));
         AboutMenu = new QAction(MainWindow);
         AboutMenu->setObjectName(QString::fromUtf8("AboutMenu"));
+        actionClear_Data = new QAction(MainWindow);
+        actionClear_Data->setObjectName(QString::fromUtf8("actionClear_Data"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         ItemName = new QLineEdit(centralwidget);
@@ -186,6 +189,7 @@ public:
         MainWindow->setMenuBar(menubar);
 
         menubar->addAction(FileMenu->menuAction());
+        FileMenu->addAction(actionClear_Data);
 
         retranslateUi(MainWindow);
 
@@ -197,6 +201,7 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         actionNew_Item->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
         AboutMenu->setText(QCoreApplication::translate("MainWindow", "Qt5", nullptr));
+        actionClear_Data->setText(QCoreApplication::translate("MainWindow", "Clear Data", nullptr));
         ItemNameLabel->setText(QCoreApplication::translate("MainWindow", "Name", nullptr));
         ItemCategoryLabel->setText(QCoreApplication::translate("MainWindow", "Category", nullptr));
         ItemPurchaseDateLabel->setText(QCoreApplication::translate("MainWindow", "Purchase Date", nullptr));
