@@ -8,7 +8,7 @@
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
-    this->setFixedSize(1053, 537);
+    this->setFixedSize(1053, 520);
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
