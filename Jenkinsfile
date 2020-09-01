@@ -60,7 +60,7 @@ pipeline {
                 bat 'del /F/Q/S artifacts\\Ownly_autogen'
                 bat 'del /F/Q/S artifacts\\src'
                 bat 'del /F/Q/S artifacts\\database_functions_test_autogen'
-                archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake, artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe"
+                archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake, artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe,artifacts/test.xml"
             }
             post {
                 always {
