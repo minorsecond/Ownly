@@ -29,7 +29,7 @@ endif(SQLITE3_FOUND)
 
 include_directories(${SQLITE3_INCLUDE_DIRS})
 
-add_executable(Ownly src/main.cpp src/Database.cpp src/Database.h src/main.h)
+add_executable(Ownly WIN32 src/main.cpp src/Database.cpp src/Database.h src/main.h)
 add_executable(database_functions_test src/Database.cpp test/test-main.cpp test/test_database_functions.cpp)
 
 add_custom_command(TARGET Ownly POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "C:/msys64/mingw64/bin/libsqlite3-0.dll" $<TARGET_FILE_DIR:Ownly>)
