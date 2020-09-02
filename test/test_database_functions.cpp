@@ -24,7 +24,7 @@ TEST_CASE("Init DB", "[DB Creation]") {
     std::remove(file_name.c_str());
 }
 
-TEST_CASE( "DB Write", "[DB Write]" ) {
+TEST_CASE( "DB IO", "[DB IO]" ) {
     std::string file_name = "testdb.sqlite";
     Storage storage = initStorage(file_name);
     db.writeDbToDisk(storage);
