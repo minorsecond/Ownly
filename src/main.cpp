@@ -17,6 +17,11 @@ MainWindow::MainWindow(QWidget *parent) {
     ui.ItemPurchaseDate->setDate(date);
 
 
+    QPalette pal = ui.deleteItemButton->palette();
+    pal.setColor(QPalette::Button, QColor(255, 99, 71));
+    ui.deleteItemButton->setAutoFillBackground(true);
+    ui.deleteItemButton->setPalette(pal);
+    ui.deleteItemButton->update();
 
     Database db;
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
