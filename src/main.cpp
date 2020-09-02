@@ -26,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent) {
     ui.deleteItemButton->setPalette(pal);
     ui.deleteItemButton->update();
 
-    Database db;
-
     QItemSelectionModel *sm = ui.inventoryList->selectionModel();
 
     // Slots
