@@ -41,3 +41,8 @@ void Database::truncate(Storage storage) {
 void Database::deleteRow(Storage storage, int row_number) {
     storage.remove<Item>(row_number);
 }
+
+Item Database::read_row(Storage storage, int row) {
+    Item item = storage.get<Item>(row);
+    return item;
+}

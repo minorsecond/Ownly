@@ -302,7 +302,7 @@
      <number>0</number>
     </property>
     <property name="columnCount">
-     <number>6</number>
+     <number>7</number>
     </property>
     <attribute name="horizontalHeaderMinimumSectionSize">
      <number>39</number>
@@ -338,6 +338,11 @@
     <column>
      <property name="text">
       <string>Used Recently</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>ID</string>
      </property>
     </column>
    </widget>
@@ -394,6 +399,19 @@
     </property>
     <property name="text">
      <string>Delete</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="NewItemButton">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>460</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>New Item</string>
     </property>
    </widget>
   </widget>

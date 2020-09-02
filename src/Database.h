@@ -47,6 +47,7 @@ public:
     std::vector<Item> read(std::string);
     Storage write(Item item);
     void truncate(Storage);
+    Item read_row(Storage storage, int row);
 };
 
 #endif //NOTCH_DATABASE_H
