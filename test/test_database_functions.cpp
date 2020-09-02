@@ -98,12 +98,14 @@ TEST_CASE( "Delete Row", "[Delete Row]" ) {
     Storage storage = initStorage(file_name);
     db.writeDbToDisk(storage);
 
-    Item item{-1, "The Silmarillion", "Book", 1998,
+    Item firstItem{-1, "The Silmarillion", "Book", 1998,
               3, 7, 8.99, 1, true,
               "This is absolutely my favorite Tolkien book."};
 
     Item secondItem{-1, "HF Ham Radio", "Electronics", 2001, 8,
                     14, 599.99, 1, true, "Great radio."};
+    storage.insert(secondItem);
+    storage.insert(firstItem);
 
     db.writeDbToDisk(storage);
     db.deleteRow(storage, 1);
