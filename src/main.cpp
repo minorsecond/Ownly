@@ -228,6 +228,14 @@ void MainWindow::new_item() {
     ui.ItemNotes->clear();
 }
 
+void MainWindow::disable_delete_button() {
+    ui.deleteItemButton->setDisabled(true)
+}
+
+void MainWindow::enable_delete_button() {
+    ui.deleteItemButton->setDisabled(false);
+}
+
 int main(int argc, char** argv) {
     Database db;
     initStorage("ownly.db");

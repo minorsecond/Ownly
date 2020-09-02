@@ -20,6 +20,8 @@ public:
 private slots:
     void truncate_db();
     void remove_row();
+    void disable_delete_button();
+    void enable_delete_button();
     void table_row_clicked(const QItemSelection &, const QItemSelection &);
     void clicked_submit();
     std::string double_to_string(double input_double);
