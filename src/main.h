@@ -20,6 +20,7 @@ public:
 private slots:
     void truncate_db();
     void remove_row();
+    void table_row_clicked();
     void clicked_submit();
 };
 

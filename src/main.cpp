@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) {
     QDate date = QDate::currentDate();
     ui.ItemPurchaseDate->setDate(date);
 
-
     QPalette pal = ui.deleteItemButton->palette();
     pal.setColor(QPalette::Button, QColor(255, 99, 71));
     ui.deleteItemButton->setAutoFillBackground(true);
@@ -158,6 +157,10 @@ void MainWindow::remove_row() {
     std::cout << "Deleting DB row at index " << row_to_delete << std::endl;
     db.deleteRow(storage, row_to_delete);
     updateMainTable();
+}
+
+void MainWindow::table_row_clicked() {
+    // Do something
 }
 
 int main(int argc, char** argv) {
