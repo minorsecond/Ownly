@@ -48,6 +48,7 @@ public:
     Storage write(Item item);
     void truncate(Storage);
     Item read_row(Storage storage, int row);
+    static void update(const Item& item);
 };
 
 #endif //NOTCH_DATABASE_H

@@ -46,3 +46,8 @@ Item Database::read_row(Storage storage, int row) {
     Item item = storage.get<Item>(row);
     return item;
 }
+
+void Database::update(const Item& item) {
+    Storage storage = initStorage("ownly.db");
+    storage.update(item);
+}

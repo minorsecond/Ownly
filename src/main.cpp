@@ -26,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent) {
     ui.deleteItemButton->setPalette(pal);
     ui.deleteItemButton->update();
 
-    QItemSelectionModel *sm = ui.inventoryList->selectionModel();
-
     // Slots
     connect(ui.inventoryList->selectionModel(),
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -80,20 +78,42 @@ void MainWindow::clicked_submit(){
         error_message.critical(0, "Error", "Please enter item name, category, and count.");
         error_message.setFixedSize(200, 200);
     } else {
-        Item item{
-                -1,
-                item_name,
-                item_category,
-                purchase_year,
-                purchase_month,
-                purchase_day,
-                item_price,
-                item_count,
-                usedInLastSixMonths,
-                notes
-        };
+        // Handle updating existing rows
+        QItemSelectionModel *select = ui.inventoryList->selectionModel();
+        if (select->hasSelection()) {
+            int selection = select->selectedRows().at(0).row();
+            int row_to_update = ui.inventoryList->item(selection, 6)->text().toUtf8().toInt();
 
-        db.write(item);
+            Item item{
+                    row_to_update,
+                    item_name,
+                    item_category,
+                    purchase_year,
+                    purchase_month,
+                    purchase_day,
+                    item_price,
+                    item_count,
+                    usedInLastSixMonths,
+                    notes
+            };
+
+            std::cout << "Row " << row_to_update << " selected to be updated." << std::endl;
+            db.update(item);
+        } else {
+            Item item{
+                    -1,
+                    item_name,
+                    item_category,
+                    purchase_year,
+                    purchase_month,
+                    purchase_day,
+                    item_price,
+                    item_count,
+                    usedInLastSixMonths,
+                    notes
+            };
+            db.write(item);  // Write new item
+        }
         updateMainTable();
     }
 }
@@ -184,6 +204,9 @@ void MainWindow::remove_row() {
 }
 
 void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection &) {
+    /*
+     * Populate fields in right pane when user clicks on a row in the QTableWidget.
+     */
     Database db;
     Storage storage = initStorage("ownly.db");
 
