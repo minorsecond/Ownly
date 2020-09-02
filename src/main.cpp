@@ -208,6 +208,7 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
     std::string purchase_price = double_to_string(item.purchasePrice);
     int count = item.count;
     bool usedInLastSixMonths = item.usedInLastSixMonths;
+    std::string notes = item.notes;
 
     std::string date_from_db = std::to_string(purchase_day) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_year);
     QDate date = QDate::fromString(QString::fromUtf8(date_from_db.c_str()), "dd/MM/yyyy");
@@ -222,6 +223,7 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
         ui.ItemUsedInLastSixMonths->setChecked(true);
     else
         ui.ItemUsedInLastSixMonths->setChecked(false);
+    ui.ItemNotes->setText(QString::fromStdString(notes));
 }
 
 void MainWindow::new_item() {
