@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) {
 
     Database db;
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
+    connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
 
     updateMainTable();
@@ -80,7 +81,8 @@ void MainWindow::updateMainTable() {
     int current_row = 0;
 
     ui.inventoryList->setRowCount(items.size());
-    ui.inventoryList->setColumnCount(6);
+    ui.inventoryList->setColumnCount(7);
+    ui.inventoryList->setColumnHidden(6, true);
 
     for(const auto& entry : items) {
         auto *name = new QTableWidgetItem(entry.itemName.c_str());
@@ -90,6 +92,7 @@ void MainWindow::updateMainTable() {
         int purchase_day = entry.purchaseDay;
         auto *item_count = new QTableWidgetItem(std::to_string(entry.count).c_str());
         bool usedInLastSixMonths = entry.usedInLastSixMonths;
+        auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
         QTableWidgetItem *used_recently;
 
         // Limit prices on table to two digits
@@ -116,6 +119,7 @@ void MainWindow::updateMainTable() {
         ui.inventoryList->setItem(current_row, 3, purchase_price_str);
         ui.inventoryList->setItem(current_row, 4, item_count);
         ui.inventoryList->setItem(current_row, 5, used_recently);
+        ui.inventoryList->setItem(current_row, 6, id);
 
         current_row +=1;
     }
@@ -127,6 +131,17 @@ void MainWindow::truncate_db() {
     Storage storage = initStorage("ownly.db");
     db.truncate(storage);
     updateMainTable();
+}
+
+void MainWindow::remove_row() {
+    std::cout << "CLicked remove row" << std::endl;
+    QItemSelectionModel *select = ui.inventoryList->selectionModel();
+    select->hasSelection();
+    QModelIndexList  selected_rows = select->selectedRows();
+
+    for(int i=0; i<selected_rows.count(); i++) {
+        QModelIndex index = selected_rows.at(i);
+    }
 }
 
 int main(int argc, char** argv) {
