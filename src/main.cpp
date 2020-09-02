@@ -4,8 +4,10 @@
 #include "MainWindow.h"
 #include "Database.h"
 #include "main.h"
+#include <string>
 #include <vector>
 #include <cmath>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
@@ -17,9 +19,15 @@ MainWindow::MainWindow(QWidget *parent) {
     ui.ItemPurchaseDate->setDate(date);
 
 
+    QPalette pal = ui.deleteItemButton->palette();
+    pal.setColor(QPalette::Button, QColor(255, 99, 71));
+    ui.deleteItemButton->setAutoFillBackground(true);
+    ui.deleteItemButton->setPalette(pal);
+    ui.deleteItemButton->update();
 
     Database db;
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
+    connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
 
     updateMainTable();
@@ -75,7 +83,8 @@ void MainWindow::updateMainTable() {
     int current_row = 0;
 
     ui.inventoryList->setRowCount(items.size());
-    ui.inventoryList->setColumnCount(6);
+    ui.inventoryList->setColumnCount(7);
+    ui.inventoryList->setColumnHidden(6, true);
 
     for(const auto& entry : items) {
         auto *name = new QTableWidgetItem(entry.itemName.c_str());
@@ -85,6 +94,7 @@ void MainWindow::updateMainTable() {
         int purchase_day = entry.purchaseDay;
         auto *item_count = new QTableWidgetItem(std::to_string(entry.count).c_str());
         bool usedInLastSixMonths = entry.usedInLastSixMonths;
+        auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
         QTableWidgetItem *used_recently;
 
         // Limit prices on table to two digits
@@ -111,6 +121,7 @@ void MainWindow::updateMainTable() {
         ui.inventoryList->setItem(current_row, 3, purchase_price_str);
         ui.inventoryList->setItem(current_row, 4, item_count);
         ui.inventoryList->setItem(current_row, 5, used_recently);
+        ui.inventoryList->setItem(current_row, 6, id);
 
         current_row +=1;
     }
@@ -121,6 +132,31 @@ void MainWindow::truncate_db() {
     std::cout << "Truncate db clicked." << std::endl;
     Storage storage = initStorage("ownly.db");
     db.truncate(storage);
+    updateMainTable();
+}
+
+void MainWindow::remove_row() {
+    std::cout << "CLicked remove row" << std::endl;
+
+    Database db;
+    Storage storage = initStorage("ownly.db");
+
+    // Get selected row
+    int select = ui.inventoryList->selectionModel()->currentIndex().row();
+    std::cout << "Selected row: " << select << std::endl;
+    //select->hasSelection();
+    //QModelIndexList selected_rows = select->selectedRows();
+
+    //for(int i=0; i<selected_rows.count(); i++) {
+    //    int index = selected_rows.at(i).data().toString().toInt();
+    //    std::cout << "DB index to delete: " << index << std::endl;
+    //    qDebug() << "Deleting DB row at index " << ui.inventoryList->item(index, 6)->text();
+    //}
+
+    int row_to_delete = (ui.inventoryList->item(select, 6)->text()).toUtf8().toInt();
+
+    std::cout << "Deleting DB row at index " << row_to_delete << std::endl;
+    db.deleteRow(storage, row_to_delete);
     updateMainTable();
 }
 

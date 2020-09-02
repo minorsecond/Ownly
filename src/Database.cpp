@@ -37,3 +37,7 @@ void Database::truncate(Storage storage) {
     storage.remove_all<Item>();
     writeDbToDisk(storage);
 }
+
+void Database::deleteRow(Storage storage, int row_number) {
+    storage.remove<Item>(row_number);
+}

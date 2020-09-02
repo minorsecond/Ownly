@@ -57,6 +57,7 @@ public:
     QTableWidget *inventoryList;
     QComboBox *ViewCategoryComboBox;
     QLabel *label;
+    QPushButton *deleteItemButton;
     QMenuBar *menubar;
     QMenu *FileMenu;
 
@@ -180,6 +181,9 @@ public:
         font1.setWeight(75);
         label->setFont(font1);
         label->setAlignment(Qt::AlignCenter);
+        deleteItemButton = new QPushButton(centralwidget);
+        deleteItemButton->setObjectName(QString::fromUtf8("deleteItemButton"));
+        deleteItemButton->setGeometry(QRect(650, 460, 75, 23));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -228,6 +232,7 @@ public:
         ViewCategoryComboBox->setCurrentText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
         ViewCategoryComboBox->setPlaceholderText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Ownly", nullptr));
+        deleteItemButton->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         FileMenu->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 
