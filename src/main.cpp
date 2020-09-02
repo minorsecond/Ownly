@@ -26,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent) {
     ui.deleteItemButton->setPalette(pal);
     ui.deleteItemButton->update();
 
-    QItemSelectionModel *sm = ui.inventoryList->selectionModel();
-
     // Slots
     connect(ui.inventoryList->selectionModel(),
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -80,8 +78,13 @@ void MainWindow::clicked_submit(){
         error_message.critical(0, "Error", "Please enter item name, category, and count.");
         error_message.setFixedSize(200, 200);
     } else {
-        Item item{
-                -1,
+        // Handle updating existing rows
+        int selection = ui.inventoryList->selectionModel()->currentIndex().row();
+        if(selection >= 0) {
+            int row_to_update = ui.inventoryList->item(selection, 6)->text().toUtf8().toInt();
+
+            Item item{
+                row_to_update,
                 item_name,
                 item_category,
                 purchase_year,
@@ -91,9 +94,25 @@ void MainWindow::clicked_submit(){
                 item_count,
                 usedInLastSixMonths,
                 notes
-        };
+            };
 
-        db.write(item);
+            std::cout << "Row " << row_to_update << " selected to be updated." << std::endl;
+            db.update(item);
+        } else {
+            Item item{
+                    -1,
+                    item_name,
+                    item_category,
+                    purchase_year,
+                    purchase_month,
+                    purchase_day,
+                    item_price,
+                    item_count,
+                    usedInLastSixMonths,
+                    notes
+            };
+            db.write(item);  // Write new item
+        }
         updateMainTable();
     }
 }
