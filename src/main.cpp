@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) {
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
+    ui.deleteItemButton->setDisabled(true);
+
     QDate date = QDate::currentDate();
     ui.ItemPurchaseDate->setDate(date);
 
@@ -187,8 +189,15 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
     Database db;
     Storage storage = initStorage("ownly.db");
 
+    QItemSelectionModel *select = ui.inventoryList->selectionModel();
+
     int selection = ui.inventoryList->selectionModel()->currentIndex().row();
     int row_to_get = ui.inventoryList->item(selection, 6)->text().toUtf8().toInt();
+
+    if(select->isRowSelected(selection))
+        ui.deleteItemButton->setEnabled(true);
+    else
+        ui.deleteItemButton->setDisabled(true);
 
     Item item = db.read_row(storage, row_to_get);
 
@@ -229,11 +238,11 @@ void MainWindow::new_item() {
 }
 
 void MainWindow::disable_delete_button() {
-    ui.deleteItemButton->setDisabled(true)
+    ui.deleteItemButton->setDisabled(true);
 }
 
 void MainWindow::enable_delete_button() {
-    ui.deleteItemButton->setDisabled(false);
+    ui.deleteItemButton->setEnabled(true);
 }
 
 int main(int argc, char** argv) {
