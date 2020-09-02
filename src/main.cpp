@@ -4,8 +4,10 @@
 #include "MainWindow.h"
 #include "Database.h"
 #include "main.h"
+#include <string>
 #include <vector>
 #include <cmath>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
@@ -135,13 +137,27 @@ void MainWindow::truncate_db() {
 
 void MainWindow::remove_row() {
     std::cout << "CLicked remove row" << std::endl;
-    QItemSelectionModel *select = ui.inventoryList->selectionModel();
-    select->hasSelection();
-    QModelIndexList  selected_rows = select->selectedRows();
 
-    for(int i=0; i<selected_rows.count(); i++) {
-        QModelIndex index = selected_rows.at(i);
-    }
+    Database db;
+    Storage storage = initStorage("ownly.db");
+
+    // Get selected row
+    int select = ui.inventoryList->selectionModel()->currentIndex().row();
+    std::cout << "Selected row: " << select << std::endl;
+    //select->hasSelection();
+    //QModelIndexList selected_rows = select->selectedRows();
+
+    //for(int i=0; i<selected_rows.count(); i++) {
+    //    int index = selected_rows.at(i).data().toString().toInt();
+    //    std::cout << "DB index to delete: " << index << std::endl;
+    //    qDebug() << "Deleting DB row at index " << ui.inventoryList->item(index, 6)->text();
+    //}
+
+    int row_to_delete = (ui.inventoryList->item(select, 6)->text()).toUtf8().toInt();
+
+    std::cout << "Deleting DB row at index " << row_to_delete << std::endl;
+    db.deleteRow(storage, row_to_delete);
+    updateMainTable();
 }
 
 int main(int argc, char** argv) {
