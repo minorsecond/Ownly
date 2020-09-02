@@ -45,7 +45,6 @@ public:
     int writeDbToDisk(Storage storage);
     std::vector<Item> read(std::string);
     Storage write(Item item);
-    int open_or_create();
     void truncate(Storage);
 };
 

@@ -16,8 +16,10 @@ MainWindow::MainWindow(QWidget *parent) {
     QDate date = QDate::currentDate();
     ui.ItemPurchaseDate->setDate(date);
 
-    Database db;
 
+
+    Database db;
+    connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
 
     updateMainTable();
@@ -114,9 +116,17 @@ void MainWindow::updateMainTable() {
     }
 }
 
+void MainWindow::truncate_db() {
+    Database db;
+    std::cout << "Truncate db clicked." << std::endl;
+    Storage storage = initStorage("ownly.db");
+    db.truncate(storage);
+    updateMainTable();
+}
+
 int main(int argc, char** argv) {
     Database db;
-    db.open_or_create();
+    initStorage("ownly.db");
 
     QApplication app(argc, argv);
     MainWindow mainWindow;

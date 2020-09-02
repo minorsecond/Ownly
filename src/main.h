@@ -18,6 +18,7 @@ public:
     void updateMainTable();
 
 private slots:
+    void truncate_db();
     void clicked_submit();
 };
 
