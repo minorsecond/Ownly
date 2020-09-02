@@ -79,21 +79,22 @@ void MainWindow::clicked_submit(){
         error_message.setFixedSize(200, 200);
     } else {
         // Handle updating existing rows
-        int selection = ui.inventoryList->selectionModel()->currentIndex().row();
-        if(selection >= 0) {
+        QItemSelectionModel *select = ui.inventoryList->selectionModel();
+        if (select->hasSelection()) {
+            int selection = select->selectedRows().at(0).row();
             int row_to_update = ui.inventoryList->item(selection, 6)->text().toUtf8().toInt();
 
             Item item{
-                row_to_update,
-                item_name,
-                item_category,
-                purchase_year,
-                purchase_month,
-                purchase_day,
-                item_price,
-                item_count,
-                usedInLastSixMonths,
-                notes
+                    row_to_update,
+                    item_name,
+                    item_category,
+                    purchase_year,
+                    purchase_month,
+                    purchase_day,
+                    item_price,
+                    item_count,
+                    usedInLastSixMonths,
+                    notes
             };
 
             std::cout << "Row " << row_to_update << " selected to be updated." << std::endl;
@@ -203,6 +204,9 @@ void MainWindow::remove_row() {
 }
 
 void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection &) {
+    /*
+     * Populate fields in right pane when user clicks on a row in the QTableWidget.
+     */
     Database db;
     Storage storage = initStorage("ownly.db");
 
