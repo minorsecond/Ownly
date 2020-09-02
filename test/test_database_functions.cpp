@@ -110,9 +110,9 @@ TEST_CASE( "Delete Row", "[Delete Row]" ) {
     db.writeDbToDisk(storage);
     db.deleteRow(storage, 1);
     db.writeDbToDisk(storage);
-    std::vector<Item> items = db.read("ownly.db");
+    std::vector<Item> items = db.read(file_name);
 
-    for(auto item : items) {
+    for(const auto& item : items) {
         if(item.id > max_id)
             max_id = item.id;
         if(item.id < min_id)
