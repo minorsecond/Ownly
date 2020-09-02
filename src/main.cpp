@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) {
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
+    connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(new_item()));
 
     updateMainTable();
 }
@@ -207,6 +208,17 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
         ui.ItemUsedInLastSixMonths->setChecked(true);
     else
         ui.ItemUsedInLastSixMonths->setChecked(false);
+}
+
+void MainWindow::new_item() {
+    ui.ItemName->clear();
+    ui.ItemCategory->clearEditText();
+    QDate date = QDate::currentDate();
+    ui.ItemPurchaseDate->setDate(date);
+    ui.ItemPurchasePrice->clear();
+    ui.ItemCount->clear();
+    ui.ItemUsedInLastSixMonths->setChecked(false);
+    ui.ItemNotes->clear();
 }
 
 int main(int argc, char** argv) {
