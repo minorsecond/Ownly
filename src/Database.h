@@ -42,6 +42,7 @@ using Storage = decltype(initStorage(""));  // Get Storage return type
 
 class Database {
 public:
+    void deleteRow(Storage storage, int row_number);
     int writeDbToDisk(Storage storage);
     std::vector<Item> read(std::string);
     Storage write(Item item);

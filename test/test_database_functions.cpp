@@ -85,3 +85,39 @@ TEST_CASE( "DB Truncate", "[DB Truncate]" ) {
 
     REQUIRE( allItems.empty() == true);
 }
+
+TEST_CASE( "Delete Row", "[Delete Row]" ) {
+    const char *file_name = "testdb.sqlite";
+    int min_id = 3;
+    int max_id = -1;
+
+    if (remove(file_name)) {
+        std::cout << "Removed existing testdb.sqlite file";
+    }
+
+    Storage storage = initStorage(file_name);
+    db.writeDbToDisk(storage);
+
+    Item item{-1, "The Silmarillion", "Book", 1998,
+              3, 7, 8.99, 1, true,
+              "This is absolutely my favorite Tolkien book."};
+
+    Item secondItem{-1, "HF Ham Radio", "Electronics", 2001, 8,
+                    14, 599.99, 1, true, "Great radio."};
+
+    db.writeDbToDisk(storage);
+    db.deleteRow(storage, 1);
+    db.writeDbToDisk(storage);
+    std::vector<Item> items = db.read("ownly.db");
+
+    for(auto item : items) {
+        if(item.id > max_id)
+            max_id = item.id;
+        if(item.id < min_id)
+            min_id = item.id;
+    }
+
+    REQUIRE(items.empty() == false);
+    REQUIRE(items.size() == 1);
+    REQUIRE(max_id == min_id);
+}
