@@ -25,11 +25,26 @@ MainWindow::MainWindow(QWidget *parent) {
     ui.deleteItemButton->update();
 
     Database db;
+
+    QItemSelectionModel *sm = ui.inventoryList->selectionModel();
+
+    // Slots
+    connect(ui.inventoryList->selectionModel(),
+            SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+            this, SLOT(table_row_clicked(const QItemSelection &, const QItemSelection &)));
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
 
     updateMainTable();
+}
+
+std::string MainWindow::double_to_string(double input_double) {
+    double purchase_price = std::ceil(input_double * 100.0) / 100.0;
+    std::ostringstream price_stream;
+    price_stream << purchase_price;
+
+    return price_stream.str();
 }
 
 void MainWindow::clicked_submit(){
@@ -97,10 +112,11 @@ void MainWindow::updateMainTable() {
         QTableWidgetItem *used_recently;
 
         // Limit prices on table to two digits
-        double purchase_price = std::ceil(entry.purchasePrice * 100.0) / 100.0;
-        std::ostringstream price_stream;
-        price_stream << purchase_price;
-        auto *purchase_price_str = new QTableWidgetItem(price_stream.str().c_str());
+        std::string purchase_price = double_to_string(entry.purchasePrice);
+        //double purchase_price = std::ceil(entry.purchasePrice * 100.0) / 100.0;
+        //std::ostringstream price_stream;
+        //price_stream << purchase_price;
+        auto *purchase_price_str = new QTableWidgetItem(purchase_price.c_str());
 
 
         std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_day);
@@ -159,8 +175,38 @@ void MainWindow::remove_row() {
     updateMainTable();
 }
 
-void MainWindow::table_row_clicked() {
-    // Do something
+void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection &) {
+    Database db;
+    Storage storage = initStorage("ownly.db");
+
+    int selection = ui.inventoryList->selectionModel()->currentIndex().row();
+    int row_to_get = ui.inventoryList->item(selection, 6)->text().toUtf8().toInt();
+
+    Item item = db.read_row(storage, row_to_get);
+
+    int id = item.id;
+    std::string item_name = item.itemName;
+    std::string item_category = item.category;
+    int purchase_year = item.purchaseYear;
+    int purchase_month = item.purchaseMonth;
+    int purchase_day = item.purchaseDay;
+    std::string purchase_price = double_to_string(item.purchasePrice);
+    int count = item.count;
+    bool usedInLastSixMonths = item.usedInLastSixMonths;
+
+    std::string date_from_db = std::to_string(purchase_day) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_year);
+    QDate date = QDate::fromString(QString::fromUtf8(date_from_db.c_str()), "dd/MM/yyyy");
+
+    ui.ItemName->setText(QString::fromStdString(item_name));
+    ui.ItemCategory->setCurrentText(QString::fromStdString(item_category));
+    ui.ItemPurchaseDate->setDate(date);
+    ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price.c_str()));
+    ui.ItemCount->setValue(count);
+
+    if(usedInLastSixMonths == true)
+        ui.ItemUsedInLastSixMonths->setChecked(true);
+    else
+        ui.ItemUsedInLastSixMonths->setChecked(false);
 }
 
 int main(int argc, char** argv) {
