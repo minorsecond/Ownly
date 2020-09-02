@@ -123,3 +123,32 @@ TEST_CASE( "Delete Row", "[Delete Row]" ) {
     REQUIRE(items.size() == 1);
     REQUIRE(max_id == min_id);
 }
+
+TEST_CASE( "Read Row", "[Read Row]" ) {
+    const char *file_name = "testdb.sqlite";
+
+    if (remove(file_name)) {
+        std::cout << "Removed existing testdb.sqlite file";
+    }
+
+    Storage storage = initStorage(file_name);
+    db.writeDbToDisk(storage);
+
+    Item firstItem{-1, "The Silmarillion", "Book", 1998,
+                   3, 7, 8.99, 1, true,
+                   "This is absolutely my favorite Tolkien book."};
+
+    Item secondItem{-1, "HF Ham Radio", "Electronics", 2001, 8,
+                    14, 599.99, 1, true, "Great radio."};
+    storage.insert(firstItem);
+    storage.insert(secondItem);
+    Item silmarillion = db.read_row(storage, 1);
+    Item radio = db.read_row(storage, 2);
+
+    REQUIRE(silmarillion.id == 1);
+    REQUIRE(silmarillion.count == 1);
+    REQUIRE(silmarillion.purchasePrice == 8.99);
+    REQUIRE(radio.id == 2);
+    REQUIRE(radio.purchasePrice == 599.99);
+    REQUIRE(radio.purchaseMonth == 8);
+}
