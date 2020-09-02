@@ -239,7 +239,8 @@ void MainWindow::new_item() {
 
 int main(int argc, char** argv) {
     Database db;
-    initStorage("ownly.db");
+    Storage storage = initStorage("ownly.db");
+    db.writeDbToDisk(storage);
 
     QApplication app(argc, argv);
     MainWindow mainWindow;
