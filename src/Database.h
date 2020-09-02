@@ -43,9 +43,9 @@ using Storage = decltype(initStorage(""));  // Get Storage return type
 class Database {
 public:
     int writeDbToDisk(Storage storage);
-    std::vector<Item> read();
+    std::vector<Item> read(std::string);
     Storage write(Item item);
-    int open_or_create();
+    void truncate(Storage);
 };
 
 #endif //NOTCH_DATABASE_H

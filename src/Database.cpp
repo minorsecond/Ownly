@@ -9,8 +9,8 @@
 #include <vector>
 #include <string.h>
 
-std::vector<Item> Database::read() {
-    Storage storage = initStorage("ownly.db");
+std::vector<Item> Database::read(std::string file_name) {
+    Storage storage = initStorage(file_name);
     std::vector<Item> allItems = storage.get_all<Item>();
 
     return allItems;
@@ -28,25 +28,12 @@ Storage Database::write(Item item) {
     return storage;
 }
 
-int Database::open_or_create() {
-    int res = access(std::string("ownly.db").c_str(), R_OK);
-
-    if(res < 0) {
-        if (errno == ENOENT) {// DB file doesn't exist
-            std::cout << "Creating new SQLite3 file at : " << "ownly.db" << std::endl;
-            Storage storage = initStorage("ownly.db");
-            Database::writeDbToDisk(storage);
-        } else if (errno == EACCES) {  // DB file exists but isn't readable
-            std::cout << "SQLite3 File exists at: " << "ownly.db" << " but is corrupt." << std::endl;
-        }
-    } else if (res == 0) {
-        std::cout << "Reading existing SQLite3 file at: " << "ownly.db" << std::endl;
-    }
-
-    return res;
-}
-
 int Database::writeDbToDisk(Storage storage) {
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
     return 0;
+}
+
+void Database::truncate(Storage storage) {
+    storage.remove_all<Item>();
+    writeDbToDisk(storage);
 }

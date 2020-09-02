@@ -49,3 +49,23 @@ TEST_CASE( "DB Write", "[DB Write]" ) {
 
     std::remove(file_name.c_str());
 }
+
+TEST_CASE( "DB Truncate", "[DB Truncate]" ) {
+    std::string file_name = "testdb.sqlite";
+    Storage storage = initStorage(file_name);
+    db.writeDbToDisk(storage);
+
+    Item item{-1, "The Silmarillion", "Book", 1998,
+              3, 7, 8.99, 1, true,
+              "This is absolutely my favorite Tolkien book."};
+    int firstInsertedId = storage.insert(item);
+
+    Item secondItem{-1, "HF Ham Radio", "Electronics", 2001, 8,
+                    14, 599.99, 1, true, "Great radio."};
+    int secondInsertedId = storage.insert(secondItem);
+    db.writeDbToDisk(storage);
+    db.truncate(storage);
+    std::vector<Item> allItems = db.read(file_name);
+
+    REQUIRE( allItems.empty() == true);
+}
