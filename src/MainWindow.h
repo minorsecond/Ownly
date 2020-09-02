@@ -58,6 +58,7 @@ public:
     QComboBox *ViewCategoryComboBox;
     QLabel *label;
     QPushButton *deleteItemButton;
+    QPushButton *NewItemButton;
     QMenuBar *menubar;
     QMenu *FileMenu;
 
@@ -148,8 +149,8 @@ public:
         dbSubmitButton->setObjectName(QString::fromUtf8("dbSubmitButton"));
         dbSubmitButton->setGeometry(QRect(950, 460, 75, 23));
         inventoryList = new QTableWidget(centralwidget);
-        if (inventoryList->columnCount() < 6)
-            inventoryList->setColumnCount(6);
+        if (inventoryList->columnCount() < 7)
+            inventoryList->setColumnCount(7);
         QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
         inventoryList->setHorizontalHeaderItem(0, __qtablewidgetitem);
         QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
@@ -162,10 +163,12 @@ public:
         inventoryList->setHorizontalHeaderItem(4, __qtablewidgetitem4);
         QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
         inventoryList->setHorizontalHeaderItem(5, __qtablewidgetitem5);
+        QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
+        inventoryList->setHorizontalHeaderItem(6, __qtablewidgetitem6);
         inventoryList->setObjectName(QString::fromUtf8("inventoryList"));
         inventoryList->setGeometry(QRect(10, 80, 591, 371));
         inventoryList->setRowCount(0);
-        inventoryList->setColumnCount(6);
+        inventoryList->setColumnCount(7);
         inventoryList->horizontalHeader()->setMinimumSectionSize(39);
         inventoryList->horizontalHeader()->setDefaultSectionSize(84);
         ViewCategoryComboBox = new QComboBox(centralwidget);
@@ -184,6 +187,9 @@ public:
         deleteItemButton = new QPushButton(centralwidget);
         deleteItemButton->setObjectName(QString::fromUtf8("deleteItemButton"));
         deleteItemButton->setGeometry(QRect(650, 460, 75, 23));
+        NewItemButton = new QPushButton(centralwidget);
+        NewItemButton->setObjectName(QString::fromUtf8("NewItemButton"));
+        NewItemButton->setGeometry(QRect(870, 460, 75, 23));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -229,10 +235,13 @@ public:
         ___qtablewidgetitem4->setText(QCoreApplication::translate("MainWindow", "Count", nullptr));
         QTableWidgetItem *___qtablewidgetitem5 = inventoryList->horizontalHeaderItem(5);
         ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Used Recently", nullptr));
+        QTableWidgetItem *___qtablewidgetitem6 = inventoryList->horizontalHeaderItem(6);
+        ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
         ViewCategoryComboBox->setCurrentText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
         ViewCategoryComboBox->setPlaceholderText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Ownly", nullptr));
         deleteItemButton->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
+        NewItemButton->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
         FileMenu->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 
