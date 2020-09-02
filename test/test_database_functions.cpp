@@ -5,6 +5,7 @@
 #include "../include/Catch2.h"
 #include "../src/Database.h"
 #include <iostream>
+#include <stdio.h>
 #include <fstream>
 
 Database db;
@@ -15,17 +16,27 @@ inline bool exists(const std::string& filename){
 }
 
 TEST_CASE("Init DB", "[DB Creation]") {
-    std::string file_name = "testdb.sqlite";
+    const char *file_name = "testdb.sqlite";
+
+    if (remove(file_name)) {
+        std::cout << "Removed existing testdb.sqlite file";
+    }
+
     Storage storage = initStorage(file_name);
     db.writeDbToDisk(storage);
     std::vector table_names = storage.table_names();
     REQUIRE( exists(file_name) == true);
     REQUIRE( table_names.at(0) == "items");
-    std::remove(file_name.c_str());
+    std::remove(file_name);
 }
 
 TEST_CASE( "DB IO", "[DB IO]" ) {
-    std::string file_name = "testdb.sqlite";
+    const char *file_name = "testdb.sqlite";
+
+    if (remove(file_name)) {
+        std::cout << "Removed existing testdb.sqlite file";
+    }
+
     Storage storage = initStorage(file_name);
     db.writeDbToDisk(storage);
 
@@ -47,11 +58,16 @@ TEST_CASE( "DB IO", "[DB IO]" ) {
     REQUIRE( book.purchasePrice == 8.99 );
     REQUIRE( book.notes == "This is absolutely my favorite Tolkien book." );
 
-    std::remove(file_name.c_str());
+    std::remove(file_name);
 }
 
 TEST_CASE( "DB Truncate", "[DB Truncate]" ) {
-    std::string file_name = "testdb.sqlite";
+    const char *file_name = "testdb.sqlite";
+
+    if (remove(file_name)) {
+        std::cout << "Removed existing testdb.sqlite file";
+    }
+
     Storage storage = initStorage(file_name);
     db.writeDbToDisk(storage);
 
