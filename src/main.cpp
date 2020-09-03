@@ -125,6 +125,7 @@ void MainWindow::clicked_submit(){
     ui.ItemCategory->addItem(item_qstring);
     ui.ViewCategoryComboBox->addItem(item_qstring);
     clear_fields();
+    populate_categories();
 }
 
 void MainWindow::updateMainTable() {
@@ -185,6 +186,7 @@ void MainWindow::truncate_db() {
     Storage storage = initStorage("ownly.db");
     db.truncate(storage);
     updateMainTable();
+    populate_categories();
 }
 
 void MainWindow::remove_row() {
@@ -248,6 +250,9 @@ void MainWindow::populate_categories() {
     std::set<QString> categories;
     Database db;
     std::vector<Item> allItems = db.read("ownly.db");
+
+    ui.ItemCategory->clear();
+    ui.ViewCategoryComboBox->clear();
 
     for(const auto& item : allItems) {
         QString item_string = QString::fromStdString(item.category);
