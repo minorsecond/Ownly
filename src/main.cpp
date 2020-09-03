@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) {
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
-    connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(new_item()));
+    connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(clear_fields()));
 
     updateMainTable();
 }
@@ -121,6 +121,7 @@ void MainWindow::clicked_submit(){
     QString item_qstring = QString::fromStdString(item_category);
     ui.ItemCategory->addItem(item_qstring);
     ui.ViewCategoryComboBox->addItem(item_qstring);
+    clear_fields();
 }
 
 void MainWindow::updateMainTable() {
@@ -254,7 +255,7 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
     ui.ItemNotes->setText(QString::fromStdString(notes));
 }
 
-void MainWindow::new_item() {
+void MainWindow::clear_fields() {
     ui.ItemName->clear();
     ui.ItemCategory->clearEditText();
     QDate date = QDate::currentDate();

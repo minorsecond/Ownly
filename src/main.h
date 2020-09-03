@@ -23,7 +23,7 @@ private slots:
     void table_row_clicked(const QItemSelection &, const QItemSelection &);
     void clicked_submit();
     std::string double_to_string(double input_double);
-    void new_item();
+    void clear_fields();
     void populate_categories();
 };
 
