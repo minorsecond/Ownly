@@ -30,7 +30,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow
+class Ui_Ownly
 {
 public:
     QAction *actionNew_Item;
@@ -62,18 +62,18 @@ public:
     QMenuBar *menubar;
     QMenu *FileMenu;
 
-    void setupUi(QMainWindow *MainWindow)
+    void setupUi(QMainWindow *Ownly)
     {
-        if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1050, 511);
-        actionNew_Item = new QAction(MainWindow);
+        if (Ownly->objectName().isEmpty())
+            Ownly->setObjectName(QString::fromUtf8("Ownly"));
+        Ownly->resize(1050, 511);
+        actionNew_Item = new QAction(Ownly);
         actionNew_Item->setObjectName(QString::fromUtf8("actionNew_Item"));
-        AboutMenu = new QAction(MainWindow);
+        AboutMenu = new QAction(Ownly);
         AboutMenu->setObjectName(QString::fromUtf8("AboutMenu"));
-        actionClear_Data = new QAction(MainWindow);
+        actionClear_Data = new QAction(Ownly);
         actionClear_Data->setObjectName(QString::fromUtf8("actionClear_Data"));
-        centralwidget = new QWidget(MainWindow);
+        centralwidget = new QWidget(Ownly);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         ItemName = new QLineEdit(centralwidget);
         ItemName->setObjectName(QString::fromUtf8("ItemName"));
@@ -191,70 +191,70 @@ public:
         NewItemButton = new QPushButton(centralwidget);
         NewItemButton->setObjectName(QString::fromUtf8("NewItemButton"));
         NewItemButton->setGeometry(QRect(870, 460, 75, 23));
-        MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
+        Ownly->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(Ownly);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 1050, 21));
         FileMenu = new QMenu(menubar);
         FileMenu->setObjectName(QString::fromUtf8("FileMenu"));
-        MainWindow->setMenuBar(menubar);
+        Ownly->setMenuBar(menubar);
 
         menubar->addAction(FileMenu->menuAction());
         FileMenu->addAction(actionClear_Data);
 
-        retranslateUi(MainWindow);
+        retranslateUi(Ownly);
 
         ViewCategoryComboBox->setCurrentIndex(0);
 
 
-        QMetaObject::connectSlotsByName(MainWindow);
+        QMetaObject::connectSlotsByName(Ownly);
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
+    void retranslateUi(QMainWindow *Ownly)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        actionNew_Item->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
-        AboutMenu->setText(QCoreApplication::translate("MainWindow", "Qt5", nullptr));
-        actionClear_Data->setText(QCoreApplication::translate("MainWindow", "Clear Data", nullptr));
-        ItemNameLabel->setText(QCoreApplication::translate("MainWindow", "Name", nullptr));
-        ItemCategoryLabel->setText(QCoreApplication::translate("MainWindow", "Category", nullptr));
-        ItemPurchaseDateLabel->setText(QCoreApplication::translate("MainWindow", "Purchase Date", nullptr));
-        ItemNotesLabel->setText(QCoreApplication::translate("MainWindow", "Notes", nullptr));
-        ItemPurchasePriceLabel->setText(QCoreApplication::translate("MainWindow", "Purchase Price", nullptr));
-        InventoryListLabel->setText(QCoreApplication::translate("MainWindow", "Inventory", nullptr));
+        Ownly->setWindowTitle(QCoreApplication::translate("Ownly", "Ownly", nullptr));
+        actionNew_Item->setText(QCoreApplication::translate("Ownly", "New Item", nullptr));
+        AboutMenu->setText(QCoreApplication::translate("Ownly", "Qt5", nullptr));
+        actionClear_Data->setText(QCoreApplication::translate("Ownly", "Clear Data", nullptr));
+        ItemNameLabel->setText(QCoreApplication::translate("Ownly", "Name", nullptr));
+        ItemCategoryLabel->setText(QCoreApplication::translate("Ownly", "Category", nullptr));
+        ItemPurchaseDateLabel->setText(QCoreApplication::translate("Ownly", "Purchase Date", nullptr));
+        ItemNotesLabel->setText(QCoreApplication::translate("Ownly", "Notes", nullptr));
+        ItemPurchasePriceLabel->setText(QCoreApplication::translate("Ownly", "Purchase Price", nullptr));
+        InventoryListLabel->setText(QCoreApplication::translate("Ownly", "Inventory", nullptr));
         ItemCategory->setCurrentText(QString());
-        ItemCategory->setPlaceholderText(QCoreApplication::translate("MainWindow", "All", nullptr));
-        ItemUsedInLastSixMonths->setText(QCoreApplication::translate("MainWindow", "Used in last 6 months", nullptr));
-        ItemCountLabel->setText(QCoreApplication::translate("MainWindow", "Count", nullptr));
-        dbSubmitButton->setText(QCoreApplication::translate("MainWindow", "Submit", nullptr));
+        ItemCategory->setPlaceholderText(QCoreApplication::translate("Ownly", "All", nullptr));
+        ItemUsedInLastSixMonths->setText(QCoreApplication::translate("Ownly", "Used in last 6 months", nullptr));
+        ItemCountLabel->setText(QCoreApplication::translate("Ownly", "Count", nullptr));
+        dbSubmitButton->setText(QCoreApplication::translate("Ownly", "Submit", nullptr));
         QTableWidgetItem *___qtablewidgetitem = inventoryList->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Name", nullptr));
+        ___qtablewidgetitem->setText(QCoreApplication::translate("Ownly", "Name", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = inventoryList->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Category", nullptr));
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("Ownly", "Category", nullptr));
         QTableWidgetItem *___qtablewidgetitem2 = inventoryList->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QCoreApplication::translate("MainWindow", "Purchased", nullptr));
+        ___qtablewidgetitem2->setText(QCoreApplication::translate("Ownly", "Purchased", nullptr));
         QTableWidgetItem *___qtablewidgetitem3 = inventoryList->horizontalHeaderItem(3);
-        ___qtablewidgetitem3->setText(QCoreApplication::translate("MainWindow", "Price", nullptr));
+        ___qtablewidgetitem3->setText(QCoreApplication::translate("Ownly", "Price", nullptr));
         QTableWidgetItem *___qtablewidgetitem4 = inventoryList->horizontalHeaderItem(4);
-        ___qtablewidgetitem4->setText(QCoreApplication::translate("MainWindow", "Count", nullptr));
+        ___qtablewidgetitem4->setText(QCoreApplication::translate("Ownly", "Count", nullptr));
         QTableWidgetItem *___qtablewidgetitem5 = inventoryList->horizontalHeaderItem(5);
-        ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Used Recently", nullptr));
+        ___qtablewidgetitem5->setText(QCoreApplication::translate("Ownly", "Used Recently", nullptr));
         QTableWidgetItem *___qtablewidgetitem6 = inventoryList->horizontalHeaderItem(6);
-        ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
-        ViewCategoryComboBox->setItemText(0, QCoreApplication::translate("MainWindow", "All Items", nullptr));
+        ___qtablewidgetitem6->setText(QCoreApplication::translate("Ownly", "ID", nullptr));
+        ViewCategoryComboBox->setItemText(0, QCoreApplication::translate("Ownly", "All Items", nullptr));
 
-        ViewCategoryComboBox->setCurrentText(QCoreApplication::translate("MainWindow", "All Items", nullptr));
+        ViewCategoryComboBox->setCurrentText(QCoreApplication::translate("Ownly", "All Items", nullptr));
         ViewCategoryComboBox->setPlaceholderText(QString());
-        label->setText(QCoreApplication::translate("MainWindow", "Ownly", nullptr));
-        deleteItemButton->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
-        NewItemButton->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
-        FileMenu->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
+        label->setText(QCoreApplication::translate("Ownly", "Ownly", nullptr));
+        deleteItemButton->setText(QCoreApplication::translate("Ownly", "Delete", nullptr));
+        NewItemButton->setText(QCoreApplication::translate("Ownly", "New Item", nullptr));
+        FileMenu->setTitle(QCoreApplication::translate("Ownly", "File", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
+    class Ownly: public Ui_Ownly {};
 } // namespace Ui
 
 QT_END_NAMESPACE
