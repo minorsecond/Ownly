@@ -245,15 +245,17 @@ void MainWindow::clear_fields() {
 }
 
 void MainWindow::populate_categories() {
-    std::vector<std::string> categories;
+    std::set<QString> categories;
     Database db;
     std::vector<Item> allItems = db.read("ownly.db");
 
-    categories.reserve(allItems.size());
     for(const auto& item : allItems) {
         QString item_string = QString::fromStdString(item.category);
-        ui.ItemCategory->addItem(item_string);
-        ui.ViewCategoryComboBox->addItem(item_string);
+        categories.insert(item_string);
+    }
+    for (const auto& category : categories){
+        ui.ItemCategory->addItem(category);
+        ui.ViewCategoryComboBox->addItem(category);
     }
 }
 
