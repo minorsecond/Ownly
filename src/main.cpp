@@ -102,7 +102,6 @@ void MainWindow::clicked_submit(){
                     notes
             };
 
-            std::cout << "Row " << row_to_update << " selected to be updated." << std::endl;
             db.update(item);
         } else {
             Item item{
@@ -120,12 +119,15 @@ void MainWindow::clicked_submit(){
             db.write(item);  // Write new item
         }
         updateMainTable();
+
+        QString item_qstring = QString::fromStdString(item_category);
+        ui.ItemCategory->addItem(item_qstring);
+        ui.ViewCategoryComboBox->addItem(item_qstring);
+
+        clear_fields();
+
+        populate_categories();
     }
-    QString item_qstring = QString::fromStdString(item_category);
-    ui.ItemCategory->addItem(item_qstring);
-    ui.ViewCategoryComboBox->addItem(item_qstring);
-    clear_fields();
-    populate_categories();
 }
 
 void MainWindow::updateMainTable() {
@@ -259,6 +261,7 @@ void MainWindow::populate_categories() {
         QString item_string = QString::fromStdString(item.category);
         categories.insert(item_string);
     }
+
     for (const auto& category : categories){
         ui.ItemCategory->addItem(category);
         ui.ViewCategoryComboBox->addItem(category);
