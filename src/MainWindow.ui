@@ -356,14 +356,22 @@
      </rect>
     </property>
     <property name="currentText">
-     <string>View Category</string>
+     <string>All Items</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
     <property name="maxVisibleItems">
      <number>29</number>
     </property>
     <property name="placeholderText">
-     <string>View Category</string>
+     <string/>
     </property>
+    <item>
+     <property name="text">
+      <string>All Items</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
