@@ -24,6 +24,7 @@ private slots:
     void clicked_submit();
     std::string double_to_string(double input_double);
     void new_item();
+    void populate_categories();
 };
 
 #endif //OWNLY_MAIN_H
