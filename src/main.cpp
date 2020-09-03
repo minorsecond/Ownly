@@ -134,52 +134,11 @@ void MainWindow::updateMainTable() {
     Database db;
     std::vector<Item> items = db.read("ownly.db");
 
-    int current_row = 0;
-
     ui.inventoryList->setRowCount(items.size());
     ui.inventoryList->setColumnCount(7);
     ui.inventoryList->setColumnHidden(6, true);
 
-    for(const auto& entry : items) {
-        auto *name = new QTableWidgetItem(entry.itemName.c_str());
-        auto *category = new QTableWidgetItem(entry.category.c_str());
-        int purchase_year = entry.purchaseYear;
-        int purchase_month = entry.purchaseMonth;
-        int purchase_day = entry.purchaseDay;
-        auto *item_count = new QTableWidgetItem(std::to_string(entry.count).c_str());
-        bool usedInLastSixMonths = entry.usedInLastSixMonths;
-        auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
-        QTableWidgetItem *used_recently;
-
-        // Limit prices on table to two digits
-        std::string purchase_price = double_to_string(entry.purchasePrice);
-        //double purchase_price = std::ceil(entry.purchasePrice * 100.0) / 100.0;
-        //std::ostringstream price_stream;
-        //price_stream << purchase_price;
-        auto *purchase_price_str = new QTableWidgetItem(purchase_price.c_str());
-
-
-        std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_day);
-        auto *date_qtwi = new QTableWidgetItem(date.c_str());
-
-        if(usedInLastSixMonths) {
-            used_recently = new QTableWidgetItem("Yes");
-        } else {
-            used_recently = new QTableWidgetItem("No");
-        }
-
-        std::string notes = entry.notes;
-
-        ui.inventoryList->setItem(current_row, 0, name);
-        ui.inventoryList->setItem(current_row, 1, category);
-        ui.inventoryList->setItem(current_row, 2, date_qtwi);
-        ui.inventoryList->setItem(current_row, 3, purchase_price_str);
-        ui.inventoryList->setItem(current_row, 4, item_count);
-        ui.inventoryList->setItem(current_row, 5, used_recently);
-        ui.inventoryList->setItem(current_row, 6, id);
-
-        current_row +=1;
-    }
+    populate_table(items);
 }
 
 void MainWindow::truncate_db() {
@@ -273,15 +232,50 @@ void MainWindow::filter_by_categories() {
     std::string selection = ui.ViewCategoryComboBox->currentText().toStdString();
     std::vector<Item> selected_items = db.filter(selection, "ownly.db");
 
-    int current_row = 0;
-
     clear_fields();
 
     ui.inventoryList->setRowCount(selected_items.size());
     ui.inventoryList->setColumnCount(7);
     ui.inventoryList->setColumnHidden(6, true);
 
-    for(const auto& entry : selected_items) {
+    populate_table(selected_items);
+}
+
+void MainWindow::populate_fields(Item item) {
+    int id = item.id;
+    std::string item_name = item.itemName;
+    std::string item_category = item.category;
+    int purchase_year = item.purchaseYear;
+    int purchase_month = item.purchaseMonth;
+    int purchase_day = item.purchaseDay;
+    std::string purchase_price = double_to_string(item.purchasePrice);
+    int count = item.count;
+    bool usedInLastSixMonths = item.usedInLastSixMonths;
+    std::string notes = item.notes;
+
+    std::string date_from_db = std::to_string(purchase_day) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_year);
+    QDate date = QDate::fromString(QString::fromUtf8(date_from_db.c_str()), "dd/MM/yyyy");
+
+    ui.ItemName->setText(QString::fromStdString(item_name));
+    ui.ItemCategory->setCurrentText(QString::fromStdString(item_category));
+    ui.ItemPurchaseDate->setDate(date);
+    ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price.c_str()));
+    ui.ItemCount->setValue(count);
+
+    if(usedInLastSixMonths == true)
+        ui.ItemUsedInLastSixMonths->setChecked(true);
+    else
+        ui.ItemUsedInLastSixMonths->setChecked(false);
+    ui.ItemNotes->setText(QString::fromStdString(notes));
+}
+
+void MainWindow::populate_table(std::vector<Item> items) {
+    /*
+     * Populate the main table widget with items.
+     */
+
+    int current_row = 0;
+    for(const auto& entry : items) {
         auto *name = new QTableWidgetItem(entry.itemName.c_str());
         auto *category = new QTableWidgetItem(entry.category.c_str());
         int purchase_year = entry.purchaseYear;
@@ -321,34 +315,6 @@ void MainWindow::filter_by_categories() {
 
         current_row +=1;
     }
-}
-
-void MainWindow::populate_fields(Item item) {
-    int id = item.id;
-    std::string item_name = item.itemName;
-    std::string item_category = item.category;
-    int purchase_year = item.purchaseYear;
-    int purchase_month = item.purchaseMonth;
-    int purchase_day = item.purchaseDay;
-    std::string purchase_price = double_to_string(item.purchasePrice);
-    int count = item.count;
-    bool usedInLastSixMonths = item.usedInLastSixMonths;
-    std::string notes = item.notes;
-
-    std::string date_from_db = std::to_string(purchase_day) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_year);
-    QDate date = QDate::fromString(QString::fromUtf8(date_from_db.c_str()), "dd/MM/yyyy");
-
-    ui.ItemName->setText(QString::fromStdString(item_name));
-    ui.ItemCategory->setCurrentText(QString::fromStdString(item_category));
-    ui.ItemPurchaseDate->setDate(date);
-    ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price.c_str()));
-    ui.ItemCount->setValue(count);
-
-    if(usedInLastSixMonths == true)
-        ui.ItemUsedInLastSixMonths->setChecked(true);
-    else
-        ui.ItemUsedInLastSixMonths->setChecked(false);
-    ui.ItemNotes->setText(QString::fromStdString(notes));
 }
 
 int main(int argc, char** argv) {
