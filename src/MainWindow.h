@@ -198,6 +198,17 @@ public:
         FileMenu = new QMenu(menubar);
         FileMenu->setObjectName(QString::fromUtf8("FileMenu"));
         MainWindow->setMenuBar(menubar);
+        QWidget::setTabOrder(ItemName, ItemCategory);
+        QWidget::setTabOrder(ItemCategory, ItemPurchaseDate);
+        QWidget::setTabOrder(ItemPurchaseDate, ItemPurchasePrice);
+        QWidget::setTabOrder(ItemPurchasePrice, ItemCount);
+        QWidget::setTabOrder(ItemCount, ItemUsedInLastSixMonths);
+        QWidget::setTabOrder(ItemUsedInLastSixMonths, ItemNotes);
+        QWidget::setTabOrder(ItemNotes, inventoryList);
+        QWidget::setTabOrder(inventoryList, ViewCategoryComboBox);
+        QWidget::setTabOrder(ViewCategoryComboBox, NewItemButton);
+        QWidget::setTabOrder(NewItemButton, dbSubmitButton);
+        QWidget::setTabOrder(dbSubmitButton, deleteItemButton);
 
         menubar->addAction(FileMenu->menuAction());
         FileMenu->addAction(actionClear_Data);
