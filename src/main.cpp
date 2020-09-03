@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) {
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
     ui.deleteItemButton->setDisabled(true);
+    ui.ViewCategoryComboBox->setDuplicatesEnabled(false);
+    ui.ItemCategory->setDuplicatesEnabled(false);
 
     QDate date = QDate::currentDate();
     ui.ItemPurchaseDate->setDate(date);
