@@ -69,8 +69,9 @@ void MainWindow::clicked_submit(){
 
     // Handle blank item counts that may happen if user uses the new item button.
     int item_count;
-    if (!item_count_str.empty())
+    if (!item_count_str.empty()) {
         item_count = std::stoi(ui.ItemCount->text().toUtf8().constData());
+    }
     else
         item_count = 0;
 
@@ -88,6 +89,7 @@ void MainWindow::clicked_submit(){
         if (select->hasSelection()) {
             int selection = select->selectedRows().at(0).row();
             int row_to_update = ui.inventoryList->item(selection, 6)->text().toUtf8().toInt();
+            std::cout << "Updating row: " << row_to_update << std::endl;
 
             Item item{
                     row_to_update,
@@ -104,6 +106,7 @@ void MainWindow::clicked_submit(){
 
             db.update(item);
         } else {
+            std::cout << "Creating new row" << std::endl;
             Item item{
                     -1,
                     item_name,
@@ -118,11 +121,8 @@ void MainWindow::clicked_submit(){
             };
             db.write(item);  // Write new item
         }
-        updateMainTable();
 
-        QString item_qstring = QString::fromStdString(item_category);
-        ui.ItemCategory->addItem(item_qstring);
-        ui.ViewCategoryComboBox->addItem(item_qstring);
+        updateMainTable();
 
         clear_fields();
 
@@ -212,8 +212,11 @@ void MainWindow::populate_categories() {
     Database db;
     std::vector<Item> allItems = db.read("ownly.db");
 
+    QSignalBlocker ViewCategorySignalBlocker(ui.ViewCategoryComboBox);
+
     ui.ItemCategory->clear();
     ui.ViewCategoryComboBox->clear();
+    std::cout << "Cleared ComboBox" << std::endl;
     ui.ViewCategoryComboBox->addItem(QString::fromStdString("All Items"));
 
     for(const auto& item : allItems) {
