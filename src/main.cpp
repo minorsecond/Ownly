@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) {
     QDate date = QDate::currentDate();
     ui.ItemPurchaseDate->setDate(date);
 
+    populate_categories();
+
     QPalette pal = ui.deleteItemButton->palette();
     pal.setColor(QPalette::Button, QColor(255, 99, 71));
     ui.deleteItemButton->setAutoFillBackground(true);
@@ -116,6 +118,9 @@ void MainWindow::clicked_submit(){
         }
         updateMainTable();
     }
+    QString item_qstring = QString::fromStdString(item_category);
+    ui.ItemCategory->addItem(item_qstring);
+    ui.ViewCategoryComboBox->addItem(item_qstring);
 }
 
 void MainWindow::updateMainTable() {
@@ -258,6 +263,19 @@ void MainWindow::new_item() {
     ui.ItemCount->clear();
     ui.ItemUsedInLastSixMonths->setChecked(false);
     ui.ItemNotes->clear();
+}
+
+void MainWindow::populate_categories() {
+    std::vector<std::string> categories;
+    Database db;
+    std::vector<Item> allItems = db.read("ownly.db");
+
+    categories.reserve(allItems.size());
+    for(const auto& item : allItems) {
+        QString item_string = QString::fromStdString(item.category);
+        ui.ItemCategory->addItem(item_string);
+        ui.ViewCategoryComboBox->addItem(item_string);
+    }
 }
 
 int main(int argc, char** argv) {
