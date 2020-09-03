@@ -9,11 +9,13 @@ Ownly is a Windows tool for keeping track of your belongings and their attribute
 
 # Tracks:
 - Date purchased
+- Category
 - Purchase price
 - Count
+- Recent use
 - Notes
 
 # Features:
 - Clean, minimal interface
 - Simple SQLite3 backend
-- Export to CSV
+- Exporting to CSV [Upcoming]
