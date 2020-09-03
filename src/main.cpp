@@ -118,7 +118,9 @@ void MainWindow::clicked_submit(){
         }
         updateMainTable();
     }
-    ui.ItemCategory->addItem(QString::fromStdString(item_category));
+    QString item_qstring = QString::fromStdString(item_category);
+    ui.ItemCategory->addItem(item_qstring);
+    ui.ViewCategoryComboBox->addItem(item_qstring);
 }
 
 void MainWindow::updateMainTable() {
@@ -270,7 +272,9 @@ void MainWindow::populate_categories() {
 
     categories.reserve(allItems.size());
     for(const auto& item : allItems) {
-        ui.ItemCategory->addItem(QString::fromStdString(item.category));
+        QString item_string = QString::fromStdString(item.category);
+        ui.ItemCategory->addItem(item_string);
+        ui.ViewCategoryComboBox->addItem(item_string);
     }
 }
 
