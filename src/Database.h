@@ -48,6 +48,7 @@ public:
     Storage write(Item item);
     void truncate(Storage);
     Item read_row(Storage storage, int row);
+    std::vector<Item> filter(std::string category, std::string file_name);
     static void update(const Item& item);
 };
 

@@ -152,3 +152,30 @@ TEST_CASE( "Read Row", "[Read Row]" ) {
     REQUIRE(radio.purchasePrice == 599.99);
     REQUIRE(radio.purchaseMonth == 8);
 }
+
+TEST_CASE( "Get DB Category", "[Get DB Category]" ) {
+    const char *file_name = "testdb.sqlite";
+
+    if (remove(file_name)) {
+        std::cout << "Removed existing testdb.sqlite file";
+    }
+
+    Storage storage = initStorage(file_name);
+    db.writeDbToDisk(storage);
+
+    Item firstItem{-1, "The Silmarillion", "Book", 1998,
+                   3, 7, 8.99, 1, true,
+                   "This is absolutely my favorite Tolkien book."};
+
+    Item secondItem{-1, "HF Ham Radio", "Electronics", 2001, 8,
+                    14, 599.99, 1, true, "Great radio."};
+    storage.insert(firstItem);
+    storage.insert(secondItem);
+
+    std::vector<Item> items = db.filter("Electronics", file_name);
+
+    REQUIRE(items.size() == 1);
+    REQUIRE(items.at(0).category == "Electronics");
+    REQUIRE(items.at(0).purchaseYear == 2001);
+    REQUIRE(items.at(0).id == 2);
+}

@@ -9,6 +9,8 @@
 #include <vector>
 #include <string.h>
 
+using namespace sqlite_orm;
+
 std::vector<Item> Database::read(std::string file_name) {
     Storage storage = initStorage(file_name);
     std::vector<Item> allItems = storage.get_all<Item>();
@@ -50,4 +52,11 @@ Item Database::read_row(Storage storage, int row) {
 void Database::update(const Item& item) {
     Storage storage = initStorage("ownly.db");
     storage.update(item);
+}
+
+std::vector<Item> Database::filter(std::string category, std::string file_name) {
+    Storage storage = initStorage(file_name);
+    std::vector<Item> items_by_category = storage.get_all<Item>(sqlite_orm::where(sqlite_orm::c(&Item::category) == category));
+
+    return items_by_category;
 }
