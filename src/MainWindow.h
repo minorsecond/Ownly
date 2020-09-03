@@ -172,6 +172,7 @@ public:
         inventoryList->horizontalHeader()->setMinimumSectionSize(39);
         inventoryList->horizontalHeader()->setDefaultSectionSize(84);
         ViewCategoryComboBox = new QComboBox(centralwidget);
+        ViewCategoryComboBox->addItem(QString());
         ViewCategoryComboBox->setObjectName(QString::fromUtf8("ViewCategoryComboBox"));
         ViewCategoryComboBox->setGeometry(QRect(390, 460, 211, 22));
         ViewCategoryComboBox->setMaxVisibleItems(29);
@@ -202,6 +203,9 @@ public:
         FileMenu->addAction(actionClear_Data);
 
         retranslateUi(MainWindow);
+
+        ViewCategoryComboBox->setCurrentIndex(0);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -237,8 +241,10 @@ public:
         ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Used Recently", nullptr));
         QTableWidgetItem *___qtablewidgetitem6 = inventoryList->horizontalHeaderItem(6);
         ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
-        ViewCategoryComboBox->setCurrentText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
-        ViewCategoryComboBox->setPlaceholderText(QCoreApplication::translate("MainWindow", "View Category", nullptr));
+        ViewCategoryComboBox->setItemText(0, QCoreApplication::translate("MainWindow", "All Items", nullptr));
+
+        ViewCategoryComboBox->setCurrentText(QCoreApplication::translate("MainWindow", "All Items", nullptr));
+        ViewCategoryComboBox->setPlaceholderText(QString());
         label->setText(QCoreApplication::translate("MainWindow", "Ownly", nullptr));
         deleteItemButton->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         NewItemButton->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));

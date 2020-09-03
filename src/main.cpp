@@ -253,6 +253,7 @@ void MainWindow::populate_categories() {
 
     ui.ItemCategory->clear();
     ui.ViewCategoryComboBox->clear();
+    ui.ViewCategoryComboBox->addItem(QString::fromStdString("All Items"));
 
     for(const auto& item : allItems) {
         QString item_string = QString::fromStdString(item.category);
