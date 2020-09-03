@@ -6,6 +6,7 @@
 #define OWNLY_MAIN_H
 
 #include "MainWindow.h"
+#include "Database.h"
 #include "QFileDialog"
 #include <QApplication>
 
@@ -16,6 +17,10 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     void updateMainTable();
+    void populate_categories();
+
+private:
+    void populate_fields(Item item);
 
 private slots:
     void truncate_db();
@@ -24,7 +29,7 @@ private slots:
     void clicked_submit();
     std::string double_to_string(double input_double);
     void clear_fields();
-    void populate_categories();
+    void filter_by_categories();
 };
 
 #endif //OWNLY_MAIN_H

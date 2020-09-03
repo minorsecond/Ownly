@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) {
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
     connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(clear_fields()));
+    connect(ui.ViewCategoryComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(filter_by_categories()));
 
     updateMainTable();
 }
@@ -227,7 +228,44 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
         ui.deleteItemButton->setDisabled(true);
 
     Item item = db.read_row(storage, row_to_get);
+    populate_fields(item);
+}
 
+void MainWindow::clear_fields() {
+    ui.ItemName->clear();
+    ui.ItemCategory->clearEditText();
+    QDate date = QDate::currentDate();
+    ui.ItemPurchaseDate->setDate(date);
+    ui.ItemPurchasePrice->clear();
+    ui.ItemCount->clear();
+    ui.ItemUsedInLastSixMonths->setChecked(false);
+    ui.ItemNotes->clear();
+}
+
+void MainWindow::populate_categories() {
+    std::vector<std::string> categories;
+    Database db;
+    std::vector<Item> allItems = db.read("ownly.db");
+
+    categories.reserve(allItems.size());
+    for(const auto& item : allItems) {
+        QString item_string = QString::fromStdString(item.category);
+        ui.ItemCategory->addItem(item_string);
+        ui.ViewCategoryComboBox->addItem(item_string);
+    }
+}
+
+void MainWindow::filter_by_categories() {
+    Database db;
+    std::string selection = ui.ViewCategoryComboBox->currentText().toStdString();
+    std::vector<Item> selected_items = db.filter(selection, "ownly.db");
+
+    for (auto item : selected_items) {
+        std::cout << "Item ID " << item.id << " in selection." << std::endl;
+    }
+}
+
+void MainWindow::populate_fields(Item item) {
     int id = item.id;
     std::string item_name = item.itemName;
     std::string item_category = item.category;
@@ -253,30 +291,6 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
     else
         ui.ItemUsedInLastSixMonths->setChecked(false);
     ui.ItemNotes->setText(QString::fromStdString(notes));
-}
-
-void MainWindow::clear_fields() {
-    ui.ItemName->clear();
-    ui.ItemCategory->clearEditText();
-    QDate date = QDate::currentDate();
-    ui.ItemPurchaseDate->setDate(date);
-    ui.ItemPurchasePrice->clear();
-    ui.ItemCount->clear();
-    ui.ItemUsedInLastSixMonths->setChecked(false);
-    ui.ItemNotes->clear();
-}
-
-void MainWindow::populate_categories() {
-    std::vector<std::string> categories;
-    Database db;
-    std::vector<Item> allItems = db.read("ownly.db");
-
-    categories.reserve(allItems.size());
-    for(const auto& item : allItems) {
-        QString item_string = QString::fromStdString(item.category);
-        ui.ItemCategory->addItem(item_string);
-        ui.ViewCategoryComboBox->addItem(item_string);
-    }
 }
 
 int main(int argc, char** argv) {
