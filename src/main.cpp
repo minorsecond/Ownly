@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) {
     populate_categories();
 
     QPalette pal = ui.deleteItemButton->palette();
-    pal.setColor(QPalette::Button, QColor(255, 99, 71));
+    pal.setColor(QPalette::Button, QColor(250, 180, 174));
     ui.deleteItemButton->setAutoFillBackground(true);
     ui.deleteItemButton->setPalette(pal);
     ui.deleteItemButton->update();
