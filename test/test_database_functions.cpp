@@ -172,10 +172,14 @@ TEST_CASE( "Get DB Category", "[Get DB Category]" ) {
     storage.insert(firstItem);
     storage.insert(secondItem);
 
-    std::vector<Item> items = db.filter("Electronics", file_name);
+    std::vector<Item> radio_item = db.filter("Electronics", file_name);
+    std::vector<Item> all_items = db.filter("All Items", file_name);
 
-    REQUIRE(items.size() == 1);
-    REQUIRE(items.at(0).category == "Electronics");
-    REQUIRE(items.at(0).purchaseYear == 2001);
-    REQUIRE(items.at(0).id == 2);
+    REQUIRE(radio_item.size() == 1);
+    REQUIRE(radio_item.at(0).category == "Electronics");
+    REQUIRE(radio_item.at(0).purchaseYear == 2001);
+    REQUIRE(radio_item.at(0).id == 2);
+    REQUIRE(all_items.size() == 2);
+    REQUIRE(all_items.at(0).category == "Book");
+    REQUIRE(all_items.at(1).itemName == "HF Ham Radio");
 }

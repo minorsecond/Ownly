@@ -56,7 +56,12 @@ void Database::update(const Item& item) {
 
 std::vector<Item> Database::filter(std::string category, std::string file_name) {
     Storage storage = initStorage(file_name);
-    std::vector<Item> items_by_category = storage.get_all<Item>(sqlite_orm::where(sqlite_orm::c(&Item::category) == category));
+    std::vector<Item> items_by_category;
+    if (category == "All Items") {
+        items_by_category = read(file_name);
+    } else {
+        items_by_category = storage.get_all<Item>(sqlite_orm::where(sqlite_orm::c(&Item::category) == category));
+    }
 
     return items_by_category;
 }
