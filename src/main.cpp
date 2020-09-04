@@ -324,14 +324,15 @@ void MainWindow::populate_table(std::vector<Item> items) {
     }
 }
 
-void MainWindow::export_to_csv() {
+void MainWindow::export_to_csv(std::string output_path) {
     Database db;
     exporters exporter;
     std::vector<Item> all_items = db.read("ownly.db");
-    exporter.to_csv(all_items, "ownly_export.csv");
+    exporter.to_csv(all_items, output_path);
 }
 
 void MainWindow::open_export_dialog() {
+    exporters exports;
     ExportDialog export_options = new ExportDialog(this);
     export_options.setModal(true);
     std::string file_path;
@@ -339,8 +340,8 @@ void MainWindow::open_export_dialog() {
         std::cout << "Accepted" <<std::endl;
         file_path = export_options.get_file_path();
     }
-    std::cout << "file path: " << file_path;
-    //export_options.exec();
+    std::cout << "CSV output path: " << file_path;
+    export_to_csv(file_path);
 }
 
 int main(int argc, char** argv) {
