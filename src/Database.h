@@ -8,7 +8,7 @@
 #include "../include/sqlite_orm.h"
 #include <vector>
 
-struct Item {
+struct Item {  // Struct for storing item attributes
     int id;
     std::string itemName;
     std::string category;
@@ -22,6 +22,13 @@ struct Item {
 };
 
 inline static auto initStorage(const std::string& file_name) {
+    /*
+     * Initialize the sqlite database. This creates a new file
+     * if one doesn't already exist. If one already exists, it
+     * will use it.
+     * @param file_name: Path to location of sqlite file
+     * @return: A Storage instance.
+     */
     return sqlite_orm::make_storage(file_name,
                                     sqlite_orm::make_table("items",
                                                            sqlite_orm::make_column("id", &Item::id, sqlite_orm::autoincrement(), sqlite_orm::primary_key()),
@@ -41,9 +48,12 @@ inline static auto initStorage(const std::string& file_name) {
 using Storage = decltype(initStorage(""));  // Get Storage return type
 
 class Database {
+    /*
+     * Various database related methods.
+     */
 public:
     void deleteRow(Storage storage, int row_number);
-    int writeDbToDisk(Storage storage);
+    int writeDbToDisk(Storage storage);  // Flush in-memory data to file
     std::vector<Item> read(std::string);
     Storage write(Item item);
     void truncate(Storage);
