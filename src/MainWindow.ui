@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Ownly</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLineEdit" name="ItemName">
@@ -456,6 +456,20 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>ItemName</tabstop>
+  <tabstop>ItemCategory</tabstop>
+  <tabstop>ItemPurchaseDate</tabstop>
+  <tabstop>ItemPurchasePrice</tabstop>
+  <tabstop>ItemCount</tabstop>
+  <tabstop>ItemUsedInLastSixMonths</tabstop>
+  <tabstop>ItemNotes</tabstop>
+  <tabstop>inventoryList</tabstop>
+  <tabstop>ViewCategoryComboBox</tabstop>
+  <tabstop>NewItemButton</tabstop>
+  <tabstop>dbSubmitButton</tabstop>
+  <tabstop>deleteItemButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -198,6 +198,17 @@ public:
         FileMenu = new QMenu(menubar);
         FileMenu->setObjectName(QString::fromUtf8("FileMenu"));
         MainWindow->setMenuBar(menubar);
+        QWidget::setTabOrder(ItemName, ItemCategory);
+        QWidget::setTabOrder(ItemCategory, ItemPurchaseDate);
+        QWidget::setTabOrder(ItemPurchaseDate, ItemPurchasePrice);
+        QWidget::setTabOrder(ItemPurchasePrice, ItemCount);
+        QWidget::setTabOrder(ItemCount, ItemUsedInLastSixMonths);
+        QWidget::setTabOrder(ItemUsedInLastSixMonths, ItemNotes);
+        QWidget::setTabOrder(ItemNotes, inventoryList);
+        QWidget::setTabOrder(inventoryList, ViewCategoryComboBox);
+        QWidget::setTabOrder(ViewCategoryComboBox, NewItemButton);
+        QWidget::setTabOrder(NewItemButton, dbSubmitButton);
+        QWidget::setTabOrder(dbSubmitButton, deleteItemButton);
 
         menubar->addAction(FileMenu->menuAction());
         FileMenu->addAction(actionClear_Data);
@@ -212,7 +223,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Ownly", nullptr));
         actionNew_Item->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
         AboutMenu->setText(QCoreApplication::translate("MainWindow", "Qt5", nullptr));
         actionClear_Data->setText(QCoreApplication::translate("MainWindow", "Clear Data", nullptr));
