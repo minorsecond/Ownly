@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
-#include <fstream>
+#include "exporters.h"
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
@@ -322,41 +322,10 @@ void MainWindow::populate_table(std::vector<Item> items) {
 }
 
 void MainWindow::export_to_csv() {
-    /*
-     * Creates a CSV file containing the current contents of the database
-     */
-
     Database db;
-    std::vector<Item> allItems = db.read("ownly.db");
-
-    std::ofstream output_csv("ownly_export.csv");
-
-    // Create header
-    output_csv << "item_name,";
-    output_csv << "category,";
-    output_csv << "purchase_date,";
-    output_csv << "purchase_price,";
-    output_csv << "count,";
-    output_csv << "used_recently,";
-    output_csv << "notes,\n";
-
-    for (const auto& item : allItems) {
-        std::string used_recently = "No";
-        std::string purchase_date = std::to_string(item.purchaseYear) + "/" + std::to_string(item.purchaseMonth) + "/" + std::to_string(item.purchaseDay);
-
-        if (item.usedInLastSixMonths)
-            used_recently = "Yes";
-
-        output_csv << item.itemName + ",";
-        output_csv << item.category + ",";
-        output_csv << purchase_date + ",";
-        output_csv << std::to_string(item.purchasePrice) + ",";
-        output_csv << std::to_string(item.count) + ",";
-        output_csv << used_recently + ",";
-        output_csv << item.notes + ",\n";
-    }
-
-    output_csv.close();
+    exporters exporter;
+    std::vector<Item> all_items = db.read("ownly.db");
+    exporter.to_csv(all_items);
 }
 
 int main(int argc, char** argv) {
