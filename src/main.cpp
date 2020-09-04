@@ -325,7 +325,7 @@ void MainWindow::export_to_csv() {
     Database db;
     exporters exporter;
     std::vector<Item> all_items = db.read("ownly.db");
-    exporter.to_csv(all_items);
+    exporter.to_csv(all_items, "ownly_export.csv");
 }
 
 int main(int argc, char** argv) {
