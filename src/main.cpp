@@ -2,16 +2,19 @@
 #include <QApplication>
 #include <QMessageBox>
 #include "MainWindow.h"
+#include "ExportOptions.h"
 #include "Database.h"
 #include "main.h"
 #include <string>
 #include <vector>
 #include <cmath>
-#include <QDebug>
+#include "exporters.h"
+#include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
     this->setFixedSize(1053, 520);
+
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
@@ -35,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) {
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this, SLOT(table_row_clicked(const QItemSelection &, const QItemSelection &)));
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
+    connect(ui.actionExport, SIGNAL(triggered()), this, SLOT(open_export_dialog()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
     connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(clear_fields()));
@@ -320,12 +324,33 @@ void MainWindow::populate_table(std::vector<Item> items) {
     }
 }
 
+void MainWindow::export_to_csv(std::string output_path) {
+    Database db;
+    exporters exporter;
+    std::vector<Item> all_items = db.read("ownly.db");
+    exporter.to_csv(all_items, output_path);
+}
+
+void MainWindow::open_export_dialog() {
+    exporters exports;
+    ExportDialog export_options = new ExportDialog(this);
+    export_options.setModal(true);
+    std::string file_path;
+    if(export_options.exec() == QDialog::Accepted) {
+        std::cout << "Accepted" <<std::endl;
+        file_path = export_options.get_file_path();
+    }
+    std::cout << "CSV output path: " << file_path;
+    export_to_csv(file_path);
+}
+
 int main(int argc, char** argv) {
     Database db;
     Storage storage = initStorage("ownly.db");
     db.writeDbToDisk(storage);
 
     QApplication app(argc, argv);
+    app.setQuitOnLastWindowClosed(false);
     MainWindow mainWindow;
     mainWindow.show();
     return QApplication::exec();
