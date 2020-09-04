@@ -15,7 +15,8 @@ ExportDialog::ExportDialog(QWidget *parent) {
 }
 
 void ExportDialog::open_file_save_picker() {
-    QString filename_qstring = QFileDialog::getSaveFileName(this, "Save File", "ownly_export.csv");
+    QString filter = "CSV Files (*.csv";
+    QString filename_qstring = QFileDialog::getSaveFileName(this, "Save File", "ownly_export.csv", filter, &filter);
     if (filename_qstring.isEmpty())
         return;
     else {
