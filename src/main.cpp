@@ -334,14 +334,12 @@ void MainWindow::export_to_csv() {
 void MainWindow::open_export_dialog() {
     ExportDialog export_options = new ExportDialog(this);
     export_options.setModal(true);
+    std::string file_path;
     if(export_options.exec() == QDialog::Accepted) {
-        if(!export_options.ExportOutputPathInput->text().isEmpty()) {
-            std::cout << "Non empty input" << std::endl;
-            std::string export_output_path = export_options.ExportOutputPathInput->text().toStdString();
-            std::cout << "got the output path" << std::endl;
-            std::cout << export_output_path << std::endl;
-        }
+        std::cout << "Accepted" <<std::endl;
+        file_path = export_options.get_file_path();
     }
+    std::cout << "file path: " << file_path;
     //export_options.exec();
 }
 
