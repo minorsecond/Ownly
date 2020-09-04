@@ -3,18 +3,23 @@
 //
 
 #include "ExportOptions.h"
-#include "ui_export_options.h"
 #include <QFileDialog>
+#include <iostream>
+#include <QDebug>
+#include <QPointer>
 
 ExportDialog::ExportDialog(QWidget *parent) {
-    //setupUi(this);
-    Ui::ExportOptions ui{};
     ui.setupUi(this);
 
     connect(ui.ExportBrowseButton, SIGNAL(clicked()), this, SLOT(open_file_save_picker()));
 }
 
 void ExportDialog::open_file_save_picker() {
-    QString filename_qstring = QFileDialog::getSaveFileName(this, "Save File", ".csv");
-    this->ExportOutputPathInput->setText(filename_qstring);
+    QString filename_qstring = QFileDialog::getSaveFileName(this, "Save File", "ownly_export.csv");
+    if (filename_qstring.isEmpty())
+        return;
+    else {
+        ui.ExportOutputPathInput->setText(filename_qstring);
+        //std::cout << "Set the text: " << ui.ExportOutputPathInput->text().toStdString() << std::endl;
+    }
 }

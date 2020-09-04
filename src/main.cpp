@@ -14,6 +14,7 @@
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
     this->setFixedSize(1053, 520);
+
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
@@ -332,10 +333,16 @@ void MainWindow::export_to_csv() {
 
 void MainWindow::open_export_dialog() {
     ExportDialog export_options = new ExportDialog(this);
-    export_options.exec();
-
-    std::string export_output_path = export_options.ExportOutputPathInput->text().toStdString();
-    std::cout << export_output_path << std::endl;
+    export_options.setModal(true);
+    if(export_options.exec() == QDialog::Accepted) {
+        if(!export_options.ExportOutputPathInput->text().isEmpty()) {
+            std::cout << "Non empty input" << std::endl;
+            std::string export_output_path = export_options.ExportOutputPathInput->text().toStdString();
+            std::cout << "got the output path" << std::endl;
+            std::cout << export_output_path << std::endl;
+        }
+    }
+    //export_options.exec();
 }
 
 int main(int argc, char** argv) {
@@ -344,6 +351,7 @@ int main(int argc, char** argv) {
     db.writeDbToDisk(storage);
 
     QApplication app(argc, argv);
+    app.setQuitOnLastWindowClosed(false);
     MainWindow mainWindow;
     mainWindow.show();
     return QApplication::exec();
