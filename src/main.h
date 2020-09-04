@@ -18,7 +18,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     void updateMainTable();
     void populate_categories();
-    static void export_to_csv(const std::vector<Item>& items);
 
 private:
     void populate_fields(Item item);
@@ -32,6 +31,7 @@ private slots:
     std::string double_to_string(double input_double);
     void clear_fields();
     void filter_by_categories();
+    void export_to_csv();
 };
 
 #endif //OWNLY_MAIN_H

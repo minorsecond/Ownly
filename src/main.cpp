@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) {
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this, SLOT(table_row_clicked(const QItemSelection &, const QItemSelection &)));
     connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
+    connect(ui.actionExport_to_CSV, SIGNAL(triggered()), this, SLOT(export_to_csv()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
     connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(clear_fields()));
@@ -320,10 +321,13 @@ void MainWindow::populate_table(std::vector<Item> items) {
     }
 }
 
-void MainWindow::export_to_csv(const std::vector<Item>& items) {
+void MainWindow::export_to_csv() {
     /*
      * Creates a CSV file containing the current contents of the database
      */
+
+    Database db;
+    std::vector<Item> allItems = db.read("ownly.db");
 
     std::ofstream output_csv("ownly_export.csv");
 
@@ -336,7 +340,7 @@ void MainWindow::export_to_csv(const std::vector<Item>& items) {
     output_csv << "used_recently,";
     output_csv << "notes,\n";
 
-    for (const auto& item : items) {
+    for (const auto& item : allItems) {
         std::string used_recently = "No";
         std::string purchase_date = std::to_string(item.purchaseYear) + "/" + std::to_string(item.purchaseMonth) + "/" + std::to_string(item.purchaseDay);
 
