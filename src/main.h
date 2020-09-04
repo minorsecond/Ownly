@@ -7,8 +7,8 @@
 
 #include "MainWindow.h"
 #include "Database.h"
-#include "QFileDialog"
 #include <QApplication>
+#include <QtGui>
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -18,6 +18,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     void updateMainTable();
     void populate_categories();
+    void export_to_csv();
 
 private:
     void populate_fields(Item item);
@@ -31,7 +32,7 @@ private slots:
     std::string double_to_string(double input_double);
     void clear_fields();
     void filter_by_categories();
-    static void export_to_csv();
+    void open_export_dialog();
 };
 
 #endif //OWNLY_MAIN_H
