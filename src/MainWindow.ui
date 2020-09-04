@@ -437,6 +437,7 @@
      <string>File</string>
     </property>
     <addaction name="actionClear_Data"/>
+    <addaction name="actionExport_to_CSV"/>
    </widget>
    <addaction name="FileMenu"/>
   </widget>
@@ -453,6 +454,11 @@
   <action name="actionClear_Data">
    <property name="text">
     <string>Clear Data</string>
+   </property>
+  </action>
+  <action name="actionExport_to_CSV">
+   <property name="text">
+    <string>Export to CSV</string>
    </property>
   </action>
  </widget>
