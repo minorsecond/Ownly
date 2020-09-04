@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
-#include <QDebug>
+#include <fstream>
 
 MainWindow::MainWindow(QWidget *parent) {
     ui.setupUi(this);
@@ -318,6 +318,21 @@ void MainWindow::populate_table(std::vector<Item> items) {
 
         current_row +=1;
     }
+}
+
+void MainWindow::export_to_csv(std::vector<Item> items) {
+    std::ofstream output_csv("ownly_export.csv");
+
+    // Create header
+    output_csv << "item_name,";
+    output_csv << "category,";
+    output_csv << "purchase_date,";
+    output_csv << "purchase_price,";
+    output_csv << "count,";
+    output_csv << "used_recently,";
+    output_csv << "notes,\n";
+
+    output_csv.close();
 }
 
 int main(int argc, char** argv) {
