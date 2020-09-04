@@ -11,7 +11,10 @@
 class ExportDialog : public QDialog, public Ui::ExportOptions {
     Q_OBJECT
 public:
-    ExportDialog(QWidget * parent = nullptr);
+    ExportDialog(QWidget * parent = 0);
+
+private slots:
+    void open_file_save_picker();
 };
 
 #endif //OWNLY_EXPORTOPTIONS_H

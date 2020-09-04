@@ -333,6 +333,9 @@ void MainWindow::export_to_csv() {
 void MainWindow::open_export_dialog() {
     ExportDialog export_options = new ExportDialog(this);
     export_options.exec();
+
+    std::string export_output_path = export_options.ExportOutputPathInput->text().toStdString();
+    std::cout << export_output_path << std::endl;
 }
 
 int main(int argc, char** argv) {

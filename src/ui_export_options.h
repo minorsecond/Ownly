@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'ExportOptions.ui'
+** Form generated from reading UI file 'ui_export_options.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.15.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef EXPORTOPTIONS_H
-#define EXPORTOPTIONS_H
+#ifndef UI_EXPORT_OPTIONS_H
+#define UI_EXPORT_OPTIONS_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -16,6 +16,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 
 QT_BEGIN_NAMESPACE
@@ -29,6 +30,7 @@ public:
     QRadioButton *CSVRadioButton;
     QComboBox *ExportCategoryFilter;
     QLabel *label;
+    QPushButton *ExportBrowseButton;
 
     void setupUi(QDialog *ExportOptions)
     {
@@ -45,7 +47,7 @@ public:
         PathLabel->setGeometry(QRect(10, 20, 31, 16));
         ExportOutputPathInput = new QLineEdit(ExportOptions);
         ExportOutputPathInput->setObjectName(QString::fromUtf8("ExportOutputPathInput"));
-        ExportOutputPathInput->setGeometry(QRect(40, 20, 331, 20));
+        ExportOutputPathInput->setGeometry(QRect(40, 20, 271, 20));
         CSVRadioButton = new QRadioButton(ExportOptions);
         CSVRadioButton->setObjectName(QString::fromUtf8("CSVRadioButton"));
         CSVRadioButton->setGeometry(QRect(270, 50, 41, 17));
@@ -56,6 +58,9 @@ public:
         label = new QLabel(ExportOptions);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(10, 50, 31, 16));
+        ExportBrowseButton = new QPushButton(ExportOptions);
+        ExportBrowseButton->setObjectName(QString::fromUtf8("ExportBrowseButton"));
+        ExportBrowseButton->setGeometry(QRect(320, 20, 75, 23));
 
         retranslateUi(ExportOptions);
         QObject::connect(ExportButtonOkCancelButtons, SIGNAL(accepted()), ExportOptions, SLOT(accept()));
@@ -70,6 +75,7 @@ public:
         PathLabel->setText(QCoreApplication::translate("ExportOptions", "Path:", nullptr));
         CSVRadioButton->setText(QCoreApplication::translate("ExportOptions", "CSV", nullptr));
         label->setText(QCoreApplication::translate("ExportOptions", "Filter:", nullptr));
+        ExportBrowseButton->setText(QCoreApplication::translate("ExportOptions", "Browse", nullptr));
     } // retranslateUi
 
 };
@@ -80,4 +86,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // EXPORTOPTIONS_H
+#endif // UI_EXPORT_OPTIONS_H
