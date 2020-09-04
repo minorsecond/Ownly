@@ -35,16 +35,21 @@ inline static auto initStorage(const std::string& file_name) {
                                                            sqlite_orm::make_column("used_in_last_six_months", &Item::usedInLastSixMonths, sqlite_orm::default_value(
                                                                    false)),
                                                            sqlite_orm::make_column("notes", &Item::notes)));
+
 }
 
 using Storage = decltype(initStorage(""));  // Get Storage return type
 
 class Database {
 public:
+    void deleteRow(Storage storage, int row_number);
     int writeDbToDisk(Storage storage);
-    Storage read();
+    std::vector<Item> read(std::string);
     Storage write(Item item);
-    int open_or_create();
+    void truncate(Storage);
+    Item read_row(Storage storage, int row);
+    std::vector<Item> filter(std::string category, std::string file_name);
+    static void update(const Item& item);
 };
 
 #endif //NOTCH_DATABASE_H

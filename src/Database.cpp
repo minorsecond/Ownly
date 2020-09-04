@@ -9,15 +9,13 @@
 #include <vector>
 #include <string.h>
 
-Storage Database::read() {
-    auto storage = initStorage("ownly.db");
-    auto allItems = storage.get_all<Item>();
+using namespace sqlite_orm;
 
-    for(auto &item : allItems) {
-        std::cout << storage.dump(item) << std::endl;
-    }
+std::vector<Item> Database::read(std::string file_name) {
+    Storage storage = initStorage(file_name);
+    std::vector<Item> allItems = storage.get_all<Item>();
 
-    return storage;
+    return allItems;
 }
 
 Storage Database::write(Item item) {
@@ -32,26 +30,38 @@ Storage Database::write(Item item) {
     return storage;
 }
 
-int Database::open_or_create() {
-    int res = access(std::string("ownly.db").c_str(), R_OK);
-
-    if(res < 0) {
-        if (errno == ENOENT) {// DB file doesn't exist
-            std::cout << "Creating new SQLite3 file at : " << "ownly.db" << std::endl;
-            Storage storage = initStorage("ownly.db");
-            Database::writeDbToDisk(storage);
-        } else if (errno == EACCES) {  // DB file exists but isn't readable
-            std::cout << "SQLite3 File exists at: " << "ownly.db" << " but is corrupt." << std::endl;
-        }
-    } else if (res == 0) {
-        std::cout << "Reading existing SQLite3 file at: " << "ownly.db" << std::endl;
-        Storage storage = Database::read();
-    }
-
-    return res;
-}
-
 int Database::writeDbToDisk(Storage storage) {
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
     return 0;
+}
+
+void Database::truncate(Storage storage) {
+    storage.remove_all<Item>();
+    writeDbToDisk(storage);
+}
+
+void Database::deleteRow(Storage storage, int row_number) {
+    storage.remove<Item>(row_number);
+}
+
+Item Database::read_row(Storage storage, int row) {
+    Item item = storage.get<Item>(row);
+    return item;
+}
+
+void Database::update(const Item& item) {
+    Storage storage = initStorage("ownly.db");
+    storage.update(item);
+}
+
+std::vector<Item> Database::filter(std::string category, std::string file_name) {
+    Storage storage = initStorage(file_name);
+    std::vector<Item> items_by_category;
+    if (category == "All Items") {
+        items_by_category = read(file_name);
+    } else {
+        items_by_category = storage.get_all<Item>(sqlite_orm::where(sqlite_orm::c(&Item::category) == category));
+    }
+
+    return items_by_category;
 }
