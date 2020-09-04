@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include "MainWindow.h"
+#include "ExportOptions.h"
 #include "Database.h"
 #include "main.h"
 #include <string>
@@ -330,41 +331,8 @@ void MainWindow::export_to_csv() {
 }
 
 void MainWindow::open_export_dialog() {
-    QDialog export_dialog;
-    export_dialog.setWindowTitle("Export Options");
-    export_dialog.setFixedSize(490, 88);
-
-    // Labels
-    QLabel path_label("Path:", &export_dialog);
-    path_label.setText("Path:");
-    path_label.move(10, 20);
-    QLabel filter_label("Filter:", &export_dialog);
-    filter_label.setText("Filter:");
-    filter_label.move(10, 50);
-
-    // Entry widgets
-    QLineEdit *ExportOutputPathInput = new QLineEdit(&export_dialog);
-    ExportOutputPathInput->setObjectName(QString::fromUtf8("ExportOutputPathInput"));
-    ExportOutputPathInput->setGeometry(QRect(40, 17, 331, 20));
-    QComboBox *ExportCategoryFilter = new QComboBox(&export_dialog);
-    ExportCategoryFilter->setObjectName(QString::fromUtf8("ExportCategoryFilter"));
-    ExportCategoryFilter->setGeometry(QRect(40, 47, 221, 22));
-
-    // Dialog buttons
-    QDialogButtonBox *ExportButtonOkCancelButtons = new QDialogButtonBox(&export_dialog);
-    ExportButtonOkCancelButtons->setObjectName(QString::fromUtf8("ExportButtonOkCancelButtons"));
-    ExportButtonOkCancelButtons->setGeometry(QRect(400, 20, 81, 241));
-    ExportButtonOkCancelButtons->setOrientation(Qt::Vertical);
-    ExportButtonOkCancelButtons->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-    // Radio buttons
-    QRadioButton *CSVRadioButton = new QRadioButton(&export_dialog);
-    CSVRadioButton->setObjectName(QString::fromUtf8("CSVRadioButton"));
-    CSVRadioButton->setGeometry(QRect(270, 50, 41, 17));
-    CSVRadioButton->setChecked(true);
-    CSVRadioButton->setText(QCoreApplication::translate("export_dialog", "CSV", nullptr));
-
-    export_dialog.exec();
+    ExportDialog export_options = new ExportDialog(this);
+    export_options.exec();
 }
 
 int main(int argc, char** argv) {
