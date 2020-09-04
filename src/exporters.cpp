@@ -7,7 +7,9 @@
 
 void exporters::to_csv(const std::vector<Item>& items, const std::string& path) {
     /*
-     * Creates a CSV file containing the current contents of the database
+     * Creates a CSV file containing the current contents of the database.
+     * @param items: Vector of Items containing attributes for individual items.
+     * @param path: path to CSV save location
      */
 
     std::ofstream output_csv(path);

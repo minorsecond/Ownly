@@ -9,6 +9,10 @@
 #include "ui_export_options.h"
 
 class ExportDialog : public QDialog, public Ui::ExportOptions {
+    /*
+     * QDialog methods
+     */
+
     Q_OBJECT
     Ui::ExportOptions ui{};
 public:

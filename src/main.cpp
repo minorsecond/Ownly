@@ -12,6 +12,11 @@
 #include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent) {
+    /*
+     * Main Window for program
+     * @param parent: Parent QWidget object
+     */
+
     ui.setupUi(this);
     this->setFixedSize(1053, 520);
 
@@ -27,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) {
 
     populate_categories();
 
+    // Change the delete button color
     QPalette pal = ui.deleteItemButton->palette();
     pal.setColor(QPalette::Button, QColor(250, 180, 174));
     ui.deleteItemButton->setAutoFillBackground(true);
@@ -48,6 +54,12 @@ MainWindow::MainWindow(QWidget *parent) {
 }
 
 std::string MainWindow::double_to_string(double input_double) {
+    /*
+     * Convert a double to a string with two decimal points.
+     * @param input_double: Number of type Double to convert.
+     * @return price_stream.str(): String denoting double with two decimal points.
+     */
+
     double purchase_price = std::ceil(input_double * 100.0) / 100.0;
     std::ostringstream price_stream;
     price_stream << purchase_price;
@@ -56,6 +68,12 @@ std::string MainWindow::double_to_string(double input_double) {
 }
 
 void MainWindow::clicked_submit(){
+    /*
+     * Handle when user clicks the Submit button on the main window.
+     * This does various things such as sending data from the UI fields to the database,
+     * Updating the main table, and clearing the UI fields.
+     */
+
     Database db;
     QMessageBox error_message;
     std::cout << "Clicked dbSubmitButton" << std::endl;
@@ -135,6 +153,10 @@ void MainWindow::clicked_submit(){
 }
 
 void MainWindow::updateMainTable() {
+    /*
+     * Reads Items from the database and populates the main table with them.
+     */
+
     Database db;
     std::vector<Item> items = db.read("ownly.db");
 
@@ -146,6 +168,10 @@ void MainWindow::updateMainTable() {
 }
 
 void MainWindow::truncate_db() {
+    /*
+     * Truncate the database and update the main table and category dropdowns.
+     */
+
     Database db;
     std::cout << "Truncate db clicked." << std::endl;
     Storage storage = initStorage("ownly.db");
@@ -155,6 +181,10 @@ void MainWindow::truncate_db() {
 }
 
 void MainWindow::remove_row() {
+    /*
+     * Delete a row that is selected in the main table.
+     */
+
     std::cout << "CLicked remove row" << std::endl;
 
     Database db;
@@ -172,6 +202,7 @@ void MainWindow::remove_row() {
     //    qDebug() << "Deleting DB row at index " << ui.inventoryList->item(index, 6)->text();
     //}
 
+    // Convert from row position on table to row position in DB, and return it.
     int row_to_delete = (ui.inventoryList->item(select, 6)->text()).toUtf8().toInt();
 
     std::cout << "Deleting DB row at index " << row_to_delete << std::endl;
@@ -182,7 +213,9 @@ void MainWindow::remove_row() {
 void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection &) {
     /*
      * Populate fields in right pane when user clicks on a row in the QTableWidget.
+     * @param QItemSelection: The selected row in the table.
      */
+
     Database db;
     Storage storage = initStorage("ownly.db");
 
@@ -201,6 +234,10 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
 }
 
 void MainWindow::clear_fields() {
+    /*
+     * Clear all user entry fields.
+     */
+
     ui.ItemName->clear();
     ui.ItemCategory->clearEditText();
     QDate date = QDate::currentDate();
@@ -212,15 +249,22 @@ void MainWindow::clear_fields() {
 }
 
 void MainWindow::populate_categories() {
+    /*
+     * Read all rows in database, make a set containing all of the categories, and populate
+     * the QComboBoxes with them.
+     */
+
     std::set<QString> categories;
     Database db;
     std::vector<Item> allItems = db.read("ownly.db");
 
+    // Block the signal while updating the combobox. The program crashes without this.
     QSignalBlocker ViewCategorySignalBlocker(ui.ViewCategoryComboBox);
 
     ui.ItemCategory->clear();
     ui.ViewCategoryComboBox->clear();
     std::cout << "Cleared ComboBox" << std::endl;
+    // This is the default option.
     ui.ViewCategoryComboBox->addItem(QString::fromStdString("All Items"));
 
     for(const auto& item : allItems) {
@@ -235,6 +279,11 @@ void MainWindow::populate_categories() {
 }
 
 void MainWindow::filter_by_categories() {
+    /*
+     * Run a where statement, based on the category selected, against the database,
+     * and return the results to the main table.
+     */
+
     Database db;
     std::string selection = ui.ViewCategoryComboBox->currentText().toStdString();
     std::vector<Item> selected_items = db.filter(selection, "ownly.db");
@@ -249,6 +298,10 @@ void MainWindow::filter_by_categories() {
 }
 
 void MainWindow::populate_fields(Item item) {
+    /*
+     * Populate user-entry fields when user clicks on a table row.
+     */
+
     int id = item.id;
     std::string item_name = item.itemName;
     std::string item_category = item.category;
@@ -279,6 +332,7 @@ void MainWindow::populate_fields(Item item) {
 void MainWindow::populate_table(std::vector<Item> items) {
     /*
      * Populate the main table widget with items.
+     * @param items: A vector of Items containing item information.
      */
 
     int current_row = 0;
@@ -325,6 +379,11 @@ void MainWindow::populate_table(std::vector<Item> items) {
 }
 
 void MainWindow::export_to_csv(std::string output_path) {
+    /*
+     * Export the database to a CSV file
+     * @param output_path: Path where CSV should be saved.
+     */
+
     Database db;
     exporters exporter;
     std::vector<Item> all_items = db.read("ownly.db");
@@ -332,6 +391,10 @@ void MainWindow::export_to_csv(std::string output_path) {
 }
 
 void MainWindow::open_export_dialog() {
+    /*
+     * Open the export dialog window where user can enter settings.
+     */
+
     exporters exports;
     ExportDialog export_options = new ExportDialog(this);
     export_options.setModal(true);
@@ -345,6 +408,9 @@ void MainWindow::open_export_dialog() {
 }
 
 int main(int argc, char** argv) {
+    /*
+     * Run the mainw indow.
+     */
     Database db;
     Storage storage = initStorage("ownly.db");
     db.writeDbToDisk(storage);

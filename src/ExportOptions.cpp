@@ -9,6 +9,11 @@
 #include <QPointer>
 
 ExportDialog::ExportDialog(QWidget *parent) {
+    /*
+     * Dialog box for data export options
+     * @param parent: Parent widget.
+     */
+
     ui.setupUi(this);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setText("Save");
@@ -16,6 +21,10 @@ ExportDialog::ExportDialog(QWidget *parent) {
 }
 
 void ExportDialog::open_file_save_picker() {
+    /*
+     * Open the file save dialog box when user clicks the Browse button.
+     */
+
     QString filter;
     if (ui.CSVRadioButton->isChecked())
         filter = "CSV Files (*.csv";
@@ -35,5 +44,9 @@ void ExportDialog::open_file_save_picker() {
 }
 
 std::string ExportDialog::get_file_path() {
+    /*
+     * Getter for returning file path to MainWindow
+     * @return: String containing path to CSV export location
+     */
     return ui.ExportOutputPathInput->text().toStdString();
 }
