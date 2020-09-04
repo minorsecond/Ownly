@@ -11,6 +11,7 @@
 ExportDialog::ExportDialog(QWidget *parent) {
     ui.setupUi(this);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setText("Save");
     connect(ui.ExportBrowseButton, SIGNAL(clicked()), this, SLOT(open_file_save_picker()));
 }
 
