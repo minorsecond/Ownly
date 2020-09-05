@@ -102,6 +102,7 @@ public:
         ItemPurchaseDate = new QDateEdit(centralwidget);
         ItemPurchaseDate->setObjectName(QString::fromUtf8("ItemPurchaseDate"));
         ItemPurchaseDate->setGeometry(QRect(850, 130, 171, 22));
+        ItemPurchaseDate->setCalendarPopup(true);
         ItemPurchaseDateLabel = new QLabel(centralwidget);
         ItemPurchaseDateLabel->setObjectName(QString::fromUtf8("ItemPurchaseDateLabel"));
         ItemPurchaseDateLabel->setGeometry(QRect(850, 110, 171, 20));
