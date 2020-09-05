@@ -263,7 +263,7 @@ void MainWindow::populate_categories() {
 
     ui.ItemCategory->clear();
     ui.ViewCategoryComboBox->clear();
-    std::cout << "Cleared ComboBox" << std::endl;
+
     // This is the default option.
     ui.ViewCategoryComboBox->addItem(QString::fromStdString("All Items"));
 
