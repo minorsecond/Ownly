@@ -406,6 +406,30 @@ void MainWindow::open_export_dialog() {
     exporter.to_csv(items, file_path);
 }
 
+std::string set_db_path() {
+    /*
+     * Get the path to the users APPDATA directory for database storage.
+     * @return database_path: Path where database will be stored.
+     */
+
+    std::string database_path;
+    PWSTR localAppData = NULL;
+    if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, NULL, &localAppData) == S_OK) {
+        std::wstring ws_path(localAppData);
+        std::string database_directory;
+        using convert_type = std::codecvt_utf8<wchar_t>;
+        std::wstring_convert<convert_type, wchar_t> converter;
+        database_directory = converter.to_bytes(ws_path) + "\\Ownly";
+        database_path = database_directory + "\\ownly_data.db";
+        CoTaskMemFree(static_cast<void*>(localAppData));
+
+        CreateDirectory(database_directory.c_str(), NULL);
+        std::cout << "DB path: " << database_path << std::endl;
+    }
+
+    return database_path;
+}
+
 int main(int argc, char** argv) {
     /*
      * Run the main window.
