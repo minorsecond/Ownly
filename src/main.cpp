@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) {
      * Main Window for program
      * @param parent: Parent QWidget object
      */
+    database_path = set_db_path();
+    Database db;
+    Storage storage = initStorage(database_path);
+    db.writeDbToDisk(storage);
 
     ui.setupUi(this);
     this->setFixedSize(1053, 520);
@@ -75,7 +79,6 @@ void MainWindow::clicked_submit(){
      */
 
     Database db;
-    std::string database_path = set_db_path();
     QMessageBox error_message;
     std::cout << "Clicked dbSubmitButton" << std::endl;
 
@@ -158,7 +161,6 @@ void MainWindow::updateMainTable() {
      * Reads Items from the database and populates the main table with them.
      */
 
-    std::string database_path = set_db_path();
     Database db;
     std::vector<Item> items = db.read(database_path);
 
@@ -174,7 +176,6 @@ void MainWindow::truncate_db() {
      * Truncate the database and update the main table and category dropdowns.
      */
 
-    std::string database_path = set_db_path();
     Database db;
     std::cout << "Truncate db clicked." << std::endl;
     Storage storage = initStorage(database_path);
@@ -188,7 +189,6 @@ void MainWindow::remove_row() {
      * Delete a row that is selected in the main table.
      */
 
-    std::string database_path = set_db_path();
     Database db;
     Storage storage = initStorage(database_path);
 
@@ -218,7 +218,6 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
      * @param QItemSelection: The selected row in the table.
      */
 
-    std::string database_path = set_db_path();
     Database db;
     Storage storage = initStorage(database_path);
 
@@ -257,7 +256,6 @@ void MainWindow::populate_categories() {
      * the QComboBoxes with them.
      */
 
-    std::string database_path = set_db_path();
     std::set<QString> categories;
     Database db;
     std::vector<Item> allItems = db.read(database_path);
@@ -288,7 +286,6 @@ void MainWindow::filter_by_categories() {
      * and return the results to the main table.
      */
 
-    std::string database_path = set_db_path();
     Database db;
     std::string selection = ui.ViewCategoryComboBox->currentText().toStdString();
     std::vector<Item> selected_items = db.filter(selection, database_path);
@@ -388,7 +385,6 @@ void MainWindow::open_export_dialog() {
      * Open the export dialog window where user can enter settings.
      */
 
-    std::string database_path = set_db_path();
     Database db;
     exporters exporter;
 
@@ -414,10 +410,6 @@ int main(int argc, char** argv) {
     /*
      * Run the main window.
      */
-    std::string database_path = set_db_path();
-    Database db;
-    Storage storage = initStorage(database_path);
-    db.writeDbToDisk(storage);
 
     QApplication app(argc, argv);
     app.setQuitOnLastWindowClosed(false);

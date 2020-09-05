@@ -50,6 +50,7 @@ public:
 private:
     void populate_fields(Item item);
     void populate_table(std::vector<Item> items);
+    std::string database_path;
 
 private slots:
     void truncate_db();
