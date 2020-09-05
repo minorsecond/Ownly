@@ -23,7 +23,7 @@ struct Item {  // Struct for storing item attributes
     int purchaseDay;
     double purchasePrice;
     int count;
-    bool usedInLastSixMonths;
+    bool usedFrequently;
     std::string notes;
 };
 
@@ -46,7 +46,7 @@ inline static auto initStorage(std::string database_path) {
                                                            sqlite_orm::make_column("purchase_day", &Item::purchaseDay),
                                                            sqlite_orm::make_column("purchase_price", &Item::purchasePrice),
                                                            sqlite_orm::make_column("count", &Item::count),
-                                                           sqlite_orm::make_column("used_in_last_six_months", &Item::usedInLastSixMonths, sqlite_orm::default_value(
+                                                           sqlite_orm::make_column("used_frequently", &Item::usedFrequently, sqlite_orm::default_value(
                                                                    false)),
                                                            sqlite_orm::make_column("notes", &Item::notes)));
 

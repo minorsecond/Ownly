@@ -87,7 +87,7 @@ void MainWindow::clicked_submit(){
     std::string item_price_string = ui.ItemPurchasePrice->text().toUtf8().constData();
     double item_price;
     std::string item_count_str = ui.ItemCount->text().toUtf8().constData();
-    bool usedInLastSixMonths = ui.ItemUsedInLastSixMonths->isChecked();
+    bool usedFrequently = ui.UsedFrequently->isChecked();
     std::string notes = ui.ItemNotes->toPlainText().toUtf8().constData();
     int purchase_year = ui.ItemPurchaseDate->date().year();
     int purchase_month = ui.ItemPurchaseDate->date().month();
@@ -126,7 +126,7 @@ void MainWindow::clicked_submit(){
                     purchase_day,
                     item_price,
                     item_count,
-                    usedInLastSixMonths,
+                    usedFrequently,
                     notes
             };
 
@@ -142,7 +142,7 @@ void MainWindow::clicked_submit(){
                     purchase_day,
                     item_price,
                     item_count,
-                    usedInLastSixMonths,
+                    usedFrequently,
                     notes
             };
             db.write(item, database_path);  // Write new item
@@ -246,7 +246,7 @@ void MainWindow::clear_fields() {
     ui.ItemPurchaseDate->setDate(date);
     ui.ItemPurchasePrice->clear();
     ui.ItemCount->clear();
-    ui.ItemUsedInLastSixMonths->setChecked(false);
+    ui.UsedFrequently->setChecked(false);
     ui.ItemNotes->clear();
 }
 
@@ -312,7 +312,7 @@ void MainWindow::populate_fields(Item item) {
     int purchase_day = item.purchaseDay;
     std::string purchase_price = double_to_string(item.purchasePrice);
     int count = item.count;
-    bool usedInLastSixMonths = item.usedInLastSixMonths;
+    bool usedFrequently = item.usedFrequently;
     std::string notes = item.notes;
 
     std::string date_from_db = std::to_string(purchase_day) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_year);
@@ -324,10 +324,10 @@ void MainWindow::populate_fields(Item item) {
     ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price.c_str()));
     ui.ItemCount->setValue(count);
 
-    if(usedInLastSixMonths == true)
-        ui.ItemUsedInLastSixMonths->setChecked(true);
+    if(usedFrequently == true)
+        ui.UsedFrequently->setChecked(true);
     else
-        ui.ItemUsedInLastSixMonths->setChecked(false);
+        ui.UsedFrequently->setChecked(false);
     ui.ItemNotes->setText(QString::fromStdString(notes));
 }
 
@@ -345,7 +345,7 @@ void MainWindow::populate_table(std::vector<Item> items) {
         int purchase_month = entry.purchaseMonth;
         int purchase_day = entry.purchaseDay;
         auto *item_count = new QTableWidgetItem(std::to_string(entry.count).c_str());
-        bool usedInLastSixMonths = entry.usedInLastSixMonths;
+        bool usedFrequently = entry.usedFrequently;
         auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
         QTableWidgetItem *used_recently;
 
@@ -360,7 +360,7 @@ void MainWindow::populate_table(std::vector<Item> items) {
         std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_day);
         auto *date_qtwi = new QTableWidgetItem(date.c_str());
 
-        if(usedInLastSixMonths) {
+        if(usedFrequently) {
             used_recently = new QTableWidgetItem("Yes");
         } else {
             used_recently = new QTableWidgetItem("No");

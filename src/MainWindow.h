@@ -50,7 +50,7 @@ public:
     QLineEdit *ItemPurchasePrice;
     QLabel *InventoryListLabel;
     QComboBox *ItemCategory;
-    QCheckBox *ItemUsedInLastSixMonths;
+    QCheckBox *UsedFrequently;
     QFrame *line_3;
     QLabel *ItemCountLabel;
     QSpinBox *ItemCount;
@@ -133,9 +133,9 @@ public:
         ItemCategory->setObjectName(QString::fromUtf8("ItemCategory"));
         ItemCategory->setGeometry(QRect(650, 130, 191, 22));
         ItemCategory->setEditable(true);
-        ItemUsedInLastSixMonths = new QCheckBox(centralwidget);
-        ItemUsedInLastSixMonths->setObjectName(QString::fromUtf8("ItemUsedInLastSixMonths"));
-        ItemUsedInLastSixMonths->setGeometry(QRect(900, 180, 121, 20));
+        UsedFrequently = new QCheckBox(centralwidget);
+        UsedFrequently->setObjectName(QString::fromUtf8("UsedFrequently"));
+        UsedFrequently->setGeometry(QRect(900, 180, 121, 20));
         line_3 = new QFrame(centralwidget);
         line_3->setObjectName(QString::fromUtf8("line_3"));
         line_3->setGeometry(QRect(780, 220, 118, 3));
@@ -206,8 +206,8 @@ public:
         QWidget::setTabOrder(ItemCategory, ItemPurchaseDate);
         QWidget::setTabOrder(ItemPurchaseDate, ItemPurchasePrice);
         QWidget::setTabOrder(ItemPurchasePrice, ItemCount);
-        QWidget::setTabOrder(ItemCount, ItemUsedInLastSixMonths);
-        QWidget::setTabOrder(ItemUsedInLastSixMonths, ItemNotes);
+        QWidget::setTabOrder(ItemCount, UsedFrequently);
+        QWidget::setTabOrder(UsedFrequently, ItemNotes);
         QWidget::setTabOrder(ItemNotes, inventoryList);
         QWidget::setTabOrder(inventoryList, ViewCategoryComboBox);
         QWidget::setTabOrder(ViewCategoryComboBox, NewItemButton);
@@ -241,7 +241,7 @@ public:
         InventoryListLabel->setText(QCoreApplication::translate("MainWindow", "Inventory", nullptr));
         ItemCategory->setCurrentText(QString());
         ItemCategory->setPlaceholderText(QCoreApplication::translate("MainWindow", "All", nullptr));
-        ItemUsedInLastSixMonths->setText(QCoreApplication::translate("MainWindow", "Used in last 6 months", nullptr));
+        UsedFrequently->setText(QCoreApplication::translate("MainWindow", "Used Frequently", nullptr));
         ItemCountLabel->setText(QCoreApplication::translate("MainWindow", "Count", nullptr));
         dbSubmitButton->setText(QCoreApplication::translate("MainWindow", "Submit", nullptr));
         QTableWidgetItem *___qtablewidgetitem = inventoryList->horizontalHeaderItem(0);
@@ -255,7 +255,7 @@ public:
         QTableWidgetItem *___qtablewidgetitem4 = inventoryList->horizontalHeaderItem(4);
         ___qtablewidgetitem4->setText(QCoreApplication::translate("MainWindow", "Count", nullptr));
         QTableWidgetItem *___qtablewidgetitem5 = inventoryList->horizontalHeaderItem(5);
-        ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Used Recently", nullptr));
+        ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Frequent Use", nullptr));
         QTableWidgetItem *___qtablewidgetitem6 = inventoryList->horizontalHeaderItem(6);
         ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
         ViewCategoryComboBox->setItemText(0, QCoreApplication::translate("MainWindow", "All Items", nullptr));
