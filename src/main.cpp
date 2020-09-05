@@ -399,11 +399,15 @@ void MainWindow::open_export_dialog() {
     ExportDialog export_options = new ExportDialog(this);
     export_options.setModal(true);
     std::string file_path;
+    std::string filter_value;
+
     if(export_options.exec() == QDialog::Accepted) {
         std::cout << "Accepted" <<std::endl;
         file_path = export_options.get_file_path();
+        filter_value = export_options.get_filter_value();
     }
-    std::cout << "CSV output path: " << file_path;
+    std::cout << "CSV output path: " << file_path << std::endl;
+    std::cout << "Filter value: " << filter_value << std::endl;
     export_to_csv(file_path);
 }
 
