@@ -158,7 +158,7 @@ void MainWindow::updateMainTable() {
      */
 
     Database db;
-    std::vector<Item> items = db.read("ownly.db");
+    std::vector<Item> items = db.read();
 
     ui.inventoryList->setRowCount(items.size());
     ui.inventoryList->setColumnCount(7);
@@ -174,7 +174,7 @@ void MainWindow::truncate_db() {
 
     Database db;
     std::cout << "Truncate db clicked." << std::endl;
-    Storage storage = initStorage("ownly.db");
+    Storage storage = initStorage();
     db.truncate(storage);
     updateMainTable();
     populate_categories();
@@ -188,7 +188,7 @@ void MainWindow::remove_row() {
     std::cout << "CLicked remove row" << std::endl;
 
     Database db;
-    Storage storage = initStorage("ownly.db");
+    Storage storage = initStorage();
 
     // Get selected row
     int select = ui.inventoryList->selectionModel()->currentIndex().row();
@@ -217,7 +217,7 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
      */
 
     Database db;
-    Storage storage = initStorage("ownly.db");
+    Storage storage = initStorage();
 
     QItemSelectionModel *select = ui.inventoryList->selectionModel();
 
@@ -256,7 +256,7 @@ void MainWindow::populate_categories() {
 
     std::set<QString> categories;
     Database db;
-    std::vector<Item> allItems = db.read("ownly.db");
+    std::vector<Item> allItems = db.read();
 
     // Block the signal while updating the combobox. The program crashes without this.
     QSignalBlocker ViewCategorySignalBlocker(ui.ViewCategoryComboBox);
@@ -286,7 +286,7 @@ void MainWindow::filter_by_categories() {
 
     Database db;
     std::string selection = ui.ViewCategoryComboBox->currentText().toStdString();
-    std::vector<Item> selected_items = db.filter(selection, "ownly.db");
+    std::vector<Item> selected_items = db.filter(selection);
 
     clear_fields();
 
@@ -399,7 +399,7 @@ void MainWindow::open_export_dialog() {
     std::cout << "CSV output path: " << file_path << std::endl;
     std::cout << "Filter value: " << filter_value << std::endl;
 
-    std::vector<Item> items = db.filter(filter_value, "ownly.db");
+    std::vector<Item> items = db.filter(filter_value);
     exporter.to_csv(items, file_path);
 }
 
@@ -408,7 +408,7 @@ int main(int argc, char** argv) {
      * Run the mainw indow.
      */
     Database db;
-    Storage storage = initStorage("ownly.db");
+    Storage storage = initStorage();
     db.writeDbToDisk(storage);
 
     QApplication app(argc, argv);

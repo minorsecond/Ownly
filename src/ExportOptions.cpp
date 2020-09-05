@@ -71,7 +71,7 @@ void ExportDialog::populate_categories() {
 
     std::set<QString> categories;
     Database db;
-    std::vector<Item> allItems = db.read("ownly.db");
+    std::vector<Item> allItems = db.read();
 
     ui.ExportCategoryFilter->clear();
 

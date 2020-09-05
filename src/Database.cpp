@@ -7,11 +7,10 @@
 #include <unistd.h>
 #include <iostream>
 #include <vector>
-#include <string.h>
 
 using namespace sqlite_orm;
 
-std::vector<Item> Database::read(std::string file_name) {
+std::vector<Item> Database::read() {
     /*
      * Read items from sqlite database.
      * The Item struct is defined in Database.h
@@ -20,7 +19,7 @@ std::vector<Item> Database::read(std::string file_name) {
      * @return: vector of Items.
      */
 
-    Storage storage = initStorage(file_name);
+    Storage storage = initStorage();
     std::vector<Item> allItems = storage.get_all<Item>();
 
     return allItems;
@@ -34,7 +33,8 @@ Storage Database::write(Item item) {
      * @return: Storage instance.
      */
 
-    Storage storage = initStorage("ownly.db");
+
+    Storage storage = initStorage();
 
     auto insertedId = storage.insert(item);
     std::cout << "insertedId = " << insertedId << std::endl;
@@ -92,21 +92,22 @@ void Database::update(const Item& item) {
      * @param item: The Item to update.
      */
 
-    Storage storage = initStorage("ownly.db");
+
+    Storage storage = initStorage();
     storage.update(item);
 }
 
-std::vector<Item> Database::filter(std::string category, std::string file_name) {
+std::vector<Item> Database::filter(std::string category) {
     /*
      * Filter database by a category.
      * @param category: Category to filter database on.
      * @param file_name: file name of sqlite file.
      */
 
-    Storage storage = initStorage(file_name);
+    Storage storage = initStorage();
     std::vector<Item> items_by_category;
     if (category == "All Items") {
-        items_by_category = read(file_name);
+        items_by_category = read();
     } else {
         items_by_category = storage.get_all<Item>(sqlite_orm::where(sqlite_orm::c(&Item::category) == category));
     }
