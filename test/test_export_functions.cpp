@@ -56,7 +56,7 @@ TEST_CASE("Create CSV", "[CSV Creation]") {
         }
         rows.push_back(line);
     }
-    REQUIRE(rows.at(0) == "item_name,category,purchase_date,purchase_price,count,used_recently,notes,");
+    REQUIRE(rows.at(0) == "item_name,category,purchase_date,purchase_price,count,used_frequently,notes,");
     REQUIRE(rows.at(1) == "The Silmarillion,Book,1998/3/7,8.990000,1,Yes,This is absolutely my favorite Tolkien book.,");
     REQUIRE(rows.at(2) == "HF Ham Radio,Electronics,2001/8/14,599.990000,1,Yes,Great radio.,");
 }

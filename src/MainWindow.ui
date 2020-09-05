@@ -221,7 +221,7 @@
      <string>All</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="ItemUsedInLastSixMonths">
+   <widget class="QCheckBox" name="UsedFrequently">
     <property name="geometry">
      <rect>
       <x>900</x>
@@ -231,7 +231,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Used in last 6 months</string>
+     <string>Used Frequently</string>
     </property>
    </widget>
    <widget class="Line" name="line_3">
@@ -340,7 +340,7 @@
     </column>
     <column>
      <property name="text">
-      <string>Used Recently</string>
+      <string>Frequent Use</string>
      </property>
     </column>
     <column>
@@ -471,7 +471,7 @@
   <tabstop>ItemPurchaseDate</tabstop>
   <tabstop>ItemPurchasePrice</tabstop>
   <tabstop>ItemCount</tabstop>
-  <tabstop>ItemUsedInLastSixMonths</tabstop>
+  <tabstop>UsedFrequently</tabstop>
   <tabstop>ItemNotes</tabstop>
   <tabstop>inventoryList</tabstop>
   <tabstop>ViewCategoryComboBox</tabstop>
