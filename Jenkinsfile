@@ -1,20 +1,14 @@
 
 pipeline {
 	agent { label 'CI-W10-Agent'}
-	parameters {
-	    booleanParam name: 'DEBUG_MODE', defaultValue: false, description: 'Compile debug build?'
-	}
+
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 	}
 	stages {
         stage('Build') {
             steps {
-                if(DEBUG_MODE) {
-                    cmakeBuild buildType: 'Debug', cleanBuild: true, installation: 'MSYS', buildDir: 'artifacts', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
-                } else {
-                    cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', buildDir: 'artifacts', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
-                }
+                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'MSYS', buildDir: 'artifacts', generator: "CodeBlocks - MinGW Makefiles", steps: [[withCmake: true]]
             }
             post {
                 failure {
