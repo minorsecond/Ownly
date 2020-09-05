@@ -90,6 +90,9 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="ItemPurchaseDateLabel">
     <property name="geometry">
