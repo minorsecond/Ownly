@@ -18,6 +18,7 @@ class ExportDialog : public QDialog, public Ui::ExportOptions {
 public:
     ExportDialog(QWidget *parent = nullptr);
     std::string get_file_path();
+    std::string get_filter_value();
 
 private slots:
     void open_file_save_picker();

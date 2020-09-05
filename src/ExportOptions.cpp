@@ -44,9 +44,18 @@ void ExportDialog::open_file_save_picker() {
 }
 
 std::string ExportDialog::get_file_path() {
-    /*
+    /*.
      * Getter for returning file path to MainWindow
-     * @return: String containing path to CSV export location
+     * @return: String containing path to CSV export location.
      */
     return ui.ExportOutputPathInput->text().toStdString();
+}
+
+std::string ExportDialog::get_filter_value() {
+    /*
+     * Getter for returning filter value back to the MainWindow class.
+     * @return: String containing filter value to pass back to database query.
+     */
+
+    return ui.ExportCategoryFilter->currentText().toStdString();
 }
