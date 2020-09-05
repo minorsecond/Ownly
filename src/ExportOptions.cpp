@@ -5,8 +5,9 @@
 #include "ExportOptions.h"
 #include <QFileDialog>
 #include <iostream>
-#include <QDebug>
 #include <QPointer>
+#include <set>
+#include "Database.h"
 
 ExportDialog::ExportDialog(QWidget *parent) {
     /*
@@ -15,6 +16,7 @@ ExportDialog::ExportDialog(QWidget *parent) {
      */
 
     ui.setupUi(this);
+    populate_categories();
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setText("Save");
     connect(ui.ExportBrowseButton, SIGNAL(clicked()), this, SLOT(open_file_save_picker()));
@@ -44,9 +46,45 @@ void ExportDialog::open_file_save_picker() {
 }
 
 std::string ExportDialog::get_file_path() {
-    /*
+    /*.
      * Getter for returning file path to MainWindow
-     * @return: String containing path to CSV export location
+     * @return: String containing path to CSV export location.
      */
     return ui.ExportOutputPathInput->text().toStdString();
+}
+
+std::string ExportDialog::get_filter_value() {
+    /*
+     * Getter for returning filter value back to the MainWindow class.
+     * @return: String containing filter value to pass back to database query.
+     */
+
+    return ui.ExportCategoryFilter->currentText().toStdString();
+}
+
+void ExportDialog::populate_categories() {
+    /*
+     * Populate the ExportCategoryFilter combo box with categories that exist in the database.
+     */
+
+    // TODO: Refactor this into the database class
+
+    std::set<QString> categories;
+    Database db;
+    std::vector<Item> allItems = db.read("ownly.db");
+
+    ui.ExportCategoryFilter->clear();
+
+    std::cout << "Cleared ComboBox" << std::endl;
+    // This is the default option.
+    ui.ExportCategoryFilter->addItem(QString::fromStdString("All Items"));
+    std::cout << "Added All Items" << std::endl;
+    for(const auto& item : allItems) {
+        QString item_string = QString::fromStdString(item.category);
+        categories.insert(item_string);
+    }
+
+    for (const auto& category : categories){
+        ui.ExportCategoryFilter->addItem(category);
+    }
 }

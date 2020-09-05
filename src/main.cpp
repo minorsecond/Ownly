@@ -263,7 +263,7 @@ void MainWindow::populate_categories() {
 
     ui.ItemCategory->clear();
     ui.ViewCategoryComboBox->clear();
-    std::cout << "Cleared ComboBox" << std::endl;
+
     // This is the default option.
     ui.ViewCategoryComboBox->addItem(QString::fromStdString("All Items"));
 
@@ -378,33 +378,29 @@ void MainWindow::populate_table(std::vector<Item> items) {
     }
 }
 
-void MainWindow::export_to_csv(std::string output_path) {
-    /*
-     * Export the database to a CSV file
-     * @param output_path: Path where CSV should be saved.
-     */
-
-    Database db;
-    exporters exporter;
-    std::vector<Item> all_items = db.read("ownly.db");
-    exporter.to_csv(all_items, output_path);
-}
-
 void MainWindow::open_export_dialog() {
     /*
      * Open the export dialog window where user can enter settings.
      */
 
-    exporters exports;
+    Database db;
+    exporters exporter;
+
     ExportDialog export_options = new ExportDialog(this);
     export_options.setModal(true);
     std::string file_path;
+    std::string filter_value;
+
     if(export_options.exec() == QDialog::Accepted) {
         std::cout << "Accepted" <<std::endl;
         file_path = export_options.get_file_path();
+        filter_value = export_options.get_filter_value();
     }
-    std::cout << "CSV output path: " << file_path;
-    export_to_csv(file_path);
+    std::cout << "CSV output path: " << file_path << std::endl;
+    std::cout << "Filter value: " << filter_value << std::endl;
+
+    std::vector<Item> items = db.filter(filter_value, "ownly.db");
+    exporter.to_csv(items, file_path);
 }
 
 int main(int argc, char** argv) {
