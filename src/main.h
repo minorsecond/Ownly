@@ -22,7 +22,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     void updateMainTable();
     void populate_categories();
-    void export_to_csv(std::string output_path);
 
 private:
     void populate_fields(Item item);
