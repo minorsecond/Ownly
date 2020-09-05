@@ -75,6 +75,7 @@ void MainWindow::clicked_submit(){
      */
 
     Database db;
+    std::string database_path = set_db_path();
     QMessageBox error_message;
     std::cout << "Clicked dbSubmitButton" << std::endl;
 
@@ -126,7 +127,7 @@ void MainWindow::clicked_submit(){
                     notes
             };
 
-            db.update(item);
+            db.update(item, database_path);
         } else {
             std::cout << "Creating new row" << std::endl;
             Item item{
@@ -141,7 +142,7 @@ void MainWindow::clicked_submit(){
                     usedInLastSixMonths,
                     notes
             };
-            db.write(item);  // Write new item
+            db.write(item, database_path);  // Write new item
         }
 
         updateMainTable();
@@ -157,8 +158,9 @@ void MainWindow::updateMainTable() {
      * Reads Items from the database and populates the main table with them.
      */
 
+    std::string database_path = set_db_path();
     Database db;
-    std::vector<Item> items = db.read();
+    std::vector<Item> items = db.read(database_path);
 
     ui.inventoryList->setRowCount(items.size());
     ui.inventoryList->setColumnCount(7);
@@ -172,9 +174,10 @@ void MainWindow::truncate_db() {
      * Truncate the database and update the main table and category dropdowns.
      */
 
+    std::string database_path = set_db_path();
     Database db;
     std::cout << "Truncate db clicked." << std::endl;
-    Storage storage = initStorage();
+    Storage storage = initStorage(database_path);
     db.truncate(storage);
     updateMainTable();
     populate_categories();
@@ -185,10 +188,9 @@ void MainWindow::remove_row() {
      * Delete a row that is selected in the main table.
      */
 
-    std::cout << "CLicked remove row" << std::endl;
-
+    std::string database_path = set_db_path();
     Database db;
-    Storage storage = initStorage();
+    Storage storage = initStorage(database_path);
 
     // Get selected row
     int select = ui.inventoryList->selectionModel()->currentIndex().row();
@@ -216,8 +218,9 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
      * @param QItemSelection: The selected row in the table.
      */
 
+    std::string database_path = set_db_path();
     Database db;
-    Storage storage = initStorage();
+    Storage storage = initStorage(database_path);
 
     QItemSelectionModel *select = ui.inventoryList->selectionModel();
 
@@ -254,9 +257,10 @@ void MainWindow::populate_categories() {
      * the QComboBoxes with them.
      */
 
+    std::string database_path = set_db_path();
     std::set<QString> categories;
     Database db;
-    std::vector<Item> allItems = db.read();
+    std::vector<Item> allItems = db.read(database_path);
 
     // Block the signal while updating the combobox. The program crashes without this.
     QSignalBlocker ViewCategorySignalBlocker(ui.ViewCategoryComboBox);
@@ -284,9 +288,10 @@ void MainWindow::filter_by_categories() {
      * and return the results to the main table.
      */
 
+    std::string database_path = set_db_path();
     Database db;
     std::string selection = ui.ViewCategoryComboBox->currentText().toStdString();
-    std::vector<Item> selected_items = db.filter(selection);
+    std::vector<Item> selected_items = db.filter(selection, database_path);
 
     clear_fields();
 
@@ -383,10 +388,12 @@ void MainWindow::open_export_dialog() {
      * Open the export dialog window where user can enter settings.
      */
 
+    std::string database_path = set_db_path();
     Database db;
     exporters exporter;
 
-    ExportDialog export_options = new ExportDialog(this);
+    //ExportDialog export_options = new ExportDialog(this, database_path);
+    ExportDialog export_options = ExportDialog(nullptr, database_path);
     export_options.setModal(true);
     std::string file_path;
     std::string filter_value;
@@ -399,16 +406,17 @@ void MainWindow::open_export_dialog() {
     std::cout << "CSV output path: " << file_path << std::endl;
     std::cout << "Filter value: " << filter_value << std::endl;
 
-    std::vector<Item> items = db.filter(filter_value);
+    std::vector<Item> items = db.filter(filter_value, database_path);
     exporter.to_csv(items, file_path);
 }
 
 int main(int argc, char** argv) {
     /*
-     * Run the mainw indow.
+     * Run the main window.
      */
+    std::string database_path = set_db_path();
     Database db;
-    Storage storage = initStorage();
+    Storage storage = initStorage(database_path);
     db.writeDbToDisk(storage);
 
     QApplication app(argc, argv);

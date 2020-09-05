@@ -16,12 +16,12 @@ class ExportDialog : public QDialog, public Ui::ExportOptions {
     Q_OBJECT
     Ui::ExportOptions ui{};
 public:
-    ExportDialog(QWidget *parent = nullptr);
+    explicit ExportDialog(QWidget *parent = nullptr, std::string database_path = "ownly_db.db");
     std::string get_file_path();
     std::string get_filter_value();
 
 private:
-    void populate_categories();
+    void populate_categories(std::string database_path);
 
 private slots:
     void open_file_save_picker();
