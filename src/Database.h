@@ -7,6 +7,12 @@
 #include "string"
 #include "../include/sqlite_orm.h"
 #include <vector>
+#include <windows.h>
+#include <shlobj.h>
+#include <locale>
+#include <codecvt>
+
+#include <iostream>
 
 struct Item {  // Struct for storing item attributes
     int id;
@@ -21,7 +27,7 @@ struct Item {  // Struct for storing item attributes
     std::string notes;
 };
 
-inline static auto initStorage(const std::string& file_name) {
+inline static auto initStorage(std::string database_path) {
     /*
      * Initialize the sqlite database. This creates a new file
      * if one doesn't already exist. If one already exists, it
@@ -29,7 +35,8 @@ inline static auto initStorage(const std::string& file_name) {
      * @param file_name: Path to location of sqlite file
      * @return: A Storage instance.
      */
-    return sqlite_orm::make_storage(file_name,
+
+    return sqlite_orm::make_storage(database_path,
                                     sqlite_orm::make_table("items",
                                                            sqlite_orm::make_column("id", &Item::id, sqlite_orm::autoincrement(), sqlite_orm::primary_key()),
                                                            sqlite_orm::make_column("item_name", &Item::itemName),
@@ -54,12 +61,12 @@ class Database {
 public:
     void deleteRow(Storage storage, int row_number);
     int writeDbToDisk(Storage storage);  // Flush in-memory data to file
-    std::vector<Item> read(std::string);
-    Storage write(Item item);
+    std::vector<Item> read(std::string database_path);
+    Storage write(Item item, std::string database_path);
     void truncate(Storage);
     Item read_row(Storage storage, int row);
-    std::vector<Item> filter(std::string category, std::string file_name);
-    static void update(const Item& item);
+    std::vector<Item> filter(std::string category, std::string database_path);
+    static void update(const Item& item, std::string database_path);
 };
 
 #endif //NOTCH_DATABASE_H

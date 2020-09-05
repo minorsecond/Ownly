@@ -9,14 +9,14 @@
 #include <set>
 #include "Database.h"
 
-ExportDialog::ExportDialog(QWidget *parent) {
+ExportDialog::ExportDialog(QWidget *parent, std::string database_path) {
     /*
      * Dialog box for data export options
      * @param parent: Parent widget.
      */
 
     ui.setupUi(this);
-    populate_categories();
+    populate_categories(database_path);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setText("Save");
     connect(ui.ExportBrowseButton, SIGNAL(clicked()), this, SLOT(open_file_save_picker()));
@@ -62,7 +62,7 @@ std::string ExportDialog::get_filter_value() {
     return ui.ExportCategoryFilter->currentText().toStdString();
 }
 
-void ExportDialog::populate_categories() {
+void ExportDialog::populate_categories(std::string database_path) {
     /*
      * Populate the ExportCategoryFilter combo box with categories that exist in the database.
      */
@@ -71,7 +71,7 @@ void ExportDialog::populate_categories() {
 
     std::set<QString> categories;
     Database db;
-    std::vector<Item> allItems = db.read("ownly.db");
+    std::vector<Item> allItems = db.read(database_path);
 
     ui.ExportCategoryFilter->clear();
 

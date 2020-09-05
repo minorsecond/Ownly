@@ -7,11 +7,10 @@
 #include <unistd.h>
 #include <iostream>
 #include <vector>
-#include <string.h>
 
 using namespace sqlite_orm;
 
-std::vector<Item> Database::read(std::string file_name) {
+std::vector<Item> Database::read(std::string database_path) {
     /*
      * Read items from sqlite database.
      * The Item struct is defined in Database.h
@@ -20,13 +19,13 @@ std::vector<Item> Database::read(std::string file_name) {
      * @return: vector of Items.
      */
 
-    Storage storage = initStorage(file_name);
+    Storage storage = initStorage(database_path);
     std::vector<Item> allItems = storage.get_all<Item>();
 
     return allItems;
 }
 
-Storage Database::write(Item item) {
+Storage Database::write(Item item, std::string database_path) {
     /*
      * Write an Item to the sqlite database.
      *
@@ -34,7 +33,8 @@ Storage Database::write(Item item) {
      * @return: Storage instance.
      */
 
-    Storage storage = initStorage("ownly.db");
+
+    Storage storage = initStorage(database_path);
 
     auto insertedId = storage.insert(item);
     std::cout << "insertedId = " << insertedId << std::endl;
@@ -86,27 +86,27 @@ Item Database::read_row(Storage storage, int row) {
     return item;
 }
 
-void Database::update(const Item& item) {
+void Database::update(const Item& item, std::string database_path) {
     /*
      * Update an Item that exists in the database.
      * @param item: The Item to update.
      */
 
-    Storage storage = initStorage("ownly.db");
+    Storage storage = initStorage(database_path);
     storage.update(item);
 }
 
-std::vector<Item> Database::filter(std::string category, std::string file_name) {
+std::vector<Item> Database::filter(std::string category, std::string database_path) {
     /*
      * Filter database by a category.
      * @param category: Category to filter database on.
      * @param file_name: file name of sqlite file.
      */
 
-    Storage storage = initStorage(file_name);
+    Storage storage = initStorage(database_path);
     std::vector<Item> items_by_category;
     if (category == "All Items") {
-        items_by_category = read(file_name);
+        items_by_category = read(database_path);
     } else {
         items_by_category = storage.get_all<Item>(sqlite_orm::where(sqlite_orm::c(&Item::category) == category));
     }
