@@ -16,7 +16,7 @@ class ExportDialog : public QDialog, public Ui::ExportOptions {
     Q_OBJECT
     Ui::ExportOptions ui{};
 public:
-    explicit ExportDialog(QWidget *parent = nullptr, std::string database_path = "ownly_db.db");
+    explicit ExportDialog([[maybe_unused]] QWidget *parent = nullptr, std::string database_path = "ownly_db.db");
     std::string get_file_path();
     std::string get_filter_value();
 
