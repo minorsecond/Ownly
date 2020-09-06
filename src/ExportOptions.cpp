@@ -7,16 +7,17 @@
 #include <iostream>
 #include <QPointer>
 #include <set>
+#include <utility>
 #include "Database.h"
 
-ExportDialog::ExportDialog(QWidget *parent, std::string database_path) {
+ExportDialog::ExportDialog([[maybe_unused]] QWidget *parent, std::string database_path) {
     /*
      * Dialog box for data export options
      * @param parent: Parent widget.
      */
 
     ui.setupUi(this);
-    populate_categories(database_path);
+    populate_categories(std::move(database_path));
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setText("Save");
     connect(ui.ExportBrowseButton, SIGNAL(clicked()), this, SLOT(open_file_save_picker()));
@@ -70,8 +71,8 @@ void ExportDialog::populate_categories(std::string database_path) {
     // TODO: Refactor this into the database class
 
     std::set<QString> categories;
-    Database db;
-    std::vector<Item> allItems = db.read(database_path);
+
+    std::vector<Item> allItems = Database::read(std::move(database_path));
 
     ui.ExportCategoryFilter->clear();
 
