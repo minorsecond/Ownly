@@ -39,6 +39,7 @@ private slots:
     void clear_fields();  // Clear all user-entry fields.
     void filter_by_categories();  // Filter table by category.
     void open_export_dialog();
+    void new_item_button();
 };
 
 #endif //OWNLY_MAIN_H
