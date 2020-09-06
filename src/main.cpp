@@ -32,6 +32,8 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     ui.inventoryList->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.inventoryList->setSelectionMode(QAbstractItemView::SingleSelection);
 
+    ui.inventoryList->setSortingEnabled(true);
+
     ui.deleteItemButton->setDisabled(true);
     ui.ViewCategoryComboBox->setDuplicatesEnabled(false);
     ui.ItemCategory->setDuplicatesEnabled(false);
