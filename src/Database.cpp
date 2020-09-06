@@ -6,6 +6,7 @@
 #include "../include/sqlite_orm.h"
 #include <unistd.h>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 using namespace sqlite_orm;
@@ -19,7 +20,7 @@ std::vector<Item> Database::read(std::string database_path) {
      * @return: vector of Items.
      */
 
-    Storage storage = initStorage(database_path);
+    Storage storage = initStorage(std::move(database_path));
     std::vector<Item> allItems = storage.get_all<Item>();
 
     return allItems;
@@ -34,7 +35,7 @@ Storage Database::write(Item item, std::string database_path) {
      */
 
 
-    Storage storage = initStorage(database_path);
+    Storage storage = initStorage(std::move(database_path));
 
     auto insertedId = storage.insert(item);
     std::cout << "insertedId = " << insertedId << std::endl;
@@ -45,14 +46,12 @@ Storage Database::write(Item item, std::string database_path) {
     return storage;
 }
 
-int Database::writeDbToDisk(Storage storage) {
+void Database::writeDbToDisk(Storage storage) {
     /*
      * Write in-memory items to sqlite file.
      * @param storage: A storage instance.
      */
-    //TODO: refactor this to a void
     std::map<std::string, sqlite_orm::sync_schema_result> schema_sync_result = storage.sync_schema(false);
-    return 0;
 }
 
 void Database::truncate(Storage storage) {
@@ -92,11 +91,11 @@ void Database::update(const Item& item, std::string database_path) {
      * @param item: The Item to update.
      */
 
-    Storage storage = initStorage(database_path);
+    Storage storage = initStorage(std::move(database_path));
     storage.update(item);
 }
 
-std::vector<Item> Database::filter(std::string category, std::string database_path) {
+std::vector<Item> Database::filter(const std::string& category, const std::string& database_path) {
     /*
      * Filter database by a category.
      * @param category: Category to filter database on.

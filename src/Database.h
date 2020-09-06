@@ -27,7 +27,7 @@ struct Item {  // Struct for storing item attributes
     std::string notes;
 };
 
-inline static auto initStorage(std::string database_path) {
+inline static auto initStorage(const std::string& database_path) {
     /*
      * Initialize the sqlite database. This creates a new file
      * if one doesn't already exist. If one already exists, it
@@ -59,13 +59,13 @@ class Database {
      * Various database related methods.
      */
 public:
-    void deleteRow(Storage storage, int row_number);
-    int writeDbToDisk(Storage storage);  // Flush in-memory data to file
-    std::vector<Item> read(std::string database_path);
-    Storage write(Item item, std::string database_path);
-    void truncate(Storage);
-    Item read_row(Storage storage, int row);
-    std::vector<Item> filter(std::string category, std::string database_path);
+    static void deleteRow(Storage storage, int row_number);
+    static void writeDbToDisk(Storage storage);  // Flush in-memory data to file
+    static std::vector<Item> read(std::string database_path);
+    static Storage write(Item item, std::string database_path);
+    static void truncate(Storage);
+    static Item read_row(Storage storage, int row);
+    static std::vector<Item> filter(const std::string& category, const std::string& database_path);
     static void update(const Item& item, std::string database_path);
 };
 
