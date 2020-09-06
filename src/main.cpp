@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <iomanip>
 #include "exporters.h"
 #include <QtWidgets>
 
@@ -319,7 +320,12 @@ void MainWindow::populate_fields(Item item) {
     bool usedFrequently = item.usedFrequently;
     std::string notes = item.notes;
 
-    std::string date_from_db = std::to_string(purchase_day) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_year);
+    std::ostringstream month_padded;
+    std::ostringstream day_padded;
+    month_padded << std::setw(2) << std::setfill('0') << purchase_month;
+    day_padded << std::setw(2) << std::setfill('0') << purchase_day;
+
+    std::string date_from_db = day_padded.str() + "/" + month_padded.str() + "/" + std::to_string(purchase_year);
     QDate date = QDate::fromString(QString::fromUtf8(date_from_db.c_str()), "dd/MM/yyyy");
 
     ui.ItemName->setText(QString::fromStdString(item_name));
