@@ -171,6 +171,7 @@ public:
         inventoryList->setHorizontalHeaderItem(6, __qtablewidgetitem6);
         inventoryList->setObjectName(QString::fromUtf8("inventoryList"));
         inventoryList->setGeometry(QRect(10, 80, 591, 371));
+        inventoryList->setEditTriggers(QAbstractItemView::NoEditTriggers);
         inventoryList->setRowCount(0);
         inventoryList->setColumnCount(7);
         inventoryList->horizontalHeader()->setMinimumSectionSize(39);
