@@ -12,11 +12,12 @@
 #include "exporters.h"
 #include <QtWidgets>
 
-MainWindow::MainWindow(QWidget *parent) {
+MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     /*
      * Main Window for program
      * @param parent: Parent QWidget object
      */
+
     database_path = set_db_path();
     Database db;
     Storage storage = initStorage(database_path);
@@ -84,7 +85,6 @@ void MainWindow::clicked_submit(){
      */
 
     Database db;
-    QMessageBox error_message;
 
     // Check if a row is selected
     QItemSelectionModel *selectionModel = ui.inventoryList->selectionModel();
@@ -115,8 +115,7 @@ void MainWindow::clicked_submit(){
         item_price = std::stod(item_price_string);
 
     if(item_name.empty() || item_category.empty() || item_count == 0){
-        error_message.critical(0, "Error", "Please enter item name, category, and count.");
-        error_message.setFixedSize(200, 200);
+        QMessageBox::critical(nullptr, "Error", "Please enter item name, category, and count.");
     } else {
         // Handle updating existing rows
         QItemSelectionModel *select = ui.inventoryList->selectionModel();
@@ -138,7 +137,7 @@ void MainWindow::clicked_submit(){
                     notes
             };
 
-            db.update(item, database_path);
+            Database::update(item, database_path);
         } else {
             std::cout << "Creating new row" << std::endl;
             Item item{
@@ -308,12 +307,11 @@ void MainWindow::filter_by_categories() {
     populate_table(selected_items);
 }
 
-void MainWindow::populate_fields(Item item) {
+void MainWindow::populate_fields(const Item& item) {
     /*
      * Populate user-entry fields when user clicks on a table row.
      */
 
-    int id = item.id;
     std::string item_name = item.itemName;
     std::string item_category = item.category;
     int purchase_year = item.purchaseYear;
@@ -335,17 +333,17 @@ void MainWindow::populate_fields(Item item) {
     ui.ItemName->setText(QString::fromStdString(item_name));
     ui.ItemCategory->setCurrentText(QString::fromStdString(item_category));
     ui.ItemPurchaseDate->setDate(date);
-    ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price.c_str()));
+    ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price));
     ui.ItemCount->setValue(count);
 
-    if(usedFrequently == true)
+    if(usedFrequently)
         ui.UsedFrequently->setChecked(true);
     else
         ui.UsedFrequently->setChecked(false);
     ui.ItemNotes->setText(QString::fromStdString(notes));
 }
 
-void MainWindow::populate_table(std::vector<Item> items) {
+void MainWindow::populate_table(const std::vector<Item>& items) {
     /*
      * Populate the main table widget with items.
      * @param items: A vector of Items containing item information.
@@ -400,7 +398,6 @@ void MainWindow::open_export_dialog() {
      */
 
     Database db;
-    exporters exporter;
 
     //ExportDialog export_options = new ExportDialog(this, database_path);
     ExportDialog export_options = ExportDialog(nullptr, database_path);
@@ -417,7 +414,7 @@ void MainWindow::open_export_dialog() {
     std::cout << "Filter value: " << filter_value << std::endl;
 
     std::vector<Item> items = db.filter(filter_value, database_path);
-    exporter.to_csv(items, file_path);
+    exporters::to_csv(items, file_path);
 }
 
 void MainWindow::new_item_button() {
@@ -436,8 +433,8 @@ std::string set_db_path() {
      */
 
     std::string database_path;
-    PWSTR localAppData = NULL;
-    if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, NULL, &localAppData) == S_OK) {
+    PWSTR localAppData = nullptr;
+    if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &localAppData) == S_OK) {
         std::wstring ws_path(localAppData);
         std::string database_directory;
         using convert_type = std::codecvt_utf8<wchar_t>;
@@ -446,7 +443,7 @@ std::string set_db_path() {
         database_path = database_directory + "\\ownly_data.db";
         CoTaskMemFree(static_cast<void*>(localAppData));
 
-        CreateDirectory(database_directory.c_str(), NULL);
+        CreateDirectory(database_directory.c_str(), nullptr);
         std::cout << "DB path: " << database_path << std::endl;
     }
 
@@ -459,10 +456,8 @@ int main(int argc, char** argv) {
      */
 
     QApplication app(argc, argv);
-    app.setQuitOnLastWindowClosed(false);
+    QApplication::setQuitOnLastWindowClosed(false);
     MainWindow mainWindow;
     mainWindow.show();
     return QApplication::exec();
-
-    return 0;
 }

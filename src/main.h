@@ -21,13 +21,13 @@ class MainWindow : public QMainWindow {
     Ui::MainWindow ui{};
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow([[maybe_unused]] QWidget *parent = nullptr);
     void updateMainTable();
     void populate_categories();
 
 private:
-    void populate_fields(Item item);
-    void populate_table(std::vector<Item> items);
+    void populate_fields(const Item& item);
+    void populate_table(const std::vector<Item>& items);
     std::string database_path;
 
 private slots:
@@ -35,7 +35,7 @@ private slots:
     void remove_row();
     void table_row_clicked(const QItemSelection &, const QItemSelection &);  // Handle event where table row is clicked.
     void clicked_submit();
-    std::string double_to_string(double input_double);  // Convert a double to a string with two decimal points.
+    static std::string double_to_string(double input_double);  // Convert a double to a string with two decimal points.
     void clear_fields();  // Clear all user-entry fields.
     void filter_by_categories();  // Filter table by category.
     void open_export_dialog();
