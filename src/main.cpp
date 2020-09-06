@@ -369,7 +369,9 @@ void MainWindow::populate_table(const std::vector<Item>& items) {
         auto *purchase_price_str = new QTableWidgetItem(purchase_price.c_str());
 
 
-        std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_day);
+        std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + \
+            std::to_string(purchase_day);
+
         auto *date_qtwi = new QTableWidgetItem(date.c_str());
 
         if(usedFrequently) {
