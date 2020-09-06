@@ -27,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent) {
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
+    // Only allow single-row selection on table widget
+    ui.inventoryList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui.inventoryList->setSelectionMode(QAbstractItemView::SingleSelection);
+
     ui.deleteItemButton->setDisabled(true);
     ui.ViewCategoryComboBox->setDuplicatesEnabled(false);
     ui.ItemCategory->setDuplicatesEnabled(false);
