@@ -7,8 +7,14 @@
 #include "string"
 #include "../include/sqlite_orm.h"
 #include <vector>
+#include <windows.h>
+#include <shlobj.h>
+#include <locale>
+#include <codecvt>
 
-struct Item {
+#include <iostream>
+
+struct Item {  // Struct for storing item attributes
     int id;
     std::string itemName;
     std::string category;
@@ -17,12 +23,20 @@ struct Item {
     int purchaseDay;
     double purchasePrice;
     int count;
-    bool usedInLastSixMonths;
+    bool usedFrequently;
     std::string notes;
 };
 
-inline static auto initStorage(const std::string& file_name) {
-    return sqlite_orm::make_storage(file_name,
+inline static auto initStorage(std::string database_path) {
+    /*
+     * Initialize the sqlite database. This creates a new file
+     * if one doesn't already exist. If one already exists, it
+     * will use it.
+     * @param file_name: Path to location of sqlite file
+     * @return: A Storage instance.
+     */
+
+    return sqlite_orm::make_storage(database_path,
                                     sqlite_orm::make_table("items",
                                                            sqlite_orm::make_column("id", &Item::id, sqlite_orm::autoincrement(), sqlite_orm::primary_key()),
                                                            sqlite_orm::make_column("item_name", &Item::itemName),
@@ -32,7 +46,7 @@ inline static auto initStorage(const std::string& file_name) {
                                                            sqlite_orm::make_column("purchase_day", &Item::purchaseDay),
                                                            sqlite_orm::make_column("purchase_price", &Item::purchasePrice),
                                                            sqlite_orm::make_column("count", &Item::count),
-                                                           sqlite_orm::make_column("used_in_last_six_months", &Item::usedInLastSixMonths, sqlite_orm::default_value(
+                                                           sqlite_orm::make_column("used_frequently", &Item::usedFrequently, sqlite_orm::default_value(
                                                                    false)),
                                                            sqlite_orm::make_column("notes", &Item::notes)));
 
@@ -41,15 +55,18 @@ inline static auto initStorage(const std::string& file_name) {
 using Storage = decltype(initStorage(""));  // Get Storage return type
 
 class Database {
+    /*
+     * Various database related methods.
+     */
 public:
     void deleteRow(Storage storage, int row_number);
-    int writeDbToDisk(Storage storage);
-    std::vector<Item> read(std::string);
-    Storage write(Item item);
+    int writeDbToDisk(Storage storage);  // Flush in-memory data to file
+    std::vector<Item> read(std::string database_path);
+    Storage write(Item item, std::string database_path);
     void truncate(Storage);
     Item read_row(Storage storage, int row);
-    std::vector<Item> filter(std::string category, std::string file_name);
-    static void update(const Item& item);
+    std::vector<Item> filter(std::string category, std::string database_path);
+    static void update(const Item& item, std::string database_path);
 };
 
 #endif //NOTCH_DATABASE_H
