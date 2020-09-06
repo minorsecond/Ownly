@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) {
     connect(ui.actionExport, SIGNAL(triggered()), this, SLOT(open_export_dialog()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
-    connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(clear_fields()));
+    connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(new_item_button()));
     connect(ui.ViewCategoryComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(filter_by_categories()));
 
     updateMainTable();
@@ -85,7 +85,10 @@ void MainWindow::clicked_submit(){
 
     Database db;
     QMessageBox error_message;
-    std::cout << "Clicked dbSubmitButton" << std::endl;
+
+    // Check if a row is selected
+    QItemSelectionModel *selectionModel = ui.inventoryList->selectionModel();
+    QModelIndexList selectedRows = selectionModel->selectedRows();
 
     std::string item_name = ui.ItemName->text().toUtf8().constData();
     std::string item_category = ui.ItemCategory->currentText().toUtf8().constData();
@@ -155,7 +158,8 @@ void MainWindow::clicked_submit(){
 
         updateMainTable();
 
-        clear_fields();
+        if (selectedRows.empty())
+            clear_fields();
 
         populate_categories();
     }
@@ -414,6 +418,15 @@ void MainWindow::open_export_dialog() {
 
     std::vector<Item> items = db.filter(filter_value, database_path);
     exporter.to_csv(items, file_path);
+}
+
+void MainWindow::new_item_button() {
+    /*
+     * Clear table row selection and fields when user clicks the New Item button
+     */
+
+    ui.inventoryList->selectionModel()->clearSelection();
+    clear_fields();
 }
 
 std::string set_db_path() {
