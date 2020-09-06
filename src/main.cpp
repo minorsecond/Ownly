@@ -11,6 +11,7 @@
 #include <iomanip>
 #include "exporters.h"
 #include <QtWidgets>
+#include <QDebug>
 
 MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     /*
@@ -50,7 +51,13 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     ui.deleteItemButton->setPalette(pal);
     ui.deleteItemButton->update();
 
+    // Disconnect the corner button slot
+    auto *cornerButton = ui.inventoryList->findChild<QAbstractButton*>();
+    if (cornerButton)
+        cornerButton->disconnect();
+
     // Slots
+    connect(cornerButton, SIGNAL(clicked()), this, SLOT(reset_table_sort()));
     connect(ui.inventoryList->selectionModel(),
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this, SLOT(table_row_clicked(const QItemSelection &, const QItemSelection &)));
@@ -62,6 +69,7 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     connect(ui.ViewCategoryComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(filter_by_categories()));
 
     updateMainTable();
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);  // Sort by ID in database
 }
 
 std::string MainWindow::double_to_string(double input_double) {
@@ -418,6 +426,15 @@ void MainWindow::new_item_button() {
 
     ui.inventoryList->selectionModel()->clearSelection();
     clear_fields();
+}
+
+void MainWindow::reset_table_sort() {
+    /*
+     * Reset table sorting to default sorting order (Sorted by ID in database)
+     */
+
+    qDebug() << "Reset table sort";
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
 }
 
 std::string set_db_path() {
