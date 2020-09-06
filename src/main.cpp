@@ -69,6 +69,7 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     connect(ui.ViewCategoryComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(filter_by_categories()));
 
     updateMainTable();
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);  // Sort by ID in database
 }
 
 std::string MainWindow::double_to_string(double input_double) {
@@ -428,7 +429,12 @@ void MainWindow::new_item_button() {
 }
 
 void MainWindow::reset_table_sort() {
+    /*
+     * Reset table sorting to default sorting order (Sorted by ID in database)
+     */
+
     qDebug() << "Reset table sort";
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
 }
 
 std::string set_db_path() {
