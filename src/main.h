@@ -40,6 +40,7 @@ private slots:
     void filter_by_categories();  // Filter table by category.
     void open_export_dialog();
     void new_item_button();
+    static void reset_table_sort();
 };
 
 #endif //OWNLY_MAIN_H
