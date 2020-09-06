@@ -26,6 +26,7 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     ui.setupUi(this);
     this->setFixedSize(1053, 520);
 
+    // Tablewidget properties
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
@@ -34,6 +35,8 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     ui.inventoryList->setSelectionMode(QAbstractItemView::SingleSelection);
 
     ui.inventoryList->setSortingEnabled(true);
+
+    ui.inventoryList->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
     ui.deleteItemButton->setDisabled(true);
     ui.ViewCategoryComboBox->setDuplicatesEnabled(false);
