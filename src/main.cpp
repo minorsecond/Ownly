@@ -30,6 +30,8 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
 
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
+
     // Only allow single-row selection on table widget
     ui.inventoryList->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.inventoryList->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -96,6 +98,8 @@ void MainWindow::clicked_submit(){
      * Updating the main table, and clearing the UI fields.
      */
 
+    bool error_state = false;
+
     // Check if a row is selected
     QItemSelectionModel *selectionModel = ui.inventoryList->selectionModel();
     QModelIndexList selectedRows = selectionModel->selectedRows();
@@ -121,12 +125,19 @@ void MainWindow::clicked_submit(){
 
     if (item_price_string.empty())
         item_price = 0.00;
-    else
-        item_price = std::stod(item_price_string);
+    else {
+        try {
+            item_price = std::stod(item_price_string);
+        } catch (const std::invalid_argument& e) {
+            QMessageBox::critical(nullptr, "Error", "Please enter a numeric price.");
+            error_state = true;
+        }
+
+    }
 
     if(item_name.empty() || item_category.empty() || item_count == 0){
         QMessageBox::critical(nullptr, "Error", "Please enter item name, category, and count.");
-    } else {
+    } else if (!error_state) {
         // Handle updating existing rows
         QItemSelectionModel *select = ui.inventoryList->selectionModel();
         if (select->hasSelection()) {
@@ -166,6 +177,7 @@ void MainWindow::clicked_submit(){
         }
 
         updateMainTable();
+        ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
 
         if (selectedRows.empty())
             clear_fields();
@@ -186,6 +198,7 @@ void MainWindow::updateMainTable() {
     ui.inventoryList->setColumnHidden(6, true);
 
     populate_table(items);
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
 }
 
 void MainWindow::truncate_db() {
@@ -363,8 +376,11 @@ void MainWindow::populate_table(const std::vector<Item>& items) {
         int purchase_day = entry.purchaseDay;
         auto *item_count = new QTableWidgetItem(std::to_string(entry.count).c_str());
         bool usedFrequently = entry.usedFrequently;
-        auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
+        //auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
         QTableWidgetItem *used_recently;
+
+        auto *id = new QTableWidgetItem;
+        id->setData(Qt::DisplayRole, entry.id);
 
         // Limit prices on table to two digits
         std::string purchase_price = double_to_string(entry.purchasePrice);
@@ -394,6 +410,8 @@ void MainWindow::populate_table(const std::vector<Item>& items) {
         ui.inventoryList->setItem(current_row, 4, item_count);
         ui.inventoryList->setItem(current_row, 5, used_recently);
         ui.inventoryList->setItem(current_row, 6, id);
+
+        std::cout << "name: " << entry.itemName << " id: " << entry.id << std::endl;
 
         current_row +=1;
     }
