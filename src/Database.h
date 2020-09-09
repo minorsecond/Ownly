@@ -67,6 +67,7 @@ public:
     static Item read_row(Storage storage, int row);
     static std::vector<Item> filter(const std::string& category, const std::string& database_path);
     static void update(const Item& item, std::string database_path);
+    static std::string set_db_path();
 };
 
 #endif //NOTCH_DATABASE_H
