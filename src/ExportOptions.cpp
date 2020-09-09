@@ -17,6 +17,7 @@ ExportDialog::ExportDialog([[maybe_unused]] QWidget *parent, std::string databas
      */
 
     ui.setupUi(this);
+    this->setFixedSize(490, 88);
     populate_categories(std::move(database_path));
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui.ExportButtonOkCancelButtons->button(QDialogButtonBox::Ok)->setText("Save");
