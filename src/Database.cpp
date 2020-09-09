@@ -113,3 +113,27 @@ std::vector<Item> Database::filter(const std::string& category, const std::strin
 
     return items_by_category;
 }
+
+std::string Database::set_db_path() {
+    /*
+     * Get the path to the users APPDATA directory for database storage.
+     * @return database_path: Path where database will be stored.
+     */
+
+    std::string database_path;
+    PWSTR localAppData = nullptr;
+    if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &localAppData) == S_OK) {
+        std::wstring ws_path(localAppData);
+        std::string database_directory;
+        using convert_type = std::codecvt_utf8<wchar_t>;
+        std::wstring_convert<convert_type, wchar_t> converter;
+        database_directory = converter.to_bytes(ws_path) + "\\Ownly";
+        database_path = database_directory + "\\ownly_data.db";
+        CoTaskMemFree(static_cast<void*>(localAppData));
+
+        CreateDirectory(database_directory.c_str(), nullptr);
+        std::cout << "DB path: " << database_path << std::endl;
+    }
+
+    return database_path;
+}

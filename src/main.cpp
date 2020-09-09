@@ -11,7 +11,6 @@
 #include <iomanip>
 #include "exporters.h"
 #include <QtWidgets>
-#include <QDebug>
 
 MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     /*
@@ -456,6 +455,22 @@ void MainWindow::reset_table_sort() {
 
     qDebug() << "Reset table sort";
     ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
+}
+
+void MainWindow::open_clear_dialog() {
+    /*
+     * Open the clear data dialog, where users must confirm that they want to erase the database.
+     */
+    ExportDialog export_options = ExportDialog(nullptr, database_path);
+    export_options.setModal(true);
+    std::string file_path;
+    std::string filter_value;
+
+    if(export_options.exec() == QDialog::Accepted) {
+        std::cout << "Accepted" <<std::endl;
+        file_path = export_options.get_file_path();
+        filter_value = export_options.get_filter_value();
+    }
 }
 
 std::string set_db_path() {
