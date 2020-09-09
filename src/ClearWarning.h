@@ -18,7 +18,7 @@ Q_OBJECT
     Ui::ClearDialog ui{};
 
 public:
-    void ClearDialog(QWidget *parent = nullptr);
+    explicit ClearWarning(QWidget *parent = nullptr);
 
 private slots:
     static void clear_database();

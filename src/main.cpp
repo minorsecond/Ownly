@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include "MainWindow.h"
 #include "ExportOptions.h"
+#include "ClearWarning.h"
 #include "Database.h"
 #include "main.h"
 #include <string>
@@ -18,7 +19,7 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
      * @param parent: Parent QWidget object
      */
 
-    database_path = set_db_path();
+    database_path = Database::set_db_path();
     Storage storage = initStorage(database_path);
     Database::writeDbToDisk(storage);
 
@@ -65,7 +66,7 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     connect(ui.inventoryList->selectionModel(),
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this, SLOT(table_row_clicked(const QItemSelection &, const QItemSelection &)));
-    connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
+    connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(open_clear_dialog()));
     connect(ui.actionExport, SIGNAL(triggered()), this, SLOT(open_export_dialog()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
@@ -88,6 +89,19 @@ std::string MainWindow::double_to_string(double input_double) {
     price_stream << purchase_price;
 
     return price_stream.str();
+}
+
+void MainWindow::open_clear_dialog() {
+    /*
+     * Open the clear data dialog, where users must confirm that they want to erase the database.
+     */
+
+    ClearWarning clear_warning = ClearWarning(nullptr);
+    clear_warning.setModal(true);
+    if(clear_warning.exec() == QDialog::Accepted) {
+        std::cout << "Accepted" <<std::endl;
+        updateMainTable();
+    }
 }
 
 void MainWindow::clicked_submit(){
@@ -455,46 +469,6 @@ void MainWindow::reset_table_sort() {
 
     qDebug() << "Reset table sort";
     ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
-}
-
-void MainWindow::open_clear_dialog() {
-    /*
-     * Open the clear data dialog, where users must confirm that they want to erase the database.
-     */
-    ExportDialog export_options = ExportDialog(nullptr, database_path);
-    export_options.setModal(true);
-    std::string file_path;
-    std::string filter_value;
-
-    if(export_options.exec() == QDialog::Accepted) {
-        std::cout << "Accepted" <<std::endl;
-        file_path = export_options.get_file_path();
-        filter_value = export_options.get_filter_value();
-    }
-}
-
-std::string set_db_path() {
-    /*
-     * Get the path to the users APPDATA directory for database storage.
-     * @return database_path: Path where database will be stored.
-     */
-
-    std::string database_path;
-    PWSTR localAppData = nullptr;
-    if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &localAppData) == S_OK) {
-        std::wstring ws_path(localAppData);
-        std::string database_directory;
-        using convert_type = std::codecvt_utf8<wchar_t>;
-        std::wstring_convert<convert_type, wchar_t> converter;
-        database_directory = converter.to_bytes(ws_path) + "\\Ownly";
-        database_path = database_directory + "\\ownly_data.db";
-        CoTaskMemFree(static_cast<void*>(localAppData));
-
-        CreateDirectory(database_directory.c_str(), nullptr);
-        std::cout << "DB path: " << database_path << std::endl;
-    }
-
-    return database_path;
 }
 
 int main(int argc, char** argv) {
