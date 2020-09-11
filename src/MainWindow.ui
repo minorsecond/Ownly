@@ -90,6 +90,9 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="ItemPurchaseDateLabel">
     <property name="geometry">
@@ -218,7 +221,7 @@
      <string>All</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="ItemUsedInLastSixMonths">
+   <widget class="QCheckBox" name="UsedFrequently">
     <property name="geometry">
      <rect>
       <x>900</x>
@@ -228,7 +231,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Used in last 6 months</string>
+     <string>Used Frequently</string>
     </property>
    </widget>
    <widget class="Line" name="line_3">
@@ -298,6 +301,9 @@
       <height>371</height>
      </rect>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>0</number>
     </property>
@@ -337,7 +343,7 @@
     </column>
     <column>
      <property name="text">
-      <string>Used Recently</string>
+      <string>Frequent Use</string>
      </property>
     </column>
     <column>
@@ -437,6 +443,7 @@
      <string>File</string>
     </property>
     <addaction name="actionClear_Data"/>
+    <addaction name="actionExport"/>
    </widget>
    <addaction name="FileMenu"/>
   </widget>
@@ -455,6 +462,11 @@
     <string>Clear Data</string>
    </property>
   </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>ItemName</tabstop>
@@ -462,7 +474,7 @@
   <tabstop>ItemPurchaseDate</tabstop>
   <tabstop>ItemPurchasePrice</tabstop>
   <tabstop>ItemCount</tabstop>
-  <tabstop>ItemUsedInLastSixMonths</tabstop>
+  <tabstop>UsedFrequently</tabstop>
   <tabstop>ItemNotes</tabstop>
   <tabstop>inventoryList</tabstop>
   <tabstop>ViewCategoryComboBox</tabstop>

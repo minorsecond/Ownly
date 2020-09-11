@@ -7,30 +7,41 @@
 
 #include "MainWindow.h"
 #include "Database.h"
-#include "QFileDialog"
 #include <QApplication>
+#include <QtGui>
+
+std::string set_db_path();
 
 class MainWindow : public QMainWindow {
+    /*
+     * Main Window GUI methods.
+     */
+
     Q_OBJECT
     Ui::MainWindow ui{};
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow([[maybe_unused]] QWidget *parent = nullptr);
     void updateMainTable();
     void populate_categories();
 
 private:
-    void populate_fields(Item item);
-    void populate_table(std::vector<Item> items);
+    void populate_fields(const Item& item);
+    void populate_table(const std::vector<Item>& items);
+    std::string database_path;
 
 private slots:
     void truncate_db();
     void remove_row();
-    void table_row_clicked(const QItemSelection &, const QItemSelection &);
+    void table_row_clicked(const QItemSelection &, const QItemSelection &);  // Handle event where table row is clicked.
     void clicked_submit();
-    std::string double_to_string(double input_double);
-    void clear_fields();
-    void filter_by_categories();
+    static std::string double_to_string(double input_double);  // Convert a double to a string with two decimal points.
+    void clear_fields();  // Clear all user-entry fields.
+    void filter_by_categories();  // Filter table by category.
+    void open_export_dialog();
+    void open_clear_dialog();
+    void new_item_button();
+    void reset_table_sort();
 };
 
 #endif //OWNLY_MAIN_H

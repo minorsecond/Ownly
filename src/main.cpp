@@ -2,18 +2,43 @@
 #include <QApplication>
 #include <QMessageBox>
 #include "MainWindow.h"
+#include "ExportOptions.h"
+#include "ClearWarning.h"
 #include "Database.h"
 #include "main.h"
 #include <string>
 #include <vector>
 #include <cmath>
 #include <iomanip>
+#include "exporters.h"
+#include <QtWidgets>
 
-MainWindow::MainWindow(QWidget *parent) {
+MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
+    /*
+     * Main Window for program
+     * @param parent: Parent QWidget object
+     */
+
+    database_path = Database::set_db_path();
+    Storage storage = initStorage(database_path);
+    Database::writeDbToDisk(storage);
+
     ui.setupUi(this);
     this->setFixedSize(1053, 520);
+
+    // Tablewidget properties
     QHeaderView* header = ui.inventoryList->horizontalHeader();
     header->setSectionResizeMode(0, QHeaderView::Stretch);
+
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
+
+    // Only allow single-row selection on table widget
+    ui.inventoryList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui.inventoryList->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    ui.inventoryList->setSortingEnabled(true);
+
+    ui.inventoryList->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
     ui.deleteItemButton->setDisabled(true);
     ui.ViewCategoryComboBox->setDuplicatesEnabled(false);
@@ -24,26 +49,41 @@ MainWindow::MainWindow(QWidget *parent) {
 
     populate_categories();
 
+    // Change the delete button color
     QPalette pal = ui.deleteItemButton->palette();
     pal.setColor(QPalette::Button, QColor(250, 180, 174));
     ui.deleteItemButton->setAutoFillBackground(true);
     ui.deleteItemButton->setPalette(pal);
     ui.deleteItemButton->update();
 
+    // Disconnect the corner button slot
+    auto *cornerButton = ui.inventoryList->findChild<QAbstractButton*>();
+    if (cornerButton)
+        cornerButton->disconnect();
+
     // Slots
+    connect(cornerButton, SIGNAL(clicked()), this, SLOT(reset_table_sort()));
     connect(ui.inventoryList->selectionModel(),
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this, SLOT(table_row_clicked(const QItemSelection &, const QItemSelection &)));
-    connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(truncate_db()));
+    connect(ui.actionClear_Data, SIGNAL(triggered()), this, SLOT(open_clear_dialog()));
+    connect(ui.actionExport, SIGNAL(triggered()), this, SLOT(open_export_dialog()));
     connect(ui.deleteItemButton, SIGNAL(clicked()), this, SLOT(remove_row()));
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
-    connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(clear_fields()));
+    connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(new_item_button()));
     connect(ui.ViewCategoryComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(filter_by_categories()));
 
     updateMainTable();
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);  // Sort by ID in database
 }
 
 std::string MainWindow::double_to_string(double input_double) {
+    /*
+     * Convert a double to a string with two decimal points.
+     * @param input_double: Number of type Double to convert.
+     * @return price_stream.str(): String denoting double with two decimal points.
+     */
+
     double purchase_price = std::ceil(input_double * 100.0) / 100.0;
     std::ostringstream price_stream;
     price_stream << purchase_price;
@@ -51,17 +91,38 @@ std::string MainWindow::double_to_string(double input_double) {
     return price_stream.str();
 }
 
+void MainWindow::open_clear_dialog() {
+    /*
+     * Open the clear data dialog, where users must confirm that they want to erase the database.
+     */
+
+    ClearWarning clear_warning = ClearWarning(nullptr);
+    clear_warning.setModal(true);
+    if(clear_warning.exec() == QDialog::Accepted) {
+        std::cout << "Accepted" <<std::endl;
+        updateMainTable();
+    }
+}
+
 void MainWindow::clicked_submit(){
-    Database db;
-    QMessageBox error_message;
-    std::cout << "Clicked dbSubmitButton" << std::endl;
+    /*
+     * Handle when user clicks the Submit button on the main window.
+     * This does various things such as sending data from the UI fields to the database,
+     * Updating the main table, and clearing the UI fields.
+     */
+
+    bool error_state = false;
+
+    // Check if a row is selected
+    QItemSelectionModel *selectionModel = ui.inventoryList->selectionModel();
+    QModelIndexList selectedRows = selectionModel->selectedRows();
 
     std::string item_name = ui.ItemName->text().toUtf8().constData();
     std::string item_category = ui.ItemCategory->currentText().toUtf8().constData();
     std::string item_price_string = ui.ItemPurchasePrice->text().toUtf8().constData();
     double item_price;
     std::string item_count_str = ui.ItemCount->text().toUtf8().constData();
-    bool usedInLastSixMonths = ui.ItemUsedInLastSixMonths->isChecked();
+    bool usedFrequently = ui.UsedFrequently->isChecked();
     std::string notes = ui.ItemNotes->toPlainText().toUtf8().constData();
     int purchase_year = ui.ItemPurchaseDate->date().year();
     int purchase_month = ui.ItemPurchaseDate->date().month();
@@ -77,13 +138,19 @@ void MainWindow::clicked_submit(){
 
     if (item_price_string.empty())
         item_price = 0.00;
-    else
-        item_price = std::stod(item_price_string);
+    else {
+        try {
+            item_price = std::stod(item_price_string);
+        } catch (const std::invalid_argument& e) {
+            QMessageBox::critical(nullptr, "Error", "Please enter a numeric price.");
+            error_state = true;
+        }
+
+    }
 
     if(item_name.empty() || item_category.empty() || item_count == 0){
-        error_message.critical(0, "Error", "Please enter item name, category, and count.");
-        error_message.setFixedSize(200, 200);
-    } else {
+        QMessageBox::critical(nullptr, "Error", "Please enter item name, category, and count.");
+    } else if (!error_state) {
         // Handle updating existing rows
         QItemSelectionModel *select = ui.inventoryList->selectionModel();
         if (select->hasSelection()) {
@@ -100,11 +167,11 @@ void MainWindow::clicked_submit(){
                     purchase_day,
                     item_price,
                     item_count,
-                    usedInLastSixMonths,
+                    usedFrequently,
                     notes
             };
 
-            db.update(item);
+            Database::update(item, database_path);
         } else {
             std::cout << "Creating new row" << std::endl;
             Item item{
@@ -116,45 +183,55 @@ void MainWindow::clicked_submit(){
                     purchase_day,
                     item_price,
                     item_count,
-                    usedInLastSixMonths,
+                    usedFrequently,
                     notes
             };
-            db.write(item);  // Write new item
+            Database::write(item, database_path);  // Write new item
         }
 
         updateMainTable();
+        ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
 
-        clear_fields();
+        if (selectedRows.empty())
+            clear_fields();
 
         populate_categories();
     }
 }
 
 void MainWindow::updateMainTable() {
-    Database db;
-    std::vector<Item> items = db.read("ownly.db");
+    /*
+     * Reads Items from the database and populates the main table with them.
+     */
+
+    std::vector<Item> items = Database::read(database_path);
 
     ui.inventoryList->setRowCount(items.size());
     ui.inventoryList->setColumnCount(7);
     ui.inventoryList->setColumnHidden(6, true);
 
     populate_table(items);
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
 }
 
 void MainWindow::truncate_db() {
-    Database db;
+    /*
+     * Truncate the database and update the main table and category dropdowns.
+     */
+
     std::cout << "Truncate db clicked." << std::endl;
-    Storage storage = initStorage("ownly.db");
-    db.truncate(storage);
+    Storage storage = initStorage(database_path);
+    Database::truncate(storage);
     updateMainTable();
     populate_categories();
 }
 
 void MainWindow::remove_row() {
-    std::cout << "CLicked remove row" << std::endl;
+    /*
+     * Delete a row that is selected in the main table.
+     */
 
-    Database db;
-    Storage storage = initStorage("ownly.db");
+    Storage storage = initStorage(database_path);
 
     // Get selected row
     int select = ui.inventoryList->selectionModel()->currentIndex().row();
@@ -168,19 +245,21 @@ void MainWindow::remove_row() {
     //    qDebug() << "Deleting DB row at index " << ui.inventoryList->item(index, 6)->text();
     //}
 
+    // Convert from row position on table to row position in DB, and return it.
     int row_to_delete = (ui.inventoryList->item(select, 6)->text()).toUtf8().toInt();
 
     std::cout << "Deleting DB row at index " << row_to_delete << std::endl;
-    db.deleteRow(storage, row_to_delete);
+    Database::deleteRow(storage, row_to_delete);
     updateMainTable();
 }
 
 void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection &) {
     /*
      * Populate fields in right pane when user clicks on a row in the QTableWidget.
+     * @param QItemSelection: The selected row in the table.
      */
-    Database db;
-    Storage storage = initStorage("ownly.db");
+
+    Storage storage = initStorage(database_path);
 
     QItemSelectionModel *select = ui.inventoryList->selectionModel();
 
@@ -192,31 +271,42 @@ void MainWindow::table_row_clicked(const QItemSelection &, const QItemSelection 
     else
         ui.deleteItemButton->setDisabled(true);
 
-    Item item = db.read_row(storage, row_to_get);
+    Item item = Database::read_row(storage, row_to_get);
     populate_fields(item);
 }
 
 void MainWindow::clear_fields() {
+    /*
+     * Clear all user entry fields.
+     */
+
     ui.ItemName->clear();
     ui.ItemCategory->clearEditText();
     QDate date = QDate::currentDate();
     ui.ItemPurchaseDate->setDate(date);
     ui.ItemPurchasePrice->clear();
     ui.ItemCount->clear();
-    ui.ItemUsedInLastSixMonths->setChecked(false);
+    ui.UsedFrequently->setChecked(false);
     ui.ItemNotes->clear();
 }
 
 void MainWindow::populate_categories() {
-    std::set<QString> categories;
-    Database db;
-    std::vector<Item> allItems = db.read("ownly.db");
+    /*
+     * Read all rows in database, make a set containing all of the categories, and populate
+     * the QComboBoxes with them.
+     */
 
+    std::set<QString> categories;
+
+    std::vector<Item> allItems = Database::read(database_path);
+
+    // Block the signal while updating the combobox. The program crashes without this.
     QSignalBlocker ViewCategorySignalBlocker(ui.ViewCategoryComboBox);
 
     ui.ItemCategory->clear();
     ui.ViewCategoryComboBox->clear();
-    std::cout << "Cleared ComboBox" << std::endl;
+
+    // This is the default option.
     ui.ViewCategoryComboBox->addItem(QString::fromStdString("All Items"));
 
     for(const auto& item : allItems) {
@@ -231,9 +321,13 @@ void MainWindow::populate_categories() {
 }
 
 void MainWindow::filter_by_categories() {
-    Database db;
+    /*
+     * Run a where statement, based on the category selected, against the database,
+     * and return the results to the main table.
+     */
+
     std::string selection = ui.ViewCategoryComboBox->currentText().toStdString();
-    std::vector<Item> selected_items = db.filter(selection, "ownly.db");
+    std::vector<Item> selected_items = Database::filter(selection, database_path);
 
     clear_fields();
 
@@ -244,8 +338,11 @@ void MainWindow::filter_by_categories() {
     populate_table(selected_items);
 }
 
-void MainWindow::populate_fields(Item item) {
-    int id = item.id;
+void MainWindow::populate_fields(const Item& item) {
+    /*
+     * Populate user-entry fields when user clicks on a table row.
+     */
+
     std::string item_name = item.itemName;
     std::string item_category = item.category;
     int purchase_year = item.purchaseYear;
@@ -253,7 +350,7 @@ void MainWindow::populate_fields(Item item) {
     int purchase_day = item.purchaseDay;
     std::string purchase_price = double_to_string(item.purchasePrice);
     int count = item.count;
-    bool usedInLastSixMonths = item.usedInLastSixMonths;
+    bool usedFrequently = item.usedFrequently;
     std::string notes = item.notes;
 
     std::ostringstream month_padded;
@@ -263,24 +360,24 @@ void MainWindow::populate_fields(Item item) {
 
     std::string date_from_db = day_padded.str() + "/" + month_padded.str() + "/" + std::to_string(purchase_year);
     QDate date = QDate::fromString(QString::fromUtf8(date_from_db.c_str()), "dd/MM/yyyy");
-    std::cout << "Date: " << date_from_db << std::endl;
 
     ui.ItemName->setText(QString::fromStdString(item_name));
     ui.ItemCategory->setCurrentText(QString::fromStdString(item_category));
     ui.ItemPurchaseDate->setDate(date);
-    ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price.c_str()));
+    ui.ItemPurchasePrice->setText(QString::fromStdString(purchase_price));
     ui.ItemCount->setValue(count);
 
-    if(usedInLastSixMonths == true)
-        ui.ItemUsedInLastSixMonths->setChecked(true);
+    if(usedFrequently)
+        ui.UsedFrequently->setChecked(true);
     else
-        ui.ItemUsedInLastSixMonths->setChecked(false);
+        ui.UsedFrequently->setChecked(false);
     ui.ItemNotes->setText(QString::fromStdString(notes));
 }
 
-void MainWindow::populate_table(std::vector<Item> items) {
+void MainWindow::populate_table(const std::vector<Item>& items) {
     /*
      * Populate the main table widget with items.
+     * @param items: A vector of Items containing item information.
      */
 
     int current_row = 0;
@@ -291,9 +388,12 @@ void MainWindow::populate_table(std::vector<Item> items) {
         int purchase_month = entry.purchaseMonth;
         int purchase_day = entry.purchaseDay;
         auto *item_count = new QTableWidgetItem(std::to_string(entry.count).c_str());
-        bool usedInLastSixMonths = entry.usedInLastSixMonths;
-        auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
+        bool usedFrequently = entry.usedFrequently;
+        //auto *id = new QTableWidgetItem(std::to_string(entry.id).c_str());
         QTableWidgetItem *used_recently;
+
+        auto *id = new QTableWidgetItem;
+        id->setData(Qt::DisplayRole, entry.id);
 
         // Limit prices on table to two digits
         std::string purchase_price = double_to_string(entry.purchasePrice);
@@ -303,10 +403,12 @@ void MainWindow::populate_table(std::vector<Item> items) {
         auto *purchase_price_str = new QTableWidgetItem(purchase_price.c_str());
 
 
-        std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + std::to_string(purchase_day);
+        std::string date = std::to_string(purchase_year) + "/" + std::to_string(purchase_month) + "/" + \
+            std::to_string(purchase_day);
+
         auto *date_qtwi = new QTableWidgetItem(date.c_str());
 
-        if(usedInLastSixMonths) {
+        if(usedFrequently) {
             used_recently = new QTableWidgetItem("Yes");
         } else {
             used_recently = new QTableWidgetItem("No");
@@ -322,19 +424,61 @@ void MainWindow::populate_table(std::vector<Item> items) {
         ui.inventoryList->setItem(current_row, 5, used_recently);
         ui.inventoryList->setItem(current_row, 6, id);
 
+        std::cout << "name: " << entry.itemName << " id: " << entry.id << std::endl;
+
         current_row +=1;
     }
 }
 
+void MainWindow::open_export_dialog() {
+    /*
+     * Open the export dialog window where user can enter settings.
+     */
+
+    //ExportDialog export_options = new ExportDialog(this, database_path);
+    ExportDialog export_options = ExportDialog(nullptr, database_path);
+    export_options.setModal(true);
+    std::string file_path;
+    std::string filter_value;
+
+    if(export_options.exec() == QDialog::Accepted) {
+        std::cout << "Accepted" <<std::endl;
+        file_path = export_options.get_file_path();
+        filter_value = export_options.get_filter_value();
+    }
+    std::cout << "CSV output path: " << file_path << std::endl;
+    std::cout << "Filter value: " << filter_value << std::endl;
+
+    std::vector<Item> items = Database::filter(filter_value, database_path);
+    exporters::to_csv(items, file_path);
+}
+
+void MainWindow::new_item_button() {
+    /*
+     * Clear table row selection and fields when user clicks the New Item button
+     */
+
+    ui.inventoryList->selectionModel()->clearSelection();
+    clear_fields();
+}
+
+void MainWindow::reset_table_sort() {
+    /*
+     * Reset table sorting to default sorting order (Sorted by ID in database)
+     */
+
+    qDebug() << "Reset table sort";
+    ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
+}
+
 int main(int argc, char** argv) {
-    Database db;
-    Storage storage = initStorage("ownly.db");
-    db.writeDbToDisk(storage);
+    /*
+     * Run the main window.
+     */
 
     QApplication app(argc, argv);
+    QApplication::setQuitOnLastWindowClosed(false);
     MainWindow mainWindow;
     mainWindow.show();
     return QApplication::exec();
-
-    return 0;
 }

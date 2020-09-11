@@ -1,6 +1,7 @@
 
 pipeline {
 	agent { label 'CI-W10-Agent'}
+
 	options {
 		buildDiscarder(logRotator(numToKeepStr: '10'))
 	}
@@ -59,8 +60,9 @@ pipeline {
                 bat 'del /F/Q/S artifacts\\database_functions_test_autogen'
                 bat 'del /F/Q/S artifacts\\Ownly_autogen'
                 bat 'del /F/Q/S artifacts\\src'
-                bat 'del /F/Q/S artifacts\\database_functions_test_autogen'
-                archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake, artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/database_functions_test.exe,artifacts/test.xml,artifacts/testdb.sqlite"
+                bat 'del /F/Q/S artifacts\\functions_test_autogen'
+                bat 'del /F/Q/S artifacts\\Testing'
+                archiveArtifacts artifacts: 'artifacts/**/**', excludes: "artifacts/Testing/**,artifacts/*.cmake, artifacts/*.tcl,artifacts/*CMake*,artifacts/*autogen*,artifacts/Makefile,artifacts/*cbp,artifacts/functions_test.exe,artifacts/test.csv,artifacts/testdb.sqlite"
             }
             post {
                 always {
