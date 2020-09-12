@@ -19,4 +19,4 @@ Ownly is a Windows tool for keeping track of your belongings and their attribute
 # Features:
 - Clean, minimal interface
 - Simple SQLite3 backend
-- Exporting to CSVR
+- Exporting to CSV
