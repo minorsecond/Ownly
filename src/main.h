@@ -42,6 +42,7 @@ private slots:
     void open_clear_dialog();
     void new_item_button();
     void reset_table_sort();
+    void search_by_name_text_changed(const QString&);
 };
 
 #endif //OWNLY_MAIN_H

@@ -68,6 +68,7 @@ public:
     static std::vector<Item> filter(const std::string& category, const std::string& database_path);
     static void update(const Item& item, std::string database_path);
     static std::string set_db_path();
+    static std::vector<Item> search_by_name(const std::string& item_name, const std::string& database_path);
 };
 
 #endif //NOTCH_DATABASE_H
