@@ -72,6 +72,7 @@ MainWindow::MainWindow([[maybe_unused]] QWidget *parent) {
     connect(ui.dbSubmitButton, SIGNAL(clicked()), this, SLOT(clicked_submit()));
     connect(ui.NewItemButton, SIGNAL(clicked()), this, SLOT(new_item_button()));
     connect(ui.ViewCategoryComboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(filter_by_categories()));
+    connect(ui.searchInput, SIGNAL(textChanged(QString)), this, SLOT(search_by_name_text_changed(QString)));
 
     updateMainTable();
     ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);  // Sort by ID in database
@@ -381,6 +382,7 @@ void MainWindow::populate_table(const std::vector<Item>& items) {
      */
 
     int current_row = 0;
+    ui.inventoryList->setRowCount(items.size());
     for(const auto& entry : items) {
         auto *name = new QTableWidgetItem(entry.itemName.c_str());
         auto *category = new QTableWidgetItem(entry.category.c_str());
@@ -423,8 +425,6 @@ void MainWindow::populate_table(const std::vector<Item>& items) {
         ui.inventoryList->setItem(current_row, 4, item_count);
         ui.inventoryList->setItem(current_row, 5, used_recently);
         ui.inventoryList->setItem(current_row, 6, id);
-
-        std::cout << "name: " << entry.itemName << " id: " << entry.id << std::endl;
 
         current_row +=1;
     }
@@ -469,6 +469,19 @@ void MainWindow::reset_table_sort() {
 
     qDebug() << "Reset table sort";
     ui.inventoryList->sortByColumn(6, Qt::AscendingOrder);
+}
+
+void MainWindow::search_by_name_text_changed(const QString&) {
+    /*
+     * Search database on partial string and print results to table.
+     */
+
+    std::string search_text = ui.searchInput->text().toStdString();
+    std::vector<Item> search_results = Database::search_by_name(search_text, database_path);
+
+    std::cout << "Search results length: " << search_results.size() << std::endl;
+
+    populate_table(search_results);
 }
 
 int main(int argc, char** argv) {
