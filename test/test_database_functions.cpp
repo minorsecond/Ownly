@@ -5,7 +5,7 @@
 #include "../include/Catch2.h"
 #include "../src/Database.h"
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 #include <fstream>
 
 Database db;
@@ -182,4 +182,35 @@ TEST_CASE( "Get DB Category", "[Get DB Category]" ) {
     REQUIRE(all_items.size() == 2);
     REQUIRE(all_items.at(0).category == "Book");
     REQUIRE(all_items.at(1).itemName == "HF Ham Radio");
+}
+
+TEST_CASE("Search by name", "[Search]") {
+    const char *file_name = "testdb.sqlite";
+
+    if (remove(file_name)) {
+        std::cout << "Removed existing testdb.sqlite file";
+    }
+
+    Storage storage = initStorage(file_name);
+    db.writeDbToDisk(storage);
+
+    Item firstItem{-1, "The Silmarillion", "Book", 1998,
+                   3, 7, 8.99, 1, true,
+                   "This is absolutely my favorite Tolkien book."};
+
+    Item secondItem{-1, "HF Ham Radio", "Electronics", 2001, 8,
+                    14, 599.99, 1, true, "Great radio."};
+    storage.insert(firstItem);
+    storage.insert(secondItem);
+
+    Database::writeDbToDisk(storage);
+    std::vector<Item> search_results = Database::search_by_name("HF Ham Radio", file_name);
+    std::vector<Item> partial_search_results = Database::search_by_name("Silmarillion", file_name);
+
+    REQUIRE(search_results.size() == 1);
+    REQUIRE(search_results.at(0).itemName == "HF Ham Radio");
+    REQUIRE(search_results.at(0).id == 2);
+    REQUIRE(partial_search_results.size() == 1);
+    REQUIRE(partial_search_results.at(0).itemName == "The Silmarillion");
+    REQUIRE(partial_search_results.at(0).id == 1);
 }

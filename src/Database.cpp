@@ -137,3 +137,18 @@ std::string Database::set_db_path() {
 
     return database_path;
 }
+
+std::vector<Item> Database::search_by_name(const std::string &item_name, const std::string &database_path) {
+    /*
+     * Filter database by an item name.
+     * @param category: name to filter database on.
+     * @param file_name: file name of sqlite file.
+     */
+
+    Storage storage = initStorage(database_path);
+    std::vector<Item> items_by_name;
+    std::string query_string = "%" + item_name + "%";
+    items_by_name = storage.get_all<Item>(sqlite_orm::where(like(&Item::itemName, query_string)));
+
+    return items_by_name;
+}

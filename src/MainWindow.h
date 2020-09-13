@@ -60,6 +60,8 @@ public:
     QLabel *label;
     QPushButton *deleteItemButton;
     QPushButton *NewItemButton;
+    QLabel *searchLabel;
+    QLineEdit *searchInput;
     QMenuBar *menubar;
     QMenu *FileMenu;
 
@@ -196,6 +198,12 @@ public:
         NewItemButton = new QPushButton(centralwidget);
         NewItemButton->setObjectName(QString::fromUtf8("NewItemButton"));
         NewItemButton->setGeometry(QRect(870, 460, 75, 23));
+        searchLabel = new QLabel(centralwidget);
+        searchLabel->setObjectName(QString::fromUtf8("searchLabel"));
+        searchLabel->setGeometry(QRect(80, 460, 41, 16));
+        searchInput = new QLineEdit(centralwidget);
+        searchInput->setObjectName(QString::fromUtf8("searchInput"));
+        searchInput->setGeometry(QRect(130, 460, 241, 20));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -266,6 +274,7 @@ public:
         label->setText(QCoreApplication::translate("MainWindow", "Ownly", nullptr));
         deleteItemButton->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         NewItemButton->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
+        searchLabel->setText(QCoreApplication::translate("MainWindow", "Search", nullptr));
         FileMenu->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
     } // retranslateUi
 
